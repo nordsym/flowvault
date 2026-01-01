@@ -1,0 +1,3127 @@
+<!DOCTYPE html>
+<html lang="sv" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlowVault - Bibliotek för n8n-arbetsflöden | NordSym</title>
+    <meta name="description" content="Verifierade arbetsflöden för Fortnox, n8n och AI. Gratis nedladdning. Byggt i Stockholm av NordSym AB.">
+
+    <!-- Open Graph / Social Media Meta Tags -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="FlowVault - Bibliotek för n8n-arbetsflöden | NordSym">
+    <meta property="og:description" content="Verifierade arbetsflöden för Fortnox, n8n och AI. Gratis nedladdning. Byggt i Stockholm av NordSym AB.">
+    <!-- Lägg gärna till en og:image här om du har en URL till en omslagsbild -->
+    
+    <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Final%20logo%20no%20text.svg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <!-- JSZip for Multi-file downloads -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+    <!-- Configuration -->
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Comfortaa', 'cursive'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: { DEFAULT: '#00BFFF', hover: '#00D4FF', light: 'rgba(0, 191, 255, 0.1)' },
+                        slate: { 850: '#151F32', 950: '#020617' },
+                        n8n: '#FF6D5A', make: '#6F3BF5', zapier: '#FF4F00', fortnox: '#ED3237',
+                        pro: { DEFAULT: '#d946ef', light: '#fae8ff', dark: '#701a75' }, // Fuchsia
+                        ent: { DEFAULT: '#8b5cf6', light: '#ede9fe', dark: '#4c1d95' }  // Violet
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 4px; } /* Added height for horizontal scroll */
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background-color: #334155; }
+        ::-webkit-scrollbar-thumb:hover { background-color: #94a3b8; }
+
+        /* Hide scrollbar for Chrome, Safari and Opera (Optional polish for filters) */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* Modal Animation */
+        .modal-enter { opacity: 0; transform: scale(0.95); }
+        .modal-enter-active { opacity: 1; transform: scale(1); transition: opacity 200ms ease-out, transform 200ms ease-out; }
+        
+        /* Utility */
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        .dark .glass { background: rgba(15, 23, 42, 0.85); }
+        
+        /* Platform Colors */
+        .platform-n8n { color: #FF6D5A; background-color: rgba(255, 109, 90, 0.1); }
+        .platform-make { color: #6F3BF5; background-color: rgba(111, 59, 245, 0.1); }
+        .platform-zapier { color: #FF4F00; background-color: rgba(255, 79, 0, 0.1); }
+        .platform-claude { color: #D97757; background-color: rgba(217, 119, 87, 0.1); }
+        .platform-chatgpt { color: #10A37F; background-color: rgba(16, 163, 127, 0.1); }
+
+        /* Badges - Updated to Fuchsia gradient */
+        .badge-pro { background: linear-gradient(to right, #d946ef, #c026d3); color: white; border: 1px solid #a21caf; box-shadow: 0 1px 2px rgba(217, 70, 239, 0.3); }
+        
+        /* Body Layering */
+        body { position: relative; z-index: 1; }
+
+        /* Stars & Space - REPLACED WITH CANVAS */
+        .stars-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0; transition: opacity 0.8s ease; }
+        .dark .stars-wrapper { opacity: 1; }
+        
+        /* Grid Background (Light Mode) */
+        .grid-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;
+            background-size: 24px 24px;
+            background-image: 
+                linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+            opacity: 1; transition: opacity 0.5s ease;
+        }
+        .dark .grid-bg { opacity: 0; }
+
+        /* Chat & Paywall Animations */
+        .chat-pulse { box-shadow: 0 0 0 0 rgba(0, 191, 255, 0.7); animation: pulse-blue 2s infinite; }
+        @keyframes pulse-blue { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 191, 255, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 191, 255, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 191, 255, 0); } }
+        
+        /* Mobile Chat Panel Polish */
+        @media (max-width: 640px) {
+            #chat-panel {
+                right: 1rem !important;
+                left: 1rem !important;
+                width: auto !important;
+                max-width: none !important;
+                bottom: 5.5rem !important; /* Above the toggle button */
+                height: 60vh !important;
+            }
+        }
+
+        .typing-dot { width: 6px; height: 6px; background-color: currentColor; border-radius: 50%; animation: typing 1.4s infinite ease-in-out both; }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; } .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+        .message-enter { animation: slideInUp 0.3s ease-out forwards; }
+        @keyframes slideInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Radio Button Custom Style - Updated to Fuchsia */
+        .radio-selected { background-color: rgba(217, 70, 239, 0.1); border-color: #d946ef; }
+        .dark .radio-selected { background-color: rgba(217, 70, 239, 0.2); border-color: #d946ef; }
+    </style>
+</head>
+<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-body transition-colors duration-300 antialiased min-h-screen flex flex-col">
+
+    <!-- Starfall Canvas Container -->
+    <div class="stars-wrapper">
+        <canvas id="starfall"></canvas>
+    </div>
+    
+    <!-- Light Mode Grid -->
+    <div class="grid-bg"></div>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 glass">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="resetApp()">
+                <!-- NordSym Logo -->
+                <img src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Final%20logo%20no%20text.svg" alt="NordSym Logo" class="w-10 h-10 object-contain">
+                <div class="flex flex-col justify-center">
+                    <div class="flex items-center gap-2">
+                        <h1 class="font-heading text-xl font-bold tracking-tight leading-none text-slate-900 dark:text-white">FlowVault</h1>
+                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary border border-primary/20">BETA</span>
+                    </div>
+                    <span class="text-[10px] text-slate-500 font-medium tracking-wide uppercase">Drivs av NordSym</span>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-4">
+                <!-- Download Counter (Visible for Free users) -->
+                <div id="download-counter" class="hidden md:flex flex-col items-end mr-2">
+                    <div class="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Gratis Nedladdningar</div>
+                    <div class="flex items-center gap-1 text-sm font-medium">
+                        <span id="dl-count" class="text-primary font-bold">0</span><span class="text-slate-400">/</span><span class="text-slate-600 dark:text-slate-300">3</span>
+                    </div>
+                </div>
+
+                <!-- Upgrade Button - UPDATED: Mobile Optimized (Icon only on mobile) -->
+                <button id="header-upgrade-btn" onclick="openPaywall('upgrade_header')" class="flex btn-sm bg-gradient-to-r from-fuchsia-500 to-purple-600 hover:from-fuchsia-600 hover:to-purple-700 text-white px-3 sm:px-5 py-2 rounded-lg text-sm font-bold shadow-lg shadow-fuchsia-500/30 transition-all hover:scale-105 items-center gap-2">
+                    <i data-lucide="zap" class="w-4 h-4 fill-white"></i> <span class="hidden sm:inline">Uppgradera</span>
+                </button>
+
+                <!-- NEW: UPLOAD BUTTON -->
+                <button onclick="openUploadModal()" class="hidden md:flex items-center gap-2 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-800 text-sm font-bold transition-colors">
+                    <i data-lucide="upload-cloud" class="w-4 h-4 text-primary"></i> Ladda upp
+                </button>
+
+                <!-- Auth Button (Updated for better visual cue) -->
+                <button onclick="handleAuthClick()" id="auth-btn" class="relative group transition-all" aria-label="Mitt konto">
+                    <!-- Renderas dynamiskt av updateAuthUI -->
+                </button>
+
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="Ändra tema">
+                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-amber-400"></i>
+                    <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-slate-600"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8 sm:py-12 relative z-10">
+        
+        <!-- Hero -->
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <!-- WRAPPED MARKETING CONTENT -->
+            <div id="hero-marketing">
+                <h2 class="font-heading text-3xl sm:text-4xl font-bold mb-4">
+                    Automatisera snabbare. <br class="hidden sm:block" /> Sluta bygga om hjulet.
+                </h2>
+                <p class="text-slate-500 dark:text-slate-400 mb-6 text-lg">
+                    Slipp börja från noll. Hämta färdiga n8n-flöden byggda för proffs.
+                </p>
+
+                <!-- Login Nudge -->
+                <div id="login-nudge" onclick="handleAuthClick()" class="hidden cursor-pointer inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-slate-100 to-slate-50 dark:from-slate-800 dark:to-slate-900 border border-slate-200 dark:border-slate-700 text-xs font-semibold text-slate-600 dark:text-slate-300 mb-8 hover:scale-105 transition-all shadow-sm group">
+                    <span class="flex h-2 w-2 relative">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                    </span>
+                    <span>Vill du ladda ner flöden? <span class="text-primary group-hover:underline">Skapa gratis konto</span></span>
+                    <i data-lucide="arrow-right" class="w-3 h-3 text-slate-400 group-hover:text-primary transition-colors"></i>
+                </div>
+            </div>
+
+            <div class="relative max-w-xl mx-auto group mb-4">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <i data-lucide="search" class="w-5 h-5 text-slate-400 group-focus-within:text-primary transition-colors"></i>
+                </div>
+                <!-- SEARCH PLACEHOLDER UPDATED -->
+                <input type="text" id="search-input" placeholder="Sök arbetsflöden (t.ex. 'AI agent', 'CRM sync', 'SEO')..." class="block w-full pl-11 pr-4 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all shadow-sm text-lg placeholder:text-slate-400" oninput="handleSearch(this.value)">
+            </div>
+            
+            <!-- Request Link (New - High Visibility) -->
+            <div class="text-sm text-slate-500 dark:text-slate-400">
+                Hittar du inte det du söker? 
+                <button onclick="openRequestModal()" class="text-primary hover:text-primary-hover font-semibold hover:underline transition-all ml-1 inline-flex items-center gap-1 group">
+                    <span id="request-link-text">Önska en automation</span> <i data-lucide="arrow-right" class="w-3 h-3 group-hover:translate-x-0.5 transition-transform"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Workflow Counter (NY) -->
+        <div id="workflow-counter" class="text-center text-sm text-slate-500 dark:text-slate-400 mb-6 -mt-4 transition-opacity duration-300">
+            <!-- Fylls dynamiskt av JS -->
+        </div>
+
+        <!-- Controls -->
+        <div class="mb-8 space-y-6">
+            <!-- Categories - UPDATED: Horizontal Scroll on Mobile -->
+            <div class="flex flex-nowrap overflow-x-auto sm:flex-wrap sm:justify-center gap-2 pb-2 sm:pb-0 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0" id="category-filters"></div>
+            
+            <!-- Secondary Filters -->
+            <div class="flex flex-col md:flex-row gap-4 items-center justify-between bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 transition-all duration-300">
+                <!-- UPDATED: Added ID to toggle visibility -->
+                <div id="filter-groups-wrapper" class="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full md:w-auto transition-all duration-300 opacity-100">
+                    <div class="flex items-center gap-2 overflow-x-auto">
+                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider whitespace-nowrap">Plattform:</span>
+                        <div class="flex gap-1" id="platform-filters"></div>
+                    </div>
+                    <div class="flex items-center gap-2 overflow-x-auto">
+                        <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider whitespace-nowrap">Nivå:</span>
+                        <div class="flex gap-1" id="difficulty-filters"></div>
+                    </div>
+                </div>
+
+                <!-- NEW: Skills Info Message (Hidden by default) -->
+                <div id="skills-info-message" class="hidden flex-1 items-center gap-3 text-sm text-slate-600 dark:text-slate-300">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-indigo-600 dark:text-indigo-400">
+                        <i data-lucide="info" class="w-4 h-4"></i>
+                    </div>
+                    <div class="leading-tight">
+                        <span class="font-bold text-slate-900 dark:text-white">Claude Skills (MCP)</span>
+                        <br>
+                        <span class="text-xs text-slate-500">Körs lokalt i Claude Desktop. Kräver ingen n8n-server.</span>
+                    </div>
+                </div>
+                
+                <!-- Sorting (Always visible, aligned to right) -->
+                <div class="flex items-center gap-2 ml-auto w-full md:w-auto justify-end">
+                    <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Sortera:</span>
+                    <div class="relative">
+                        <select onchange="setSort(this.value)" class="appearance-none bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 py-1.5 pl-3 pr-8 rounded-lg text-sm font-medium focus:outline-none focus:ring-2 focus:ring-primary/50 cursor-pointer hover:border-slate-300 dark:hover:border-slate-600 transition-colors">
+                            <option value="popular">Mest populära</option>
+                            <option value="recent">Senast tillagda</option>
+                            <option value="downloads">Flest nedladdningar</option>
+                            <option value="alphabetical">Namn (A-Ö)</option>
+                        </select>
+                        <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid -->
+        <div id="workflow-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+        <!-- Pagination Controls (NEW) -->
+        <div id="pagination-controls" class="mt-12 flex justify-center items-center gap-4 hidden">
+            <!-- Buttons injected by JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div id="empty-state" class="hidden text-center py-20">
+            <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-900 mb-4">
+                <i data-lucide="search-x" class="w-8 h-8 text-slate-400"></i>
+            </div>
+            <h3 class="text-lg font-medium mb-1">Inga träffar</h3>
+            <p class="text-slate-500 dark:text-slate-400 mb-6 max-w-md mx-auto">
+                Vi har både svenska integrationer och globala AI-flöden. Prova att justera dina filter eller kontakta oss.
+            </p>
+            <button onclick="resetApp()" class="px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-700 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm">Rensa filter</button>
+        </div>
+
+        <!-- Request Banner (New) -->
+        <div class="mt-16 p-8 rounded-3xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900/50 dark:to-slate-900 border border-slate-200 dark:border-slate-800 text-center relative overflow-hidden group">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary/50 to-transparent opacity-50"></div>
+            <div class="relative z-10">
+                <div class="w-14 h-14 bg-white dark:bg-slate-800 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm border border-slate-100 dark:border-slate-700 transform group-hover:scale-110 transition-transform duration-500 rotate-3 group-hover:rotate-6">
+                    <i data-lucide="lightbulb" class="w-7 h-7 text-amber-400 fill-amber-400/20"></i>
+                </div>
+                <!-- UPDATED: IDs for dynamic content -->
+                <h3 id="banner-title" class="font-heading text-2xl font-bold mb-3 text-slate-900 dark:text-white">Saknar du ett flöde eller en agent?</h3>
+                <p id="banner-text" class="text-slate-500 dark:text-slate-400 mb-8 max-w-lg mx-auto text-sm leading-relaxed">
+                    Vi på NordSym bygger nya automationer varje vecka baserat på communityts behov. Berätta vad du behöver så prioriterar vi det.
+                </p>
+                <button onclick="openRequestModal()" class="px-8 py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:opacity-90 transition-all shadow-xl shadow-slate-200/50 dark:shadow-none flex items-center gap-2 mx-auto active:scale-95">
+                    <i data-lucide="sparkles" class="w-4 h-4"></i>
+                    <span>Skicka önskemål</span>
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer with Pricing -->
+    <footer class="border-t border-slate-200 dark:border-slate-800 py-12 mt-16 bg-slate-50/50 dark:bg-slate-900/50 relative z-10">
+        <div class="max-w-7xl mx-auto px-4">
+            
+            <!-- Pricing Section / Status Section -->
+            <div id="pricing-section-wrapper" class="mb-16">
+                
+                <!-- View: Marketing / Pricing (Visible for Free/Logged out) -->
+                <div id="pricing-marketing">
+                    <div class="text-center mb-10">
+                        <h3 class="font-heading text-2xl font-bold mb-2">Välj din nivå</h3>
+                        <p class="text-slate-500">Skala upp din automation när du är redo</p>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                        <!-- FREE -->
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 flex flex-col">
+                            <div class="mb-4">
+                                <h4 class="font-bold text-lg">FREE</h4>
+                                <div class="text-3xl font-bold mt-2">0 kr</div>
+                                <div class="text-sm text-slate-500">för alltid</div>
+                            </div>
+                            <ul class="space-y-3 mb-8 flex-1">
+                                <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> 3 nedladdningar / månad</li>
+                                <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Tillgång till Community flows</li>
+                                <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Svenska integrationer</li>
+                            </ul>
+                            <button class="w-full py-3 rounded-xl border border-slate-200 dark:border-slate-700 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Nuvarande plan</button>
+                        </div>
+
+                        <!-- PRO (Polished Version) -->
+                        <div class="relative group z-10">
+                            <!-- Glow Effect Border -->
+                            <div class="absolute -inset-0.5 bg-gradient-to-r from-fuchsia-600 to-purple-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
+                            
+                            <div class="relative bg-white dark:bg-slate-900 rounded-2xl p-6 ring-1 ring-slate-900/5 dark:ring-white/10 flex flex-col h-full transform transition-transform duration-300 hover:-translate-y-1">
+                                <!-- Badge -->
+                                <div class="absolute top-0 right-0">
+                                     <div class="bg-gradient-to-r from-fuchsia-500 to-purple-600 text-white text-[10px] font-bold px-3 py-1 rounded-bl-xl rounded-tr-xl shadow-sm uppercase tracking-wider">Populär</div>
+                                </div>
+
+                                <div class="mb-6">
+                                    <h4 class="font-heading font-bold text-lg text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-purple-600">PRO</h4>
+                                    <div class="flex items-baseline mt-2">
+                                        <span class="text-4xl font-bold text-slate-900 dark:text-white">299 kr</span>
+                                        <span class="text-sm font-medium text-slate-500 ml-1">/mån</span>
+                                    </div>
+                                    <div class="text-xs text-slate-400 font-medium mt-1">exkl. moms</div>
+                                </div>
+
+                                <ul class="space-y-4 mb-8 flex-1">
+                                    <li class="flex items-start gap-3">
+                                        <div class="w-5 h-5 rounded-full bg-fuchsia-100 dark:bg-fuchsia-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <i data-lucide="check" class="w-3 h-3 text-fuchsia-600 dark:text-fuchsia-400"></i>
+                                        </div>
+                                        <span class="text-sm text-slate-700 dark:text-slate-300 font-medium"><strong>Obegränsade</strong> nedladdningar</span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <div class="w-5 h-5 rounded-full bg-fuchsia-100 dark:bg-fuchsia-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <i data-lucide="check" class="w-3 h-3 text-fuchsia-600 dark:text-fuchsia-400"></i>
+                                        </div>
+                                        <span class="text-sm text-slate-700 dark:text-slate-300 font-medium">Tillgång till PRO-flöden & <strong>Skills</strong></span>
+                                    </li>
+                                    <li class="flex items-start gap-3">
+                                        <div class="w-5 h-5 rounded-full bg-fuchsia-100 dark:bg-fuchsia-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+                                            <i data-lucide="sparkles" class="w-3 h-3 text-fuchsia-600 dark:text-fuchsia-400"></i>
+                                        </div>
+                                        <!-- UPDATED COPY -->
+                                        <span class="text-sm font-bold bg-gradient-to-r from-fuchsia-600 to-purple-600 bg-clip-text text-transparent">Ladda upp & dela flöden</span>
+                                    </li>
+                                </ul>
+
+                                <button onclick="openPaywall('pricing_footer')" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-fuchsia-500 to-purple-600 hover:from-fuchsia-600 hover:to-purple-700 text-white font-bold shadow-lg shadow-fuchsia-500/25 transition-all hover:shadow-fuchsia-500/40 hover:scale-[1.02] active:scale-[0.98]">
+                                    Uppgradera nu
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- ENTERPRISE -->
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 flex flex-col opacity-75 hover:opacity-100 transition-opacity">
+                            <div class="mb-4">
+                                <h4 class="font-bold text-lg text-ent">ENTERPRISE</h4>
+                                <div class="text-3xl font-bold mt-2">Anpassat</div>
+                                <div class="text-sm text-slate-500">Vi hjälper er skala</div>
+                            </div>
+                            <ul class="space-y-3 mb-8 flex-1">
+                                <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-ent"></i> Hjälp med implementation</li>
+                                <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-ent"></i> Strategisk rådgivning</li>
+                                <li class="flex items-center gap-2 text-sm"><i data-lucide="star" class="w-4 h-4 text-amber-400"></i> Förtur till Auto-Connect</li>
+                            </ul>
+                            <button onclick="openEnterpriseModal()" class="block w-full py-3 rounded-xl border border-ent text-ent font-bold text-center hover:bg-ent-light dark:hover:bg-slate-800 transition-colors">Boka rådgivning</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- View: PRO Status (Visible for PRO users) -->
+                <div id="pricing-pro-status" class="hidden">
+                    <div class="max-w-3xl mx-auto bg-white dark:bg-slate-900 rounded-3xl p-8 border border-fuchsia-200 dark:border-fuchsia-900/30 shadow-lg relative overflow-hidden text-center">
+                         <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-fuchsia-400 via-purple-500 to-fuchsia-400"></div>
+                         <div class="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-full bg-fuchsia-100 dark:bg-fuchsia-900/30 text-fuchsia-600 dark:text-fuchsia-400">
+                             <i data-lucide="crown" class="w-6 h-6"></i>
+                         </div>
+                         <h3 class="font-heading text-2xl font-bold mb-2 text-slate-900 dark:text-white">Du har FlowVault <span class="text-fuchsia-500">PRO</span></h3>
+                         <p class="text-slate-500 dark:text-slate-400 mb-6 max-w-lg mx-auto">
+                             Tack för att du stöttar utvecklingen av nya integrationer. Du har obegränsad tillgång till hela biblioteket.
+                         </p>
+                         <div class="flex justify-center gap-4">
+                             <button onclick="openUploadModal()" class="px-6 py-2 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold hover:opacity-90 transition-opacity flex items-center gap-2">
+                                 <i data-lucide="upload-cloud" class="w-4 h-4"></i> Ladda upp flow
+                             </button>
+                             <button onclick="openEnterpriseModal()" class="px-6 py-2 rounded-lg border border-slate-200 dark:border-slate-700 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm">
+                                 Kontakta Enterprise
+                             </button>
+                         </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer Bottom -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 border-t border-slate-200 dark:border-slate-800 pt-12">
+                <!-- Col 1: Om -->
+                <div>
+                    <img src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Final%20logo%20no%20text.svg" alt="NordSym Logo" class="w-8 h-8 mb-4 object-contain">
+                    <h3 class="font-heading font-bold mb-3 text-slate-900 dark:text-white">Om FlowVault</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mb-4 leading-relaxed">
+                        Sveriges största bibliotek för n8n-arbetsflöden och AI-agenter. Byggt med ❤️ i Stockholm av <a href="https://www.nordsym.com" target="_blank" class="text-slate-900 dark:text-white font-medium hover:text-primary transition-colors underline decoration-slate-300 dark:decoration-slate-700 underline-offset-2">NordSym AB</a>.
+                    </p>
+                </div>
+
+                <!-- Col 2: Legal/Security (NEW) -->
+                <div>
+                    <h3 class="font-heading font-bold mb-3 text-slate-900 dark:text-white">Juridik & Säkerhet</h3>
+                    <ul class="space-y-2 text-sm text-slate-500 dark:text-slate-400">
+                        <li><button onclick="openSecurityModal('privacy')" class="hover:text-primary transition-colors text-left flex items-center gap-2"><i data-lucide="shield-check" class="w-3 h-3"></i> Integritetspolicy</button></li>
+                        <li><button onclick="openSecurityModal('security')" class="hover:text-primary transition-colors text-left flex items-center gap-2"><i data-lucide="lock" class="w-3 h-3"></i> Säkerhet</button></li>
+                        <li><button onclick="openSecurityModal('terms')" class="hover:text-primary transition-colors text-left flex items-center gap-2"><i data-lucide="file-text" class="w-3 h-3"></i> Användarvillkor</button></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Kontakt -->
+                <div>
+                    <h3 class="font-heading font-bold mb-3 text-slate-900 dark:text-white">Kontakt</h3>
+                    <div class="space-y-2">
+                        <a href="mailto:support@nordsym.com" class="text-slate-500 hover:text-primary transition-colors text-sm font-medium flex items-center gap-2">
+                            <i data-lucide="mail" class="w-4 h-4 text-slate-400"></i> support@nordsym.com
+                        </a>
+                        <a href="https://www.nordsym.com" target="_blank" class="text-slate-500 hover:text-primary transition-colors text-sm font-medium flex items-center gap-2">
+                            <i data-lucide="globe" class="w-4 h-4 text-slate-400"></i> www.nordsym.com
+                        </a>
+                        <a href="https://www.linkedin.com/company/107921985" target="_blank" class="text-slate-500 hover:text-primary transition-colors text-sm font-medium flex items-center gap-2">
+                            <i data-lucide="linkedin" class="w-4 h-4 text-slate-400"></i> LinkedIn
+                        </a>
+                        <a href="https://x.com/NordSym" target="_blank" class="text-slate-500 hover:text-primary transition-colors text-sm font-medium flex items-center gap-2">
+                            <i data-lucide="twitter" class="w-4 h-4 text-slate-400"></i> X
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center pt-8 border-t border-slate-200 dark:border-slate-800 mt-8">
+                <p class="text-slate-500 text-sm">&copy; 2025 FlowVault by NordSym AB. Alla rättigheter förbehållna.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Security & Legal Modal (NEW) -->
+    <div id="security-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[90] hidden transition-opacity opacity-0 flex items-center justify-center p-4" onclick="closeSecurityModal()">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-slate-200 dark:border-slate-800 flex flex-col max-h-[85vh]" onclick="event.stopPropagation()">
+            
+            <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/20">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center text-emerald-600 dark:text-emerald-400">
+                        <i data-lucide="shield" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-heading text-xl font-bold text-slate-900 dark:text-white">Säkerhet & Villkor</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs">Transparens är vår grundsten.</p>
+                    </div>
+                </div>
+                <button onclick="closeSecurityModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+
+            <div class="p-8 overflow-y-auto prose dark:prose-invert max-w-none text-sm leading-relaxed">
+                <!-- Content Section 1: Privacy -->
+                <!-- UPDATED: Added ID for scrolling -->
+                <div id="sec-privacy" class="mb-8 scroll-mt-4">
+                    <h4 class="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white mb-3">
+                        <i data-lucide="lock" class="w-4 h-4 text-primary"></i> Integritet & Data
+                    </h4>
+                    <p class="text-slate-600 dark:text-slate-400">
+                        Vi värnar om din integritet. FlowVault samlar endast in minimal data nödvändig för tjänstens funktion (inloggning och nedladdningshistorik). Vi säljer aldrig din data till tredje part.
+                    </p>
+                    <ul class="list-disc pl-5 mt-2 text-slate-600 dark:text-slate-400">
+                        <li><strong>E-post:</strong> Används endast för inloggning och (om du valt det) nyhetsbrev.</li>
+                        <li><strong>Cookies:</strong> Vi använder endast funktionella cookies för att hålla dig inloggad. Ingen spårning.</li>
+                    </ul>
+                </div>
+
+                <!-- Content Section 2: Security -->
+                <!-- UPDATED: Added ID for scrolling -->
+                <div id="sec-security" class="mb-8 scroll-mt-4">
+                    <h4 class="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white mb-3">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i> Säkerhet i Arbetsflöden
+                    </h4>
+                    <p class="text-slate-600 dark:text-slate-400">
+                        Alla arbetsflöden och Skills på FlowVault granskas manuellt av NordSyms experter innan publicering för att säkerställa hög kvalitet och säkerhet.
+                    </p>
+                    <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/50 p-3 rounded-lg mt-3 text-amber-800 dark:text-amber-200 text-xs">
+                        <strong>Observera:</strong> Du ansvarar själv för att hantera dina API-nycklar säkert när du använder flödena i din egen miljö. Lämna aldrig nycklar synliga i koden.
+                    </div>
+                </div>
+
+                <!-- Content Section 3: Terms -->
+                <!-- UPDATED: Added ID for scrolling -->
+                <div id="sec-terms" class="scroll-mt-4">
+                    <h4 class="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white mb-3">
+                        <i data-lucide="file-text" class="w-4 h-4 text-slate-400"></i> Användarvillkor
+                    </h4>
+                    <p class="text-slate-600 dark:text-slate-400">
+                        Genom att använda FlowVault godkänner du att materialet tillhandahålls "i befintligt skick". NordSym AB ansvarar inte för eventuella driftstopp eller fel som uppstår i din egen n8n-miljö vid användning av våra mallar.
+                    </p>
+                </div>
+            </div>
+            
+            <div class="p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 text-center">
+                <button onclick="closeSecurityModal()" class="px-6 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-lg hover:opacity-90 transition-opacity w-full sm:w-auto">Jag förstår</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Paywall Modal -->
+    <div id="paywall-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[80] hidden transition-opacity opacity-0 flex items-center justify-center p-4" onclick="closePaywall()">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden transform scale-95 transition-transform" onclick="event.stopPropagation()">
+            <!-- MODAL HEADER UPDATED TO FUCHSIA -->
+            <div class="bg-fuchsia-500 p-6 text-white text-center relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
+                <div class="relative z-10">
+                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 backdrop-blur-sm"><i data-lucide="lock" class="w-6 h-6 text-white"></i></div>
+                    <h3 id="paywall-title" class="text-2xl font-bold font-heading">Uppgradera till PRO</h3>
+                    <p id="paywall-desc" class="text-fuchsia-100 mt-1 text-sm">Lås upp detta workflow och få obegränsad tillgång.</p>
+                </div>
+                <button onclick="closePaywall()" class="absolute top-4 right-4 text-white/70 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
+            </div>
+            <div class="p-8">
+                <ul class="space-y-4 mb-8">
+                    <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400"><i data-lucide="check" class="w-3 h-3"></i></div><span class="text-slate-700 dark:text-slate-300 font-medium">Obegränsade nedladdningar</span></li>
+                    <!-- COPY UPDATED HERE TOO -->
+                    <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400"><i data-lucide="check" class="w-3 h-3"></i></div><span class="text-slate-700 dark:text-slate-300 font-medium">Tillgång till exklusiva PRO-flöden</span></li>
+                    <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400"><i data-lucide="check" class="w-3 h-3"></i></div><span class="text-slate-700 dark:text-slate-300 font-medium">Stöd vidareutveckling</span></li>
+                </ul>
+                <div class="flex flex-col gap-3">
+                    <!-- BUTTON UPDATED TO FUCHSIA -->
+                    <button onclick="handleProUpgrade(event)" class="w-full py-4 rounded-xl bg-fuchsia-500 hover:bg-fuchsia-600 text-white font-bold text-lg text-center shadow-lg shadow-fuchsia-500/20 transition-all hover:scale-[1.02] flex justify-center items-center gap-2">
+                        <span>Skaffa PRO för 299 kr/mån</span> <i data-lucide="credit-card" class="w-5 h-5"></i>
+                    </button>
+                    <p class="text-center text-xs text-slate-400">Ingen bindningstid. Avsluta när du vill.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal (Restored) -->
+    <div id="auth-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[80] hidden transition-opacity opacity-0 flex items-center justify-center p-4" onclick="closeAuthModal()">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-slate-200 dark:border-slate-800" onclick="event.stopPropagation()">
+            <div class="p-6 relative">
+                <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+                
+                <!-- View: Login (Email) -->
+                <div id="auth-view-email" class="block">
+                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4 text-primary"><i data-lucide="log-in" class="w-6 h-6"></i></div>
+                    <h3 class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">Logga in på FlowVault</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Ange din e-postadress för att få en inloggningskod.</p>
+                    <form onsubmit="handleEmailSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-500 mb-1">E-postadress</label>
+                            <input type="email" id="auth-email" required placeholder="namn@foretag.se" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white">
+                        </div>
+                        <button type="submit" id="auth-email-btn" class="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
+                            <span>Skicka kod</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- View: Verify (Code) -->
+                <div id="auth-view-code" class="hidden">
+                    <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4 text-green-600 dark:text-green-400"><i data-lucide="mail-check" class="w-6 h-6"></i></div>
+                    <h3 class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">Kolla din inkorg</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Vi har skickat en kod till <span id="auth-email-display" class="font-medium text-slate-800 dark:text-slate-200"></span>.</p>
+                    <form onsubmit="handleCodeSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Verifieringskod</label>
+                            <input type="text" id="auth-code" required placeholder="123456" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white text-center text-2xl tracking-widest font-mono">
+                        </div>
+                        <button type="submit" id="auth-code-btn" class="w-full py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary-hover transition-colors flex justify-center gap-2">Verifiera & Logga in</button>
+                        <button type="button" onclick="switchAuthView('email')" class="w-full text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 mt-2">Ändra e-post</button>
+                    </form>
+                </div>
+
+                <!-- View: Profile (Logged In) -->
+                <div id="auth-view-profile" class="hidden text-center">
+                    <div class="w-16 h-16 bg-gradient-to-br from-primary to-blue-600 rounded-full flex items-center justify-center mb-4 text-white text-2xl font-bold mx-auto" id="profile-avatar">U</div>
+                    <h3 class="font-heading text-xl font-bold mb-1 text-slate-900 dark:text-white" id="profile-email">anvandare@email.com</h3>
+                    <div class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 mb-6 border border-slate-200 dark:border-slate-700" id="profile-tier">Free Plan</div>
+                    
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800">
+                            <div class="text-2xl font-bold text-slate-900 dark:text-white" id="profile-dl-count">0</div>
+                            <div class="text-[10px] text-slate-500 uppercase tracking-wider">Nedladdningar</div>
+                        </div>
+                        <div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800">
+                            <div class="text-2xl font-bold text-slate-900 dark:text-white" id="profile-fav-count">0</div>
+                            <div class="text-[10px] text-slate-500 uppercase tracking-wider">Favoriter</div>
+                        </div>
+                    </div>
+
+                    <button onclick="handleLogout()" class="w-full py-3 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Logga ut</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Modal (Fix: Added missing modal) -->
+    <div id="request-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[80] hidden transition-opacity opacity-0 flex items-center justify-center p-4" onclick="closeRequestModal()">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-slate-200 dark:border-slate-800" onclick="event.stopPropagation()">
+            <div class="p-6 relative">
+                <button onclick="closeRequestModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center mb-4 text-amber-600 dark:text-amber-400"><i data-lucide="lightbulb" class="w-6 h-6"></i></div>
+                <!-- UPDATED: Added IDs for dynamic text -->
+                <h3 id="req-modal-title" class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">Önska en automation</h3>
+                <p id="req-modal-desc" class="text-slate-500 dark:text-slate-400 text-sm mb-6">Beskriv vad du behöver. Vi prioriterar baserat på efterfrågan.</p>
+                <form onsubmit="handleRequestSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Din E-post</label>
+                        <input type="email" id="request-email" required placeholder="namn@foretag.se" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Beskrivning</label>
+                        <textarea id="request-desc" required rows="4" placeholder="Jag behöver ett flöde som..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white resize-none"></textarea>
+                    </div>
+                    <button type="submit" id="req-submit-btn" class="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
+                        <span>Skicka önskemål</span> <i data-lucide="send" class="w-4 h-4"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enterprise Modal (Fix: Added missing modal) -->
+    <div id="enterprise-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[80] hidden transition-opacity opacity-0 flex items-center justify-center p-4" onclick="closeEnterpriseModal()">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-slate-200 dark:border-slate-800" onclick="event.stopPropagation()">
+            <div class="p-6 relative">
+                <button onclick="closeEnterpriseModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mb-4 text-purple-600 dark:text-purple-400"><i data-lucide="building-2" class="w-6 h-6"></i></div>
+                <h3 class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">Enterprise Väntelista</h3>
+                <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Få tillgång till prioriterad support och skräddarsydda lösningar. Skriv upp dig så kontaktar vi dig.</p>
+                <form onsubmit="handleEnterpriseSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Din E-post</label>
+                        <input type="email" id="enterprise-email" required placeholder="namn@foretag.se" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white">
+                    </div>
+                    <button type="submit" id="ent-submit-btn" class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl transition-colors flex justify-center items-center gap-2">
+                        <span>Gå med i listan</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW: Upload Modal (Marketplace) -->
+    <div id="upload-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[80] hidden transition-opacity opacity-0 flex items-center justify-center p-4" onclick="closeUploadModal()">
+        <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-slate-200 dark:border-slate-800 flex flex-col max-h-[90vh]" onclick="event.stopPropagation()">
+            <!-- Header -->
+            <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                <div>
+                    <h3 class="font-heading text-xl font-bold text-slate-900 dark:text-white">Ladda upp till FlowVault</h3>
+                    <!-- UPDATED COPY -->
+                    <p class="text-slate-500 dark:text-slate-400 text-xs">Dela dina automationer med communityt.</p>
+                </div>
+                <button onclick="closeUploadModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+
+            <!-- Tabs -->
+            <div class="flex border-b border-slate-100 dark:border-slate-800">
+                <button onclick="switchUploadTab('json')" id="tab-json" class="flex-1 py-3 text-sm font-bold text-primary border-b-2 border-primary bg-slate-50 dark:bg-slate-800/50 transition-colors">Klistra in JSON</button>
+                <button onclick="switchUploadTab('file')" id="tab-file" class="flex-1 py-3 text-sm font-bold text-slate-500 border-b-2 border-transparent hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Ladda upp Fil</button>
+            </div>
+
+            <!-- Content -->
+            <div class="p-6 overflow-y-auto">
+                <form onsubmit="handleUploadSubmit(event)" class="space-y-4">
+                    <!-- JSON Input -->
+                    <div id="upload-view-json" class="block">
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Arbetsflödes-kod (JSON)</label>
+                        <textarea id="upload-json-content" rows="8" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white font-mono text-xs resize-none" placeholder='{"nodes": [...], "connections": {...}}'></textarea>
+                    </div>
+
+                    <!-- File Input -->
+                    <div id="upload-view-file" class="hidden">
+                        <label class="block w-full h-48 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl flex flex-col items-center justify-center cursor-pointer hover:border-primary hover:bg-primary/5 transition-all group">
+                            <div class="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                                <i data-lucide="upload" class="w-6 h-6 text-slate-400 group-hover:text-primary"></i>
+                            </div>
+                            <span class="text-sm font-medium text-slate-600 dark:text-slate-300">Klicka för att välja .json fil</span>
+                            <span class="text-xs text-slate-400 mt-1">eller dra och släpp här</span>
+                            <input type="file" id="upload-file-input" accept=".json" class="hidden" onchange="handleFileSelect(this)">
+                        </label>
+                        <div id="file-name-display" class="hidden mt-2 text-xs font-bold text-emerald-500 flex items-center gap-1"><i data-lucide="check" class="w-3 h-3"></i> <span></span></div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Titel</label>
+                            <input type="text" id="upload-title" required placeholder="t.ex. Automatisk Fakturering" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none dark:text-white text-sm">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Kategori</label>
+                            <select id="upload-category" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none dark:text-white text-sm">
+                                <!-- Populated dynamically by JS -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3">
+                        <button type="button" onclick="closeUploadModal()" class="px-4 py-2 rounded-lg text-sm font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">Avbryt</button>
+                        <button type="submit" class="px-6 py-2 bg-primary hover:bg-primary-hover text-white rounded-lg text-sm font-bold shadow-lg shadow-primary/20 transition-transform active:scale-95 flex items-center gap-2">
+                            <span>Ladda upp</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detail Modal (FIXED SCROLL & Z-INDEX) -->
+    <div id="modal-backdrop" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-[60] hidden transition-opacity opacity-0 overflow-y-auto" aria-hidden="true" onclick="closeModal(event)">
+        <div class="min-h-screen px-4 text-center">
+            <span class="inline-block h-screen align-middle" aria-hidden="true">&#8203;</span>
+            <div id="modal-content" class="inline-block w-full max-w-2xl p-6 my-8 text-left align-middle transition-all transform bg-white dark:bg-slate-900 shadow-2xl rounded-2xl border border-slate-200 dark:border-slate-800 relative scale-95 opacity-0" onclick="event.stopPropagation()">
+                <button onclick="closeModal()" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors z-10"><i data-lucide="x" class="w-6 h-6"></i></button>
+                <div class="mb-6 pr-8">
+                    <div class="flex flex-wrap items-center gap-2 mb-3">
+                        <span id="modal-platform" class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider border border-transparent"></span>
+                        <div id="modal-verified" class="flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded border border-emerald-100 dark:border-emerald-900"><i data-lucide="check-circle-2" class="w-3 h-3"></i> Verifierad av NordSym</div>
+                    </div>
+                    <h2 id="modal-title" class="font-heading text-2xl font-bold text-slate-900 dark:text-white leading-tight"></h2>
+                    <!-- UPDATED: Author wrapper controlled by JS entirely -->
+                    <p id="modal-author-wrapper" class="text-sm text-slate-500 mt-1"></p>
+                </div>
+                <div class="prose dark:prose-invert max-w-none mb-6">
+                    <p id="modal-description" class="text-slate-600 dark:text-slate-300 text-base leading-relaxed"></p>
+                </div>
+
+                <!-- How-to Guide (NEW) -->
+                <!-- UPDATED: Added IDs for dynamic content -->
+                <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 mb-6 border border-slate-100 dark:border-slate-800">
+                    <h4 id="modal-guide-title" class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center gap-2">
+                        <i data-lucide="info" class="w-3 h-3"></i> Så använder du flödet
+                    </h4>
+                    <ol id="modal-guide-list" class="text-sm text-slate-600 dark:text-slate-300 space-y-1 list-decimal list-inside pl-1">
+                        <!-- Populated dynamically via JS -->
+                        <li>Ladda ner JSON-filen.</li>
+                        <li>Öppna din egen <strong>n8n-instans</strong>.</li>
+                        <li>Klicka på menyn i hörnet → <strong>Import from File</strong>.</li>
+                        <li>Njut av automationen! 🚀</li>
+                    </ol>
+                </div>
+                
+                <!-- Multi-File Selection System - UPDATED TO FUCHSIA -->
+                <div id="multi-file-selector" class="hidden mb-6 bg-fuchsia-50 dark:bg-fuchsia-900/20 rounded-xl border border-fuchsia-100 dark:border-fuchsia-900/50 p-4">
+                    <div class="flex items-center gap-2 mb-3 text-fuchsia-700 dark:text-fuchsia-400 font-bold text-sm uppercase tracking-wide">
+                        <i data-lucide="layers" class="w-4 h-4"></i> <span id="multi-file-header">Multi-Workflow System</span>
+                    </div>
+                    <div id="multi-file-options" class="space-y-2 mb-3">
+                        <!-- Populated via JS -->
+                    </div>
+                    <div id="multi-file-notes" class="text-[10px] text-slate-500 dark:text-slate-400 italic border-t border-fuchsia-100 dark:border-fuchsia-900/50 pt-2 mt-2 hidden">
+                        <!-- Notes populated via JS -->
+                    </div>
+                </div>
+
+                <!-- Modal Help Banner -->
+                <!-- UPDATED: Added IDs for dynamic text -->
+                <div class="p-4 bg-gradient-to-r from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/20 rounded-xl border border-primary/20 mb-6 flex items-start gap-4">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mt-1"><i data-lucide="headphones" class="w-5 h-5 text-primary"></i></div>
+                    <div class="flex-1">
+                        <h4 id="modal-help-title" class="font-semibold text-slate-900 dark:text-white mb-1 text-sm sm:text-base">Behöver du hjälp att sätta upp detta?</h4>
+                        <p id="modal-help-text" class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-3">Vi på NordSym hjälper svenska företag att implementera och anpassa automationer.</p>
+                        <a id="modal-help-btn" href="#" class="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary-hover transition-colors group">Kontakta oss för hjälp <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></a>
+                    </div>
+                </div>
+                <!-- Metadata -->
+                <!-- UPDATED: Added IDs to grid and wrappers for visibility toggling -->
+                <div id="modal-metadata-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50">
+                    <div id="meta-difficulty-wrapper"><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Svårighetsgrad</div><div class="font-semibold text-slate-800 dark:text-slate-200 capitalize" id="modal-difficulty"></div></div>
+                    <div id="meta-time-wrapper"><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tidsåtgång</div><div class="font-semibold text-slate-800 dark:text-slate-200" id="modal-time"></div></div>
+                    <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Nedladdningar</div><div class="font-semibold text-slate-800 dark:text-slate-200" id="modal-downloads"></div></div>
+                     <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Plattform</div><div class="font-semibold text-slate-800 dark:text-slate-200 capitalize" id="modal-platform-text"></div></div>
+                </div>
+                <div class="mb-8 space-y-4">
+                    <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Perfekt för</div><div id="modal-usecases" class="flex flex-wrap gap-2"></div></div>
+                    <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Taggar</div><div id="modal-tags" class="flex flex-wrap gap-2"></div></div>
+                </div>
+                <!-- UPDATE: Removed Copy Button, Full Width Download -->
+                <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-slate-100 dark:border-slate-800">
+                    <button id="btn-download" class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white font-semibold py-3 px-6 rounded-xl transition-all active:scale-[0.98] shadow-md shadow-primary/20"><i data-lucide="download" class="w-5 h-5"></i> <span>Ladda ner arbetsflöde</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 sm:left-6 sm:translate-x-0 z-[100] transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1) transform translate-y-32 opacity-0 pointer-events-none">
+        <div class="flex items-center gap-4 px-5 py-3.5 bg-slate-900/95 dark:bg-white/95 backdrop-blur-md text-white dark:text-slate-900 rounded-2xl shadow-2xl border border-slate-800 dark:border-slate-100 min-w-[280px] sm:min-w-[320px]">
+            <div id="toast-icon-bg" class="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30 shrink-0 transition-colors duration-300">
+                <i data-lucide="check" class="w-5 h-5 text-white"></i>
+            </div>
+            <div class="flex-1">
+                <h4 id="toast-title" class="text-[10px] font-bold uppercase tracking-wider opacity-60 mb-0.5 transition-colors">Notis</h4>
+                <p id="toast-message" class="text-sm font-bold leading-tight">Operationen lyckades</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cookie Consent Banner (New) -->
+    <div id="cookie-banner" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 w-full max-w-sm hidden transition-all duration-500 transform translate-y-20 opacity-0">
+        <div class="glass border border-slate-200 dark:border-slate-700 p-4 rounded-2xl shadow-2xl flex flex-col gap-3 mx-4 sm:mx-0">
+            <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 text-primary">
+                    <i data-lucide="cookie" class="w-4 h-4"></i>
+                </div>
+                <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Vi använder kakor för att spara dina favoriter och hålla dig inloggad. Inget spårande, bara funktion. 🍪
+                </p>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="acceptCookies()" class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-2 rounded-lg text-xs font-bold hover:opacity-90 transition-opacity">Okej, kör!</button>
+                <button onclick="closeCookieBanner()" class="px-3 py-2 rounded-lg text-xs font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">Senare</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Widget UI -->
+    <button id="chat-toggle" onclick="toggleChat()" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary hover:bg-primary-hover text-white rounded-full shadow-lg hover:shadow-primary/50 transition-all hover:scale-105 active:scale-95 flex items-center justify-center chat-pulse group">
+        <i data-lucide="message-square" class="w-7 h-7 fill-white group-hover:scale-90 transition-transform"></i>
+        <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
+    </button>
+
+    <div id="chat-panel" class="fixed bottom-24 right-6 z-50 w-full max-w-[360px] h-[550px] max-h-[70vh] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden transition-all duration-300 origin-bottom-right scale-95 opacity-0 hidden">
+        <!-- Chat Header -->
+        <div class="p-4 bg-slate-900 dark:bg-slate-950 text-white flex items-center justify-between shrink-0 relative overflow-hidden">
+            <div class="absolute inset-0 bg-primary/10"></div>
+            <div class="flex items-center gap-3 relative z-10">
+                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-blue-600 p-0.5 shadow-lg shadow-primary/20">
+                    <div class="w-full h-full bg-slate-900 rounded-full flex items-center justify-center">
+                    <i data-lucide="bot" class="w-5 h-5 text-primary"></i>
+                </div>
+            </div>
+            <div>
+                <div class="flex items-center gap-2">
+                    <h3 class="font-bold text-sm tracking-wide">FlowVault AI</h3>
+                    <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/20 text-primary border border-primary/30">BETA</span>
+                </div>
+                <div class="flex items-center gap-1.5 text-[10px] text-emerald-400 font-medium">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
+                    Online
+                    </div>
+                </div>
+            </div>
+            <button onclick="toggleChat()" class="p-1.5 hover:bg-white/10 rounded-lg transition-colors relative z-10"><i data-lucide="x" class="w-5 h-5 text-slate-300 hover:text-white"></i></button>
+        </div>
+
+        <!-- Chat Messages -->
+        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50 dark:bg-slate-900/50 scroll-smooth">
+            <div class="flex gap-3 message-enter">
+                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1 border border-primary/20">
+                    <i data-lucide="bot" class="w-4 h-4 text-primary"></i>
+                </div>
+                <div class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 p-3.5 rounded-2xl rounded-tl-none text-sm shadow-sm text-slate-600 dark:text-slate-300 leading-relaxed">
+                    Hej! Jag kan hjälpa dig hitta rätt automation eller svara på frågor om n8n och Make. Vad funderar du på? 👋
+                </div>
+            </div>
+            
+            <!-- Typing Indicator -->
+            <div id="typing-indicator" class="flex gap-3 hidden">
+                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
+                    <i data-lucide="bot" class="w-4 h-4 text-primary"></i>
+                </div>
+                <div class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 p-4 rounded-2xl rounded-tl-none flex gap-1 items-center h-10 shadow-sm">
+                    <div class="typing-dot text-slate-400"></div>
+                    <div class="typing-dot text-slate-400"></div>
+                    <div class="typing-dot text-slate-400"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Input -->
+        <div class="p-3 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 shrink-0">
+            <form onsubmit="handleChatSubmit(event)" class="relative flex items-center gap-2">
+                <input type="text" id="chat-input" placeholder="Skriv din fråga..." class="flex-1 pl-4 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none text-sm transition-all dark:text-white placeholder:text-slate-400" autocomplete="off">
+                <button type="submit" class="p-3 bg-primary hover:bg-primary-hover text-white rounded-xl transition-colors shadow-sm disabled:opacity-50 flex-shrink-0 active:scale-95">
+                    <i data-lucide="send" class="w-4 h-4"></i>
+                </button>
+            </form>
+            <div class="text-center mt-2 opacity-60">
+                <div class="flex items-center justify-center gap-1.5">
+                    <i data-lucide="zap" class="w-3 h-3 text-primary"></i>
+                    <p class="text-[10px] text-slate-400">Drivs av NordSym AB</p>
+                </div>
+                <p class="text-[9px] text-slate-400 mt-0.5">AI-agenten kan göra misstag.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIG ---
+        const GITHUB_CONFIG = {
+            user: 'nordsym',          
+            repo: 'flowvault',        // Updated repo name
+            branch: 'main'            
+        };
+
+        const UI_TEXT = { difficulties: { beginner: "Nybörjare", intermediate: "Medel", advanced: "Avancerad" } };
+        const AI_CONFIG = { apiKey: 'PLACEHOLDER_API_KEY', model: 'claude-3-sonnet-20240229', endpoint: 'https://api.anthropic.com/v1/messages' };
+        
+        // --- API INTEGRATION ---
+        // VIKTIGT: Nu pekar vi på LIVE (Published) URL igen
+        const API_BASE = 'https://nordsym.app.n8n.cloud/webhook';
+        
+        const API_ENDPOINTS = {
+            workflows: `${API_BASE}/flowvault-workflows`,
+            // FIX: Uppdaterad URL baserat på din webhook (dubbel path)
+            download: (id) => `${API_BASE}/flowvault-download/flowvault-download/${id}`,
+            authInit: `${API_BASE}/flowvault-auth-init`,   // LIVE: Init login
+            authVerify: `${API_BASE}/flowvault-verify-v2`, // LIVE: Verify code
+            request: 'https://nordsym.app.n8n.cloud/webhook/flowvault-request',
+            upload: 'https://nordsym.app.n8n.cloud/webhook/flowvault-upload', // NY: Upload Endpoint
+            chat: 'https://nordsym.app.n8n.cloud/webhook/5d2f97e8-0938-4fae-a660-5121f4b4fab7/chat', // LIVE: AI Chat
+            createCheckout: 'https://nordsym.app.n8n.cloud/webhook/flowvault-create-checkout', // LIVE: Stripe Checkout (Explicit URL)
+            getUser: 'https://nordsym.app.n8n.cloud/webhook/flowvault-get-user' // LIVE: Refresh User Tier (Explicit URL)
+        };
+        const USE_BACKEND = true; // Enabled for production
+
+        // --- GLOBAL HELPERS ---
+        // Flyttade ut denna så att både renderWorkflows och downloadJSON kan använda den
+        const normalizeTags = (input) => {
+            let list = [];
+            if (Array.isArray(input)) list = input;
+            else if (typeof input === 'string') list = input.split(',');
+            else if (input) list = [String(input)];
+            
+            return list
+                .flatMap(item => String(item).split(','))
+                .map(item => item.trim().toLowerCase())
+                .filter(item => item.length > 0);
+        };
+
+        // Tier & Tracking State
+        const FREE_LIMIT = 3;
+        // User State Schema Upgrade
+        let userState = JSON.parse(localStorage.getItem('flowvault_user_state')) || {
+            tier: 'free', 
+            downloads: [],
+            downloadsRemaining: 3, // New field from API
+            favorites: [], 
+            email: null, 
+            isAuthenticated: false,
+            token: null,
+            resetDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1).toISOString()
+        };
+
+        // --- DEV MODE OVERRIDE ---
+        // Tvingar användaren till PRO-nivå för att låsa upp alla funktioner under utveckling.
+        // userState.tier = 'pro';
+        // console.log("🔧 DEV MODE: PRO tier forced active");
+        // -------------------------
+
+        // Migration safeguard
+        if (!userState.favorites) userState.favorites = [];
+        if (typeof userState.isAuthenticated === 'undefined') userState.isAuthenticated = false;
+
+        // Reset monthly downloads if needed
+        if (new Date() > new Date(userState.resetDate)) {
+            userState.downloads = []; 
+            userState.resetDate = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1).toISOString();
+            localStorage.setItem('flowvault_user_state', JSON.stringify(userState));
+        }
+
+        // --- UPDATED CATEGORIES FOR SKILLS ---
+        const CATEGORIES = [
+            { id: 'all', label: 'Alla', icon: 'layout-grid', aliases: [] },
+            // ÄNDRING: Tog bort generiska ord som "automation", "tool" som matchade vanliga flöden
+            { id: 'skills', label: 'Claude Skills', icon: 'folder-code', aliases: ['mcp', 'claude desktop'] },
+            { id: 'favorites', label: 'Favoriter', icon: 'star', aliases: [] },
+            // ÄNDRING: "Svenska Integrationer" -> "Svensk Integration" för att matcha Airtable exakt
+            { id: 'swedish', label: 'Svensk Integration', icon: '🇸🇪', aliases: ['svensk', 'sweden', 'swedish'] },
+            { id: 'ai-automation', label: 'AI Automation', icon: 'bot', aliases: ['ai', 'artificiell', 'gpt', 'llm'] },
+            { id: 'social', label: 'Social Media', icon: 'megaphone', aliases: ['social', 'some', 'linkedin', 'facebook', 'instagram', 'tiktok'] },
+            { id: 'sales', label: 'Sälj & CRM', icon: 'briefcase', aliases: ['sälj', 'sales', 'crm', 'pipe'] },
+            { id: 'content', label: 'Innehållskapande', icon: 'palette', aliases: ['content', 'innehåll', 'design', 'bild'] },
+            { id: 'productivity', label: 'Produktivitet', icon: 'zap', aliases: ['produktivitet', 'effektivitet', 'admin'] },
+            { id: 'specialized', label: 'Specialiserad', icon: 'wrench', aliases: ['special', 'bygg', 'fastighet', 'nisch'] }
+        ];
+
+        const STATIC_WORKFLOWS = [
+            // --- CLAUDE SKILLS (Hardcoded Examples) ---
+            // RENSAT: Nu hämtas dessa från Airtable istället
+            
+            // KATEGORI: 🇸🇪 Svenska Integrationer (20)
+            { id: "fortnox-invoice-sync", title: "Fortnox Faktura till Sheets", description: "Synka godkända fakturor från Fortnox till Google Sheets automatiskt varje natt.", category: "swedish", tags: ["fortnox", "faktura", "sheets", "ekonomi"], platform: "n8n", verified: true, downloads: 842, difficulty: "intermediate", estimatedTime: "15 min", useCases: ["Småföretag", "Konsulter"], author: "NordSym", category: "swedish" },
+            // UPDATED: Added fileCount for testing multi-file system
+            { 
+                id: "kvitto-fortnox", 
+                title: "Kvittoredovisning Dropbox → Fortnox (Complete System)", 
+                description: "Komplett system. Hämtar kvitton från Dropbox, kör OCR, och skapar verifikatutkast i Fortnox automatiskt. Innehåller även felhanteringsmodul.", 
+                category: "swedish", 
+                tags: ["fortnox", "dropbox", "ocr", "kvitto"], 
+                platform: "n8n", 
+                verified: true, 
+                downloads: 620, 
+                difficulty: "advanced", 
+                estimatedTime: "40 min", 
+                useCases: ["Konsulter", "Småföretag"], 
+                author: "NordSym", 
+                category: "swedish",
+                fileCount: 3, 
+                workflowType: "modular",
+                fileDescriptions: "Del 1: Huvudprocess (Dropbox trigger)\nDel 2: OCR & AI Processing\nDel 3: Fortnox Integration & Error Handling",
+                installationNotes: "Importera delarna i ordning 1-3. Se till att koppla ihop webhook-noderna enligt diagrammet i dokumentationen."
+            },
+            // NEW: Multi-file Agent Test
+            {
+                id: "ai-agent-swarm",
+                title: "AI Agent Swarm - Content Team",
+                description: "Ett team av 5 specialiserade AI-agenter som samarbetar. Research, Skrivande, SEO, Granskning och Publicering.",
+                category: "ai-automation",
+                tags: ["ai", "agents", "openai", "automation"],
+                platform: "n8n",
+                verified: true,
+                downloads: 1205,
+                difficulty: "advanced",
+                estimatedTime: "2h",
+                useCases: ["Marknadsavdelningar", "Byråer"],
+                author: "NordSym",
+                fileCount: 5,
+                workflowType: "bundle",
+                fileDescriptions: "Agent 1: Researcher\nAgent 2: Writer\nAgent 3: SEO Specialist\nAgent 4: Editor\nAgent 5: Publisher",
+                installationNotes: "Dessa agenter använder n8n:s nya LangChain-noder. Kräver n8n version 1.0+."
+            },
+            { id: "visma-bokio-sync", title: "Stripe till Bokio", description: "Sammanställ dagliga utbetalningar från Stripe och skapa samlat verifikat i Bokio.", category: "swedish", tags: ["stripe", "bokio", "betalningar"], platform: "n8n", verified: true, downloads: 410, difficulty: "intermediate", estimatedTime: "25 min", useCases: ["E-handlare"], author: "NordSym", category: "swedish" },
+            { id: "rot-xml-generator", title: "ROT-avdrag XML Generator", description: "Skapar XML-fil för Skatteverket baserat på arbetsorder. Perfekt för byggfirmor.", category: "swedish", tags: ["skatteverket", "rot", "xml", "bygg"], platform: "n8n", verified: true, downloads: 420, difficulty: "advanced", estimatedTime: "60 min", useCases: ["Byggfirmor", "Hantverkare"], author: "NordSym", category: "swedish" },
+            { id: "scrive-signing", title: "Avtalssignering via Scrive", description: "Skapa avtal från Google Docs-mall, konvertera till PDF och skicka för e-signering via Scrive.", category: "swedish", tags: ["scrive", "avtal", "esignering"], platform: "n8n", verified: true, downloads: 380, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["Konsulter", "Säljare"], author: "NordSym", category: "swedish" },
+            { id: "bankid-verification", title: "BankID Verifiering", description: "Integrera BankID-verifiering i dina workflows för säker identifiering.", category: "swedish", tags: ["bankid", "verifiering", "säkerhet"], platform: "n8n", verified: true, downloads: 290, difficulty: "advanced", estimatedTime: "45 min", useCases: ["Fintech", "Byråer"], author: "NordSym", category: "swedish" },
+            { id: "byggprojekt-foton", title: "Projektbilder till Kund", description: "Vattenstämpla projektbilder med datum/logga och SMS:a automatiskt till kund.", category: "swedish", tags: ["bygg", "bilder", "sms", "kundvård"], platform: "n8n", verified: true, downloads: 280, difficulty: "beginner", estimatedTime: "20 min", useCases: ["Hantverkare", "Byggfirmor"], author: "NordSym", category: "swedish" },
+            { id: "fortnox-product-sync", title: "Fortnox Produkter → Shopify", description: "Synka produkter och lager mellan Fortnox och Shopify automatiskt.", category: "swedish", tags: ["fortnox", "shopify", "lager", "ehandel"], platform: "n8n", verified: true, downloads: 510, difficulty: "advanced", estimatedTime: "50 min", useCases: ["E-handlare"], author: "NordSym", category: "swedish" },
+            { id: "tripletex-timesheet", title: "Tripletex Tidrapportering", description: "Automatisera tidrapporter från Google Calendar till Tripletex.", category: "swedish", tags: ["tripletex", "tid", "kalender"], platform: "n8n", verified: true, downloads: 195, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["Konsulter"], author: "NordSym", category: "swedish" },
+            { id: "swish-notifications", title: "Swish Betalningsnotiser", description: "Få Slack/Email-notiser när Swish-betalningar kommer in.", category: "swedish", tags: ["swish", "betalning", "notiser"], platform: "n8n", verified: true, downloads: 340, difficulty: "beginner", estimatedTime: "15 min", useCases: ["Småföretag"], author: "NordSym", category: "swedish" },
+            { id: "postnord-tracking", title: "PostNord Spårning", description: "Automatisk spårning av PostNord-paket med kundnotiser via SMS/Email.", category: "swedish", tags: ["postnord", "spårning", "logistik"], platform: "n8n", verified: true, downloads: 220, difficulty: "intermediate", estimatedTime: "25 min", useCases: ["E-handlare"], author: "NordSym", category: "swedish" },
+            { id: "kivra-invoices", title: "Kivra Fakturautskick", description: "Skicka fakturor via Kivra direkt från ditt faktureringssystem.", category: "swedish", tags: ["kivra", "faktura", "digital"], platform: "n8n", verified: true, downloads: 175, difficulty: "intermediate", estimatedTime: "35 min", useCases: ["Småföretag"], author: "NordSym", category: "swedish" },
+            { id: "fortnox-payroll", title: "Fortnox Lön Automation", description: "Automatisera lönekörning från tidrapporter i Fortnox.", category: "swedish", tags: ["fortnox", "lön", "hr"], platform: "n8n", verified: true, downloads: 310, difficulty: "advanced", estimatedTime: "60 min", useCases: ["HR-avdelningar"], author: "NordSym", category: "swedish" },
+            { id: "arbetsformedlingen-api", title: "Arbetsförmedlingen Platsannonser", description: "Publicera jobbannoner automatiskt till Arbetsförmedlingens API.", category: "swedish", tags: ["arbetsförmedlingen", "rekrytering", "jobb"], platform: "n8n", verified: true, downloads: 145, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["HR", "Rekrytering"], author: "NordSym", category: "swedish" },
+            { id: "uc-credit-check", title: "UC Kreditkontroll", description: "Automatisk kreditkontroll via UC innan orderbekräftelse.", category: "swedish", tags: ["uc", "kredit", "riskbedömning"], platform: "n8n", verified: true, downloads: 265, difficulty: "advanced", estimatedTime: "40 min", useCases: ["B2B-försäljning"], author: "NordSym", category: "swedish" },
+            { id: "skatteverket-vat", title: "Skatteverket Momsrapport", description: "Sammanställ momsunderlag från Fortnox för Skatteverket.", category: "swedish", tags: ["skatteverket", "moms", "rapportering"], platform: "n8n", verified: true, downloads: 390, difficulty: "advanced", estimatedTime: "50 min", useCases: ["Ekonomiavdelningar"], author: "NordSym", category: "swedish" },
+            { id: "bolagsverket-registration", title: "Bolagsverket Ändringsanmälan", description: "Automatisera delar av ändringsanmälningar till Bolagsverket.", category: "swedish", tags: ["bolagsverket", "företag", "registrering"], platform: "n8n", verified: true, downloads: 128, difficulty: "advanced", estimatedTime: "45 min", useCases: ["Byråer", "Jurister"], author: "NordSym", category: "swedish" },
+            { id: "swedish-bank-reconciliation", title: "Svensk Bankavstämning", description: "Automatisk avstämning mellan svenska banker och bokföringssystem.", category: "swedish", tags: ["bank", "avstämning", "ekonomi"], platform: "n8n", verified: true, downloads: 445, difficulty: "advanced", estimatedTime: "55 min", useCases: ["Ekonomiavdelningar"], author: "NordSym", category: "swedish" },
+            { id: "digital-mailbox", title: "Digital Brevlåda Integration", description: "Hämta och processera post från Kivra, MinMyndighetsPost automatiskt.", category: "swedish", tags: ["kivra", "myndighetspost", "digital"], platform: "n8n", verified: true, downloads: 198, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["Företag"], author: "NordSym", category: "swedish" },
+            { id: "swedish-holidays", title: "Svenska helgdagar i automation", description: "Automatisk hänsyn till svenska helgdagar i schemalagda flöden.", category: "swedish", tags: ["helgdagar", "schema", "kalender"], platform: "n8n", verified: true, downloads: 312, difficulty: "beginner", estimatedTime: "10 min", useCases: ["Alla"], author: "NordSym", category: "swedish" },
+            // (Remaining workflows omitted for brevity, but array structure remains same)
+        ];
+
+        let WORKFLOWS = [...STATIC_WORKFLOWS]; 
+        
+        // --- UPDATED PLATFORMS ---
+        const PLATFORMS = [ 
+            { id: 'all', label: 'Alla' }, 
+            { id: 'n8n', label: 'n8n' }
+        ];
+        const DIFFICULTIES = [ { id: 'all', label: 'Alla' } ];
+
+        // NEW: ITEMS_PER_PAGE and currentPage added to state
+        const ITEMS_PER_PAGE = 20;
+        // ÄNDRING: platformFilter är nu 'n8n' som default istället för 'all'
+        let state = { search: '', categoryFilter: 'all', platformFilter: 'n8n', difficultyFilter: 'all', sort: 'popular', currentPage: 1 };
+        let chatState = { isOpen: false, history: [] };
+        let currentModalWorkflow = null;
+        let currentFileSelection = 'all'; // 'all' or index (1, 2, 3...)
+        let modalTimer; // Fix för race conditions vid snabba klick
+
+        // --- DOM Elements ---
+        const gridEl = document.getElementById('workflow-grid');
+        const filtersEl = document.getElementById('category-filters');
+        const platformFiltersEl = document.getElementById('platform-filters');
+        const difficultyFiltersEl = document.getElementById('difficulty-filters');
+        const emptyStateEl = document.getElementById('empty-state');
+        const searchInputEl = document.getElementById('search-input');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalContent = document.getElementById('modal-content');
+        const modalHelpBtn = document.getElementById('modal-help-btn');
+        
+        // Chat Elements - Restored
+        const chatPanel = document.getElementById('chat-panel');
+        const chatToggle = document.getElementById('chat-toggle');
+        const chatInput = document.getElementById('chat-input');
+        const chatMessages = document.getElementById('chat-messages');
+        const typingIndicator = document.getElementById('typing-indicator');
+
+        const paywallModal = document.getElementById('paywall-modal');
+        const dlCountEl = document.getElementById('dl-count');
+        const counterEl = document.getElementById('workflow-counter'); 
+        const multiFileSelector = document.getElementById('multi-file-selector'); 
+
+        // --- AUTH & MODAL ELEMENTS ---
+        const authModal = document.getElementById('auth-modal');
+        // REMOVED: const authBtnDot = document.getElementById('auth-status-dot'); // Hanteras nu direkt i updateAuthUI
+        const requestModal = document.getElementById('request-modal'); 
+        const enterpriseModal = document.getElementById('enterprise-modal');
+        // NEW
+        const uploadModal = document.getElementById('upload-modal');
+
+        // --- MAIN FUNCTIONS ---
+
+        function init() {
+            renderControls();
+            
+            // --- NYTT: DEV BYPASS (Måste köras innan rendering) ---
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('dev') === 'pro') {
+                console.log("🔧 DEV MODE: Force enabling PRO tier");
+                userState.isAuthenticated = true;
+                userState.email = 'dev@nordsym.com';
+                userState.tier = 'pro';
+                saveUserState();
+                setTimeout(() => showToast("🛠️ DEV MODE: PRO Aktiverat", false), 500);
+            }
+            // -----------------------------------------------------
+
+            renderHeader(); 
+            renderStats();
+            renderWorkflows(); 
+            fetchWorkflows();  
+            initTheme();
+            initStarfall(); 
+            updateAuthUI(); 
+            checkStripeRedirect(); 
+            initCookies(); 
+            populateUploadCategories(); // NEW: Populate upload dropdown
+            lucide.createIcons();
+
+            // NYTT: Synka användardata (tier & downloads) direkt vid start om inloggad
+            if (userState.isAuthenticated && userState.email && urlParams.get('dev') !== 'pro') {
+                syncUserProfile();
+            }
+        }
+
+        // --- NEW SYNC FUNCTION ---
+        async function syncUserProfile() {
+            console.log("🔄 Synkar användarprofil...");
+            try {
+                const formData = new URLSearchParams();
+                formData.append('email', userState.email);
+
+                const res = await fetch(API_ENDPOINTS.getUser, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    
+                    // Uppdatera Tier
+                    if (data.tier) userState.tier = data.tier.toLowerCase();
+                    
+                    // Uppdatera Nedladdningar (Hård synk)
+                    if (data.downloads_count !== undefined) {
+                        const count = parseInt(data.downloads_count);
+                        console.log(`✅ Profil synkad: ${data.tier}, ${count} nedladdningar.`);
+                        // Skapa dummy-historik för att matcha serverns siffra
+                        userState.downloads = Array(count).fill({ id: 'synced', timestamp: new Date().toISOString() });
+                    }
+
+                    saveUserState();
+                    renderHeader(); // Uppdatera mätaren visuellt
+                    renderWorkflows(); // Lås upp/ner PRO-kort
+                }
+            } catch (error) {
+                console.warn("Kunde inte synka profil:", error);
+            }
+        }
+
+        // --- COOKIE LOGIC ---
+        function initCookies() {
+            if (!localStorage.getItem('flowvault_cookies_accepted')) {
+                const banner = document.getElementById('cookie-banner');
+                if (banner) {
+                    banner.classList.remove('hidden');
+                    // Liten fördröjning för snyggare in-animation
+                    setTimeout(() => {
+                        banner.classList.remove('translate-y-20', 'opacity-0');
+                    }, 1000);
+                }
+            }
+        }
+
+        function acceptCookies() {
+            localStorage.setItem('flowvault_cookies_accepted', 'true');
+            closeCookieBanner();
+            showToast("Inställningar sparade! 👍");
+        }
+
+        function closeCookieBanner() {
+            const banner = document.getElementById('cookie-banner');
+            if (banner) {
+                banner.classList.add('translate-y-20', 'opacity-0');
+                setTimeout(() => banner.classList.add('hidden'), 500);
+            }
+        }
+
+        function renderHeader() {
+            const isPro = userState.tier === 'pro';
+            const dlCounter = document.getElementById('download-counter');
+            const upgradeBtn = document.getElementById('header-upgrade-btn');
+            const heroMarketing = document.getElementById('hero-marketing');
+            const pricingMarketing = document.getElementById('pricing-marketing');
+            const pricingProStatus = document.getElementById('pricing-pro-status');
+
+            // 1. Hantera Header och Hero baserat på PRO-status
+            if (isPro) {
+                // Header Upgrade Button -> Hide
+                if (upgradeBtn) {
+                    upgradeBtn.classList.remove('sm:flex');
+                    upgradeBtn.classList.add('hidden');
+                }
+                
+                // Download Counter -> Show PRO badge
+                if (dlCounter) {
+                    dlCounter.innerHTML = '<span class="text-xs font-bold text-fuchsia-500 bg-fuchsia-100 dark:bg-fuchsia-900/30 px-2 py-1 rounded border border-fuchsia-200 dark:border-fuchsia-700">PRO PLAN</span>';
+                }
+
+                // Hero Marketing -> Hide
+                if (heroMarketing) {
+                    heroMarketing.style.display = 'none';
+                    heroMarketing.parentElement.classList.add('mt-8');
+                }
+
+                // Footer Pricing -> Hide Marketing, Show Status
+                if (pricingMarketing) pricingMarketing.classList.add('hidden');
+                if (pricingProStatus) pricingProStatus.classList.remove('hidden');
+
+            } else {
+                // Free Plan Logic
+                if (upgradeBtn) {
+                    upgradeBtn.classList.add('sm:flex');
+                    upgradeBtn.classList.remove('hidden');
+                }
+                
+                if (heroMarketing) {
+                    heroMarketing.style.display = 'block';
+                    heroMarketing.parentElement.classList.remove('mt-8');
+                }
+
+                // Footer Pricing -> Show Marketing, Hide Status
+                if (pricingMarketing) pricingMarketing.classList.remove('hidden');
+                if (pricingProStatus) pricingProStatus.classList.add('hidden');
+
+                if (dlCounter) {
+                    dlCounter.innerHTML = `
+                        <div class="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Gratis Nedladdningar</div>
+                        <div class="flex items-center gap-1 text-sm font-medium">
+                            <span id="dl-count" class="text-primary font-bold">${userState.downloads.length}</span><span class="text-slate-400">/</span><span class="text-slate-600 dark:text-slate-300">3</span>
+                        </div>
+                    `;
+                    const countEl = document.getElementById('dl-count');
+                    if (countEl && userState.downloads.length >= FREE_LIMIT) {
+                        countEl.classList.remove('text-primary');
+                        countEl.classList.add('text-red-500');
+                    }
+                }
+            }
+            updateAuthUI();
+        }
+
+        // --- AUTH SYSTEM (Frontend Mock for n8n/Airtable) ---
+        // ... (existing helper functions for modals) ...
+
+        function handleAuthClick() {
+            if (userState.isAuthenticated) {
+                switchAuthView('profile');
+            } else {
+                switchAuthView('email');
+            }
+            openAuthModal();
+        }
+
+        function openAuthModal() {
+            authModal.classList.remove('hidden');
+            setTimeout(() => { authModal.classList.remove('opacity-0'); authModal.firstElementChild.classList.remove('scale-95'); authModal.firstElementChild.classList.add('scale-100'); }, 10);
+        }
+
+        function closeAuthModal() {
+            authModal.classList.add('opacity-0'); authModal.firstElementChild.classList.remove('scale-100'); authModal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => authModal.classList.add('hidden'), 300);
+        }
+
+        function openRequestModal() {
+            if (userState.isAuthenticated && userState.email) {
+                document.getElementById('request-email').value = userState.email;
+            }
+
+            // DYNAMIC TEXT UPDATE
+            const titleEl = document.getElementById('req-modal-title');
+            const descEl = document.getElementById('req-modal-desc');
+
+            if (state.categoryFilter === 'skills') {
+                titleEl.textContent = "Önska en Claude Skill";
+                descEl.textContent = "Saknar du en MCP-server eller specifik förmåga i Claude? Berätta vad du vill bygga!";
+            } else {
+                titleEl.textContent = "Önska en automation";
+                descEl.textContent = "Beskriv vad du behöver. Vi prioriterar baserat på efterfrågan.";
+            }
+
+            requestModal.classList.remove('hidden');
+            setTimeout(() => { requestModal.classList.remove('opacity-0'); requestModal.firstElementChild.classList.remove('scale-95'); requestModal.firstElementChild.classList.add('scale-100'); }, 10);
+        }
+
+        function closeRequestModal() {
+            requestModal.classList.add('opacity-0'); requestModal.firstElementChild.classList.remove('scale-100'); requestModal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => requestModal.classList.add('hidden'), 300);
+        }
+
+        function openEnterpriseModal() {
+            if (userState.isAuthenticated && userState.email) {
+                document.getElementById('enterprise-email').value = userState.email;
+            }
+            enterpriseModal.classList.remove('hidden');
+            setTimeout(() => { enterpriseModal.classList.remove('opacity-0'); enterpriseModal.firstElementChild.classList.remove('scale-95'); enterpriseModal.firstElementChild.classList.add('scale-100'); }, 10);
+        }
+
+        function closeEnterpriseModal() {
+            enterpriseModal.classList.add('opacity-0'); enterpriseModal.firstElementChild.classList.remove('scale-100'); enterpriseModal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => enterpriseModal.classList.add('hidden'), 300);
+        }
+
+        // --- UPLOAD MODAL LOGIC (NEW) ---
+        function openUploadModal() {
+            if (!userState.isAuthenticated) {
+                showToast("Du måste logga in för att ladda upp.", true);
+                openAuthModal();
+                return;
+            }
+            uploadModal.classList.remove('hidden');
+            setTimeout(() => { uploadModal.classList.remove('opacity-0'); uploadModal.firstElementChild.classList.remove('scale-95'); uploadModal.firstElementChild.classList.add('scale-100'); }, 10);
+        }
+
+        function closeUploadModal() {
+            uploadModal.classList.add('opacity-0'); uploadModal.firstElementChild.classList.remove('scale-100'); uploadModal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => uploadModal.classList.add('hidden'), 300);
+        }
+
+        // --- NEW: Security Modal Functions ---
+        function openSecurityModal(section = null) {
+            const modal = document.getElementById('security-modal');
+            modal.classList.remove('hidden');
+            
+            // Animation
+            setTimeout(() => { 
+                modal.classList.remove('opacity-0'); 
+                modal.firstElementChild.classList.remove('scale-95'); 
+                modal.firstElementChild.classList.add('scale-100'); 
+            }, 10);
+
+            // Scroll to specific section if requested
+            if (section) {
+                // Liten fördröjning så modalen hinner "öppnas" i DOMen
+                setTimeout(() => {
+                    const el = document.getElementById(`sec-${section}`);
+                    if (el) {
+                        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }, 150);
+            }
+        }
+
+        function closeSecurityModal() {
+            const modal = document.getElementById('security-modal');
+            modal.classList.add('opacity-0'); 
+            modal.firstElementChild.classList.remove('scale-100'); 
+            modal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => modal.classList.add('hidden'), 300);
+        }
+
+        function switchUploadTab(tab) {
+            const jsonView = document.getElementById('upload-view-json');
+            const fileView = document.getElementById('upload-view-file');
+            const jsonTab = document.getElementById('tab-json');
+            const fileTab = document.getElementById('tab-file');
+
+            if (tab === 'json') {
+                jsonView.classList.remove('hidden'); fileView.classList.add('hidden');
+                jsonTab.classList.add('text-primary', 'border-primary', 'bg-slate-50', 'dark:bg-slate-800/50'); jsonTab.classList.remove('text-slate-500', 'border-transparent');
+                fileTab.classList.remove('text-primary', 'border-primary', 'bg-slate-50', 'dark:bg-slate-800/50'); fileTab.classList.add('text-slate-500', 'border-transparent');
+            } else {
+                jsonView.classList.add('hidden'); fileView.classList.remove('hidden');
+                fileTab.classList.add('text-primary', 'border-primary', 'bg-slate-50', 'dark:bg-slate-800/50'); fileTab.classList.remove('text-slate-500', 'border-transparent');
+                jsonTab.classList.remove('text-primary', 'border-primary', 'bg-slate-50', 'dark:bg-slate-800/50'); jsonTab.classList.add('text-slate-500', 'border-transparent');
+            }
+        }
+
+        function handleFileSelect(input) {
+            const display = document.getElementById('file-name-display');
+            if (input.files && input.files[0]) {
+                display.classList.remove('hidden');
+                display.querySelector('span').textContent = input.files[0].name;
+            }
+        }
+
+        // UPDATED: Real Upload Logic instead of Mock
+        async function handleUploadSubmit(e) {
+            e.preventDefault();
+            
+            if (!userState.isAuthenticated || !userState.email) {
+                showToast("Du måste vara inloggad för att ladda upp.", true);
+                return;
+            }
+
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Laddar upp...';
+            btn.disabled = true;
+
+            try {
+                const title = document.getElementById('upload-title').value;
+                const category = document.getElementById('upload-category').value;
+                const isJsonTab = !document.getElementById('upload-view-json').classList.contains('hidden');
+                
+                let contentToSend = '';
+                let uploadType = '';
+
+                // Hämta innehåll baserat på flik
+                if (isJsonTab) {
+                    contentToSend = document.getElementById('upload-json-content').value;
+                    uploadType = 'json_paste';
+                    if (!contentToSend.trim()) throw new Error("Klistra in JSON-koden först.");
+                } else {
+                    const fileInput = document.getElementById('upload-file-input');
+                    if (fileInput.files.length > 0) {
+                        const file = fileInput.files[0];
+                        // Läs filen som text
+                        contentToSend = await file.text();
+                        uploadType = 'file_upload';
+                    } else {
+                        throw new Error("Välj en fil först.");
+                    }
+                }
+
+                // Validera att det är någorlunda giltig JSON (enkel check)
+                try {
+                    JSON.parse(contentToSend);
+                } catch (err) {
+                    throw new Error("Ogiltigt JSON-format. Kontrollera koden.");
+                }
+
+                console.log("📤 Skickar uppladdning...", { title, category, uploadType });
+
+                // Skicka till n8n
+                // Vi använder URLSearchParams för att undvika CORS-problem med "application/json"
+                const formData = new URLSearchParams();
+                formData.append('email', userState.email);
+                formData.append('title', title);
+                formData.append('category', category);
+                formData.append('jsonContent', contentToSend); // Hela koden skickas som text
+                formData.append('type', uploadType);
+                formData.append('source', 'flowvault_web');
+
+                const response = await fetch(API_ENDPOINTS.upload, {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    showToast("Tack! Ditt flöde har skickats för granskning. 🚀");
+                    closeUploadModal();
+                    // Rensa formulär
+                    document.getElementById('upload-json-content').value = '';
+                    document.getElementById('upload-title').value = '';
+                    document.getElementById('upload-file-input').value = '';
+                    document.getElementById('file-name-display').classList.add('hidden');
+                } else {
+                    const errText = await response.text();
+                    console.error("Upload error:", errText);
+                    showToast("Något gick fel vid uppladdning.", true);
+                }
+
+            } catch (error) {
+                console.error("Upload Error:", error);
+                showToast(error.message || "Ett fel uppstod.", true);
+            } finally {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+            }
+        }
+
+        async function handleEnterpriseSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('enterprise-email').value;
+            const btn = document.getElementById('ent-submit-btn');
+            const originalContent = btn.innerHTML;
+            
+            btn.innerHTML = '<div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
+            btn.disabled = true;
+
+            try {
+                // FIX: Vi använder URLSearchParams (Form Data) istället för JSON.
+                // Detta gör anropet till ett "Simple Request" och hoppar över CORS-kontrollen (OPTIONS).
+                const formData = new URLSearchParams();
+                formData.append('email', email);
+                formData.append('description', "ENTERPRISE WAITLIST REQUEST");
+                formData.append('type', "enterprise_waitlist");
+
+                const response = await fetch(API_ENDPOINTS.request, {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    showToast("Du är nu uppskriven på listan! 🚀");
+                    closeEnterpriseModal();
+                    document.getElementById('enterprise-email').value = ''; 
+                } else {
+                    const errorText = await response.text();
+                    console.error("Server Error:", errorText);
+                    showToast("Något gick fel. Försök igen.", true);
+                }
+            } catch (error) {
+                console.error("Enterprise request error:", error);
+                showToast("Kunde inte ansluta till servern.", true);
+            } finally {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+            }
+        }
+
+        async function handleRequestSubmit(e) {
+            e.preventDefault();
+            const desc = document.getElementById('request-desc').value;
+            const email = document.getElementById('request-email').value;
+            const btn = document.getElementById('req-submit-btn');
+            const originalContent = btn.innerHTML;
+            
+            btn.innerHTML = '<div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
+            btn.disabled = true;
+
+            try {
+                console.log("Sending request to:", API_ENDPOINTS.request); 
+
+                // FIX: Vi använder URLSearchParams (Form Data) istället för JSON.
+                // Detta gör anropet till ett "Simple Request" och hoppar över CORS-kontrollen (OPTIONS).
+                const formData = new URLSearchParams();
+                formData.append('email', email);
+                formData.append('description', desc);
+                formData.append('source', 'flowvault_web');
+
+                const response = await fetch(API_ENDPOINTS.request, {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    showToast("Tack för ditt önskemål! 🚀");
+                    document.getElementById('request-desc').value = '';
+                    closeRequestModal();
+                } else {
+                    console.error("Server responded with:", response.status);
+                    showToast(`Serverfel (${response.status}). Försök igen.`, true);
+                }
+            } catch (error) {
+                console.error("Request error details:", error);
+                
+                if (error.message.includes('Failed to fetch')) {
+                    showToast("Kunde inte nå servern (CORS).", true);
+                } else {
+                    showToast("Något gick fel. Försök igen.", true);
+                }
+            } finally {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+            }
+        }
+
+        function switchAuthView(view) {
+            ['email', 'code', 'profile'].forEach(v => document.getElementById(`auth-view-${v}`).classList.add('hidden'));
+            document.getElementById(`auth-view-${view}`).classList.remove('hidden');
+            
+            if (view === 'profile') {
+                document.getElementById('profile-email').textContent = userState.email;
+                document.getElementById('profile-tier').textContent = userState.tier === 'pro' ? 'PRO Plan' : 'Free Plan';
+                document.getElementById('profile-tier').className = `inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-6 border ${userState.tier === 'pro' ? 'bg-fuchsia-100 text-fuchsia-600 border-fuchsia-200' : 'bg-slate-100 text-slate-600 border-slate-200'}`;
+                document.getElementById('profile-avatar').textContent = userState.email.charAt(0).toUpperCase();
+                document.getElementById('profile-dl-count').textContent = userState.downloads.length;
+                document.getElementById('profile-fav-count').textContent = userState.favorites.length;
+            }
+        }
+
+        function updateAuthUI() {
+            const btn = document.getElementById('auth-btn');
+            const nudge = document.getElementById('login-nudge');
+            if (!btn) return;
+
+            if (userState.isAuthenticated) {
+                // Hide the nudge if logged in
+                if (nudge) nudge.classList.add('hidden');
+
+                // Inloggad vy: Avatar
+                const initial = userState.email ? userState.email.charAt(0).toUpperCase() : 'U';
+                btn.className = "p-1 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors relative group border border-transparent";
+                btn.innerHTML = `
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                        ${initial}
+                    </div>
+                    <span class="absolute bottom-0 right-0 w-2.5 h-2.5 rounded-full bg-emerald-500 border-2 border-white dark:border-slate-950"></span>
+                `;
+            } else {
+                // Show the nudge if logged out
+                if (nudge) {
+                    nudge.classList.remove('hidden');
+                    // Ensure it's treated as a flex container when removing hidden
+                    nudge.style.display = 'inline-flex';
+                }
+
+                // Utloggad vy: Tydlig "Logga in" knapp med puls-effekt
+                btn.className = "flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-white font-bold text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700 relative";
+                btn.innerHTML = `
+                    <span>Logga in</span>
+                    <i data-lucide="log-in" class="w-3 h-3"></i>
+                    <span class="absolute -top-1 -right-1 flex h-3 w-3">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                    </span>
+                `;
+            }
+            // Uppdatera ikonerna eftersom vi bytte innerHTML
+            lucide.createIcons();
+        }
+
+        async function handleEmailSubmit(e) {
+            e.preventDefault();
+            const email = document.getElementById('auth-email').value;
+            const btn = e.target.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
+            btn.disabled = true;
+
+            // --- DEV BACKDOOR ---
+            if (email.toLowerCase() === 'dev@nordsym.com' || email.toLowerCase() === 'pro@nordsym.com') {
+                setTimeout(() => {
+                    document.getElementById('auth-email-display').textContent = email;
+                    showToast("DEV MODE: Kod är 123456 🛠️");
+                    switchAuthView('code');
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 800);
+                return;
+            }
+            // ---------------------
+
+            try {
+                console.log("Anropar Auth Init:", API_ENDPOINTS.authInit);
+                
+                // FIX: Byt till URLSearchParams (Form Data) för att undvika CORS-blockering
+                const formData = new URLSearchParams();
+                formData.append('email', email);
+
+                const response = await fetch(API_ENDPOINTS.authInit, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData 
+                });
+
+                if (response.ok) {
+                    const responseData = await response.clone().json().catch(() => ({}));
+                    console.log("🚀 Auth Init Server Response:", responseData);
+
+                    // NY LOGIK: Logga varning men STOPPA INTE. Låt användaren skriva in koden om den kom fram.
+                    if (responseData.success === false) {
+                        console.warn("⚠️ Servern rapporterade fel, men vi fortsätter ändå:", responseData);
+                    }
+
+                    document.getElementById('auth-email-display').textContent = email;
+                    showToast("Kod skickad till din e-post!");
+                    switchAuthView('code');
+                } else {
+                    console.error("Auth Init Error:", response.status, await response.text());
+                    showToast("Kunde inte skicka kod. Serverfel.", true);
+                }
+            } catch (error) {
+                console.error("Auth init error details:", error);
+                if (error.message.includes('Failed to fetch')) {
+                    showToast("Kunde inte nå servern (CORS). Kolla Executions i n8n.", true);
+                } else {
+                    showToast("Nätverksfel. Kontrollera din anslutning.", true);
+                }
+            } finally {
+                if (email.toLowerCase() !== 'dev@nordsym.com' && email.toLowerCase() !== 'pro@nordsym.com') {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            }
+        }
+
+        async function handleCodeSubmit(e) {
+            e.preventDefault();
+            const code = document.getElementById('auth-code').value;
+            const email = document.getElementById('auth-email').value;
+            const btn = document.getElementById('auth-code-btn');
+            const originalText = btn.innerHTML;
+
+            btn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
+            btn.disabled = true;
+            
+            // --- DEV BACKDOOR ---
+            if ((email.toLowerCase() === 'dev@nordsym.com' || email.toLowerCase() === 'pro@nordsym.com') && code === '123456') {
+                setTimeout(() => {
+                    userState.isAuthenticated = true;
+                    userState.email = email;
+                    userState.tier = email.toLowerCase() === 'pro@nordsym.com' ? 'pro' : 'free';
+                    
+                    saveUserState();
+                    showToast(`Inloggad som DEV (${userState.tier.toUpperCase()}) 🛠️`);
+                    closeAuthModal();
+                    updateAuthUI();
+                    renderHeader();
+                    renderWorkflows(); 
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }, 800);
+                return;
+            }
+            // ---------------------
+
+            try {
+                console.log(`🚀 Sending Verify Request to: ${API_ENDPOINTS.authVerify}`);
+                
+                const formData = new URLSearchParams();
+                formData.append('email', email);
+                formData.append('code', code);
+
+                const res = await fetch(API_ENDPOINTS.authVerify, { 
+                    method: 'POST', 
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData 
+                });
+                
+                const data = await res.json();
+
+                if (data.success) { 
+                    userState.isAuthenticated = true;
+                    userState.email = email;
+                    userState.tier = (data.tier || 'free').toLowerCase();
+                    
+                    // --- HARD TRACKING FIX ---
+                    // Om servern skickar antalet nedladdningar, använd det!
+                    // Vi skapar "dummy-objekt" i historiken för att matcha antalet.
+                    if (data.downloads_count !== undefined && data.downloads_count !== null) {
+                        const count = parseInt(data.downloads_count);
+                        console.log(`📥 Synkar historik från server: ${count} nedladdningar.`);
+                        // Fyll arrayen med placeholder-data så .length blir rätt
+                        userState.downloads = Array(count).fill({ id: 'synced_from_server', timestamp: new Date().toISOString() });
+                    }
+                    
+                    saveUserState();
+                    
+                    const tierMsg = userState.tier === 'pro' ? 'PRO 🚀' : 'Free';
+                    showToast(`Inloggad som ${tierMsg}!`);
+                    
+                    closeAuthModal();
+                    updateAuthUI();
+                    renderHeader();
+                    renderWorkflows(); 
+                } else {
+                    showToast("Felaktig kod", true);
+                }
+            } catch (err) {
+                console.error("Auth verify error details:", err);
+                if (err.message.includes('Failed to fetch')) {
+                    showToast("Serverfel (CORS). Kolla att n8n-flödet är AKTIVT!", true);
+                } else {
+                    showToast("Kunde inte verifiera kod.", true);
+                }
+            } finally {
+                if (!((email.toLowerCase() === 'dev@nordsym.com' || email.toLowerCase() === 'pro@nordsym.com') && code === '123456')) {
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            }
+        }
+
+        function handleLogout() {
+            userState.isAuthenticated = false;
+            userState.email = null;
+            userState.token = null;
+            userState.tier = 'free'; 
+            
+            // FIX: Rensa nedladdningshistoriken vid utloggning så nästa användare slipper ärva den
+            userState.downloads = []; 
+            
+            saveUserState();
+            showToast("Utloggad");
+            closeAuthModal();
+            updateAuthUI();
+            renderHeader();
+            renderWorkflows(); // FIX: Rita om gridet så saker låses igen
+        }
+
+        function saveUserState() {
+            localStorage.setItem('flowvault_user_state', JSON.stringify(userState));
+        }
+
+        // --- STRIPE CHECKOUT ---
+        async function handleProUpgrade(e) {
+            if (e) e.preventDefault();
+            
+            if (!userState.isAuthenticated || !userState.email) {
+                closePaywall();
+                setTimeout(() => {
+                    showToast("Logga in för att uppgradera", true);
+                    openAuthModal();
+                }, 300);
+                return;
+            }
+
+            const btn = e ? e.currentTarget : document.querySelector('#paywall-modal button.bg-fuchsia-500');
+            const originalContent = btn.innerHTML;
+            btn.innerHTML = '<div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Väntar på Stripe...';
+            btn.disabled = true;
+
+            try {
+                let emailToUse = userState.email;
+
+                // DEV FEATURE: Hårdkodad fallback
+                if (userState.email.toLowerCase().includes('dev@') || userState.email.toLowerCase().includes('nordsym')) {
+                    emailToUse = `test.${Date.now()}@nordsym.com`;
+                    console.log("🧪 DEV MODE: Auto-genererad email:", emailToUse);
+                }
+
+                console.log("💳 Starting checkout for:", emailToUse); 
+                
+                const formData = new URLSearchParams();
+                formData.append('email', emailToUse);
+
+                console.log("Anropar Create Checkout:", API_ENDPOINTS.createCheckout);
+
+                const res = await fetch(API_ENDPOINTS.createCheckout, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                });
+
+                if (res.ok) {
+                    const text = await res.text();
+                    console.log("🚀 Stripe Server Response:", text);
+                    
+                    let data;
+                    try {
+                        data = JSON.parse(text);
+                    } catch (e) {
+                        throw new Error("Ogiltigt JSON-svar från n8n.");
+                    }
+
+                    // ROBUST URL FINDER: Hanterar Array, Objekt med 'checkoutUrl' eller 'url'
+                    let targetUrl = null;
+                    
+                    if (Array.isArray(data) && data.length > 0 && data[0].url) {
+                        targetUrl = data[0].url; // Om n8n returnerar rå Stripe-array
+                    } else if (data.checkoutUrl) {
+                        targetUrl = data.checkoutUrl; // Om n8n returnerar { checkoutUrl: ... }
+                    } else if (data.url) {
+                        targetUrl = data.url; // Om n8n returnerar platt objekt
+                    }
+
+                    if (targetUrl) {
+                        console.log("✅ Opening Payment Link:", targetUrl);
+                        showToast("Öppnar betalning i ny flik...", false);
+                        
+                        // VIKTIGT: Använd window.open för att undvika sandbox-krasch/utloggning
+                        window.open(targetUrl, '_blank');
+                    } else {
+                        console.error("❌ Saknar URL i data:", data);
+                        throw new Error("Kunde inte hitta betallänk i svaret.");
+                    }
+                } else {
+                    const errText = await res.text();
+                    console.error("Server responded with:", res.status, errText);
+                    throw new Error(`Serverfel: ${res.status}`);
+                }
+            } catch (err) {
+                console.error("Stripe error details:", err);
+                if (err.message.includes('Failed to fetch')) {
+                    showToast("CORS-fel. n8n måste svara med 'Access-Control-Allow-Origin: *'", true);
+                } else {
+                    showToast("Kunde inte starta betalning: " + err.message, true);
+                }
+            } finally {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+            }
+        }
+
+        // --- STRIPE REDIRECT LOGIC ---
+        async function checkStripeRedirect() {
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.get('canceled') === 'true') {
+                console.log("🚫 Stripe Checkout Cancelled");
+                showToast("Uppgradering avbruten.", true);
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+            else if (urlParams.get('success') === 'true') {
+                console.log("✅ Stripe Checkout Success! Starting polling...");
+                showToast("Betalning mottagen! Verifierar status...", false);
+                window.history.replaceState({}, document.title, window.location.pathname);
+                
+                // ÖKAD POLLING: 20 försök x 3 sekunder = 60 sekunder totalt
+                pollForProStatus(20);
+            }
+        }
+
+        async function pollForProStatus(retriesLeft) {
+            if (!userState.email) return;
+
+            // Avbryt om vi redan blivit PRO (t.ex. av en annan flik eller tidigare poll)
+            if (userState.tier === 'pro') {
+                return; 
+            }
+
+            if (retriesLeft <= 0) {
+                console.warn("⚠️ Polling timed out. User is still free.");
+                showToast("Kunde inte se uppdateringen än. Ladda om sidan om en stund.", true);
+                return;
+            }
+
+            try {
+                console.log(`🔄 Polling PRO status via getUser... (${retriesLeft} försök kvar)`);
+                const formData = new URLSearchParams();
+                formData.append('email', userState.email);
+
+                const res = await fetch(API_ENDPOINTS.getUser, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    console.log("👤 User Profile Data:", data);
+                    
+                    if (data.tier === 'pro') {
+                        // SUCCESS! Vi hittade PRO-statusen
+                        console.log("🎉 PRO status confirmed!");
+                        userState.tier = 'pro';
+                        saveUserState();
+                        renderHeader();
+                        renderWorkflows(); 
+                        showToast("Välkommen till PRO! 🚀");
+                        
+                        // Visuell feedback på uppgraderingen
+                        const dlCounter = document.getElementById('download-counter');
+                        if(dlCounter) {
+                            dlCounter.innerHTML = '<span class="text-xs font-bold text-fuchsia-500 bg-fuchsia-100 dark:bg-fuchsia-900/30 px-2 py-1 rounded border border-fuchsia-200 dark:border-fuchsia-700 animate-bounce">PRO AKTIVERAT</span>';
+                        }
+                        return; // Sluta polla
+                    }
+                }
+            } catch (error) {
+                console.error("Polling error:", error);
+            }
+
+            // Om vi inte är PRO än, vänta 3 sekunder och försök igen
+            setTimeout(() => pollForProStatus(retriesLeft - 1), 3000);
+        }
+
+        // --- PAYWALL & MODALS ---
+        function openPaywall(reason) {
+            const title = document.getElementById('paywall-title');
+            const desc = document.getElementById('paywall-desc');
+            
+            if (reason === 'limit_reached') {
+                title.textContent = "Slut på gratis nedladdningar";
+                desc.textContent = "Du har använt dina 3 gratis nedladdningar för denna månad. Uppgradera för att fortsätta.";
+            } else if (reason === 'pro_content') {
+                title.textContent = "Uppgradera till PRO";
+                desc.textContent = "Detta workflow kräver ett PRO-konto för att ladda ner.";
+            } else if (reason === 'skills_locked') {
+                // NYTT MEDDELANDE FÖR SKILLS
+                title.textContent = "Lås upp Skills";
+                desc.textContent = "Claude Skills (MCP) är en avancerad funktion som kräver PRO-konto.";
+            } else {
+                title.textContent = "Uppgradera till PRO";
+                desc.textContent = "Få obegränsad tillgång till alla automationer.";
+            }
+
+            paywallModal.classList.remove('hidden');
+            setTimeout(() => {
+                paywallModal.classList.remove('opacity-0');
+                paywallModal.firstElementChild.classList.remove('scale-95');
+                paywallModal.firstElementChild.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closePaywall() {
+            paywallModal.classList.add('opacity-0');
+            paywallModal.firstElementChild.classList.remove('scale-100');
+            paywallModal.firstElementChild.classList.add('scale-95');
+            setTimeout(() => paywallModal.classList.add('hidden'), 300);
+        }
+
+        async function fetchWorkflows() {
+            if (!USE_BACKEND) return;
+            try {
+                console.log("🔍 Försöker hämta workflows från:", API_ENDPOINTS.workflows);
+                const response = await fetch(API_ENDPOINTS.workflows);
+                
+                if (response.ok) {
+                    const data = await response.json();
+                    // Validera att vi faktiskt fick en lista
+                    const items = Array.isArray(data) ? data : (data.workflows || []);
+                    
+                    if (items.length > 0) {
+                        console.log(`✅ Lyckades hämta ${items.length} workflows från n8n!`);
+                        
+                        // FIX: Slå ihop hårdkodade Skills med backend-data
+                        // Vi extraherar skills från STATIC_WORKFLOWS och lägger dem först
+                        const hardcodedSkills = STATIC_WORKFLOWS.filter(w => w.category === 'skills');
+                        
+                        // Undvik dubbletter om du senare lägger in dem i databasen med samma ID
+                        const fetchedIds = new Set(items.map(i => i.id));
+                        const uniqueSkills = hardcodedSkills.filter(s => !fetchedIds.has(s.id));
+
+                        // Kombinera: Skills först, sedan resten från databasen
+                        WORKFLOWS = [...uniqueSkills, ...items];
+                        
+                        // DEBUG: Logga datan för det specifika flödet så vi ser vad category innehåller
+                        const debugItem = items.find(i => i.title && i.title.toLowerCase().includes('fortnox'));
+                        if (debugItem) {
+                            console.log("🐛 DEBUG DATA för Fortnox-flödet:", {
+                                title: debugItem.title,
+                                categoryRaw: debugItem.category,
+                                categoryType: typeof debugItem.category,
+                                isArray: Array.isArray(debugItem.category)
+                            });
+                        }
+
+                        renderWorkflows(); 
+                        renderStats();
+                    } else {
+                        console.warn("⚠️ Backend svarade OK men listan var tom. Använder fallback.");
+                    }
+                } else {
+                    console.error(`❌ Backend Error: ${response.status} ${response.statusText}`);
+                    // Visa toast om backend är nere så du vet direkt
+                    showToast(`Kunde inte hämta flöden: ${response.status}`, true);
+                }
+            } catch (error) {
+                console.error('❌ Nätverksfel / CORS vid hämtning av workflows:', error);
+            }
+        }
+
+        function renderWorkflows() {
+            // Helper flyttad till global scope (normalizeTags)
+
+            let filtered = WORKFLOWS.filter(wf => {
+                // FIX: Definiera wfCats här uppe så den är tillgänglig i hela funktionen (löser ReferenceError)
+                const rawCat = wf.category || wf.fields?.category || wf.fields?.Category;
+                const wfCats = normalizeTags(rawCat);
+
+                const matchesSearch = wf.title.toLowerCase().includes(state.search.toLowerCase()) || wf.description.toLowerCase().includes(state.search.toLowerCase());
+                
+                let matchesCategory = true;
+                
+                if (state.categoryFilter === 'favorites') {
+                    matchesCategory = userState.favorites.includes(wf.id);
+                } else if (state.categoryFilter !== 'all') {
+                    // Hämta hela kategori-objektet för att komma åt aliases
+                    const targetCategoryObj = CATEGORIES.find(c => c.id === state.categoryFilter);
+                    const targetId = state.categoryFilter.toLowerCase();
+                    const targetLabel = targetCategoryObj?.label.toLowerCase() || '';
+                    const targetAliases = targetCategoryObj?.aliases || []; 
+
+                    // SPECIALHANTERING FÖR SKILLS: Strikt matchning
+                    if (state.categoryFilter === 'skills') {
+                        // Måste vara exakt kategorin "skills" eller "claude skills" (från Airtable)
+                        matchesCategory = wfCats.includes('skills') || wfCats.includes('claude skills');
+                    } else {
+                        // Vanlig logik för andra kategorier
+                        matchesCategory = wfCats.some(cat => 
+                            cat === targetId || 
+                            cat === targetLabel ||
+                            cat.includes(targetId) || 
+                            cat.includes(targetLabel) ||
+                            (targetLabel && targetLabel.includes(cat)) ||
+                            targetAliases.some(alias => cat.includes(alias)) 
+                        );
+                    }
+                }
+
+                // UPDATED PLATFORM LOGIC
+                let matchesPlatform = state.platformFilter === 'all';
+                
+                // Om vi visar kategorin "Skills", tvinga fram plattformen 'claude' oavsett vad filtret står på.
+                // Detta gör att man ser sina skills även om "n8n" är förvalt som default.
+                if (state.categoryFilter === 'skills') {
+                    // Använd normalizeTags-resultatet (wfCats) för att fånga upp "claude skills" säkert
+                    matchesPlatform = wf.platform === 'claude' || wfCats.includes('skills') || wfCats.includes('claude skills');
+                } else if (!matchesPlatform) {
+                    matchesPlatform = wf.platform === state.platformFilter;
+                }
+
+                const matchesDifficulty = state.difficultyFilter === 'all' || wf.difficulty === state.difficultyFilter;
+                return matchesSearch && matchesCategory && matchesPlatform && matchesDifficulty;
+            });
+
+            if (counterEl) {
+                // UPDATED COUNTER LOGIC
+                // Använd samma robusta detect-funktion som i resten av appen
+                const isSkillItem = (w) => {
+                    const c = normalizeTags(w.category || w.fields?.category);
+                    return c.includes('skills') || c.includes('claude skills');
+                };
+
+                const totalSkills = WORKFLOWS.filter(isSkillItem).length; 
+                const totalFlows = WORKFLOWS.length - totalSkills; 
+                
+                let typeLabel = "arbetsflöden"; 
+                let totalBase = totalFlows; // Basen är "vanliga" flöden (exkluderar skills)
+
+                // 1. Om man specifikt filtrerar på Skills-kategorin
+                if (state.categoryFilter === 'skills') {
+                    typeLabel = "skills";
+                    totalBase = totalSkills; 
+                } 
+                // 2. Om man visar "Alla" kategorier OCH "Alla" plattformar (helt blandat)
+                else if (state.categoryFilter === 'all' && state.platformFilter === 'all') {
+                    typeLabel = "arbetsflöden & skills";
+                    totalBase = WORKFLOWS.length; 
+                } 
+                // 3. Alla andra fall (t.ex. n8n, Sales, Svensk Integration)
+                else {
+                    typeLabel = "arbetsflöden";
+                    totalBase = totalFlows;
+                }
+
+                counterEl.innerHTML = `Visar <span class="font-bold text-slate-900 dark:text-white">${filtered.length}</span> av <span class="font-medium">${totalBase}</span> ${typeLabel}`;
+            }
+
+            if (state.sort === 'popular') filtered.sort((a, b) => b.downloads - a.downloads);
+            else if (state.sort === 'recent') filtered.reverse();
+            else if (state.sort === 'downloads') filtered.sort((a, b) => b.downloads - a.downloads);
+            else if (state.sort === 'alphabetical') filtered.sort((a, b) => a.title.localeCompare(b.title));
+            
+            if (filtered.length === 0) { 
+                gridEl.classList.add('hidden'); 
+                emptyStateEl.classList.remove('hidden'); 
+                document.getElementById('pagination-controls').classList.add('hidden');
+                return; 
+            }
+            gridEl.classList.remove('hidden'); emptyStateEl.classList.add('hidden');
+
+            // --- PAGINATION LOGIC ---
+            const totalItems = filtered.length;
+            const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
+            
+            // Safety check if page is out of bounds after filter change
+            if (state.currentPage > totalPages) state.currentPage = 1;
+
+            const startIndex = (state.currentPage - 1) * ITEMS_PER_PAGE;
+            const paginatedItems = filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE);
+
+            gridEl.innerHTML = paginatedItems.map(wf => {
+                // ANVÄND SUPER-STÄDAREN ÄVEN FÖR VISNINGEN
+                const rawCat = wf.category || wf.fields?.category || wf.fields?.Category;
+                const wfCatsBadge = normalizeTags(rawCat);
+
+                let badge = '';
+                // UPDATED: Tog bort den specifika "Svensk"-badgen för att undvika dubbla flaggor.
+                // Nu förlitar vi oss på att kategorin "Svensk" genererar en flagg-ikon i loopen nedan istället.
+                if (wf.proBadge) {
+                    badge = `<span class="badge-pro px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1"><i data-lucide="crown" class="w-3 h-3"></i> PRO</span>`;
+                }
+
+                // NY LOGIK: Generera ikoner för ALLA identifierade kategorier
+                let catIconsHtml = '';
+                const uniqueMatchedCats = new Set(); 
+
+                wfCatsBadge.forEach(catStr => {
+                    const foundCat = CATEGORIES.find(c => {
+                        if (c.id === 'all') return false;
+                        const directMatch = c.id === catStr || c.label.toLowerCase() === catStr;
+                        const aliasMatch = c.aliases && c.aliases.some(alias => catStr.includes(alias));
+                        return directMatch || aliasMatch;
+                    });
+
+                    if (foundCat && !uniqueMatchedCats.has(foundCat.id)) {
+                        uniqueMatchedCats.add(foundCat.id); 
+                        
+                        const isEmoji = foundCat.icon.match(/\p{Emoji}/u);
+                        if (isEmoji) {
+                             catIconsHtml += `<span class="text-sm opacity-80 cursor-help" title="${foundCat.label}">${foundCat.icon}</span>`;
+                        } else {
+                             catIconsHtml += `<i data-lucide="${foundCat.icon}" class="w-4 h-4 text-slate-400" title="${foundCat.label}"></i>`;
+                        }
+                    }
+                });
+
+                const isLocked = wf.proBadge && userState.tier === 'free';
+                const actionIcon = isLocked ? 'lock' : 'arrow-right';
+                const actionText = isLocked ? 'Lås upp' : 'Visa';
+                const isFav = userState.favorites.includes(wf.id);
+
+                return `
+                <div class="group relative bg-white dark:bg-slate-900 rounded-2xl border ${wf.proBadge ? 'border-fuchsia-200 dark:border-fuchsia-900/50' : 'border-slate-200 dark:border-slate-800'} p-6 hover:border-primary/50 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 flex flex-col h-full cursor-pointer" onclick="handleWorkflowClick('${wf.id}')">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex flex-wrap items-center gap-2">
+                            <span class="px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider platform-${wf.platform}">${wf.platform}</span>
+                            <div class="flex items-center gap-1.5 ml-1">
+                                ${catIconsHtml}
+                            </div>
+                            ${badge}
+                        </div>
+                        <div class="flex items-center gap-2">
+                            ${wf.verified ? `<span class="text-emerald-500 dark:text-emerald-400" title="Verifierad"><i data-lucide="check-circle-2" class="w-5 h-5"></i></span>` : ''}
+                            <button onclick="toggleFavorite(event, '${wf.id}')" class="text-slate-400 hover:text-amber-400 hover:scale-110 transition-all focus:outline-none z-20" title="${isFav ? 'Ta bort favorit' : 'Lägg till favorit'}">
+                                <i data-lucide="star" class="w-5 h-5 ${isFav ? 'fill-amber-400 text-amber-400' : ''}"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <h3 class="font-heading text-lg font-bold mb-2 text-slate-900 dark:text-slate-100 group-hover:text-primary transition-colors leading-tight">${wf.title}</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm line-clamp-3 mb-6 flex-grow">${wf.description}</p>
+                    <div class="flex items-center justify-between text-xs font-medium text-slate-400 mb-4 pb-4 border-b border-slate-50 dark:border-slate-800/50">
+                        <div class="flex items-center gap-1.5"><i data-lucide="download" class="w-3.5 h-3.5"></i> ${wf.downloads.toLocaleString('sv-SE')}</div>
+                        <div class="capitalize flex items-center gap-1.5"><i data-lucide="bar-chart-2" class="w-3.5 h-3.5"></i> ${UI_TEXT.difficulties[wf.difficulty] || wf.difficulty}</div>
+                    </div>
+                    <div class="flex items-center justify-between mt-auto">
+                        <div class="flex -space-x-2">
+                             ${wf.tags.slice(0, 2).map(tag => `<span class="bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] px-2 py-0.5 rounded-full border border-white dark:border-slate-900">#${tag}</span>`).join('')}
+                        </div>
+                        <span class="text-primary text-sm font-semibold flex items-center gap-1 group-hover:translate-x-1 transition-transform">${actionText} <i data-lucide="${actionIcon}" class="w-4 h-4"></i></span>
+                    </div>
+                </div>
+            `}).join('');
+            
+            renderPagination(totalPages);
+            lucide.createIcons();
+        }
+
+        // --- PAGINATION FUNCTIONS ---
+        function renderPagination(totalPages) {
+            const paginationEl = document.getElementById('pagination-controls');
+            if (totalPages <= 1) {
+                paginationEl.classList.add('hidden');
+                return;
+            }
+            
+            paginationEl.classList.remove('hidden');
+            paginationEl.innerHTML = `
+                <button onclick="changePage(${state.currentPage - 1})" ${state.currentPage === 1 ? 'disabled' : ''} class="flex items-center gap-1 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium">
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i> Föregående
+                </button>
+                <span class="text-sm font-medium text-slate-600 dark:text-slate-400">Sida ${state.currentPage} av ${totalPages}</span>
+                <button onclick="changePage(${state.currentPage + 1})" ${state.currentPage === totalPages ? 'disabled' : ''} class="flex items-center gap-1 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium">
+                    Nästa <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                </button>
+            `;
+            lucide.createIcons();
+        }
+
+        function changePage(newPage) {
+            state.currentPage = newPage;
+            renderWorkflows();
+            // Scroll to the top of the filters/grid
+            const scrollTarget = document.getElementById('category-filters');
+            if(scrollTarget) {
+                const yOffset = -100; // Offset for sticky header
+                const y = scrollTarget.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            }
+        }
+
+        function toggleFavorite(e, id) {
+            e.stopPropagation(); 
+            const index = userState.favorites.indexOf(id);
+            if (index === -1) {
+                userState.favorites.push(id);
+                showToast("Tillagd i favoriter");
+            } else {
+                userState.favorites.splice(index, 1);
+            }
+            localStorage.setItem('flowvault_user_state', JSON.stringify(userState));
+            renderWorkflows(); 
+        }
+
+        // Updated filters to reset page to 1
+        function handleSearch(query) { state.search = query; state.currentPage = 1; renderWorkflows(); }
+        function setCategory(id) { state.categoryFilter = id; state.currentPage = 1; renderControls(); renderWorkflows(); }
+        
+        function setPlatform(id) { 
+            // NY LOGIK: Lås Skills-knappen för icke-PRO
+            if (id === 'skills' && userState.tier !== 'pro') {
+                openPaywall('skills_locked');
+                return;
+            }
+
+            state.platformFilter = id; 
+            state.currentPage = 1; 
+            renderControls(); 
+            renderWorkflows(); 
+        }
+
+        function setDifficulty(id) { state.difficultyFilter = id; state.currentPage = 1; renderControls(); renderWorkflows(); }
+        function setSort(val) { state.sort = val; state.currentPage = 1; renderWorkflows(); }
+        
+        // ÄNDRING: Reset sätter också tillbaka placeholder
+        function resetApp() { 
+            state.search = ''; 
+            state.categoryFilter = 'all'; 
+            state.platformFilter = 'n8n'; 
+            state.currentPage = 1; 
+            
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.value = '';
+                searchInput.placeholder = "Sök arbetsflöden (t.ex. 'AI agent', 'CRM sync', 'SEO')...";
+            }
+            
+            renderControls(); 
+            renderWorkflows(); 
+        }
+
+        // --- NEW: POPULATE UPLOAD CATEGORIES ---
+        function populateUploadCategories() {
+            const select = document.getElementById('upload-category');
+            if (!select) return;
+            // Ta alla kategorier, men filtrera bort 'all', 'favorites' OCH 'skills' (då det är kommande feature)
+            select.innerHTML = CATEGORIES
+                .filter(c => c.id !== 'all' && c.id !== 'favorites' && c.id !== 'skills')
+                // value="${c.label}" skickar "Sälj & CRM" till n8n, vilket matchar din Airtable.
+                .map(c => `<option value="${c.label}">${c.label}</option>`)
+                .join('');
+        }
+
+        // --- DEV TOOL: TOGGLE PRO ---
+        function toggleDevTier() {
+            userState.isAuthenticated = true; // Tvinga inloggad
+            if (!userState.email) userState.email = 'dev@nordsym.com'; // Sätt dummy-mail om ingen finns
+            
+            if (userState.tier === 'pro') {
+                userState.tier = 'free';
+                showToast("🛠️ DEV: Bytte till FREE", false);
+            } else {
+                userState.tier = 'pro';
+                showToast("🛠️ DEV: Bytte till PRO", false);
+            }
+            saveUserState();
+            renderHeader();
+            renderWorkflows();
+        }
+
+        function renderControls() {
+            // FIX: Återställer renderingen av kategoriknapparna som försvann
+            // Added whitespace-nowrap to prevent text wrapping inside buttons on mobile
+            filtersEl.innerHTML = CATEGORIES.map(cat => {
+                const isActive = state.categoryFilter === cat.id;
+                const isSkills = cat.id === 'skills';
+
+                const iconHtml = cat.id === 'swedish' 
+                    ? `<span class="text-lg leading-none">${cat.icon}</span>` 
+                    : `<i data-lucide="${cat.icon}" class="w-4 h-4"></i>`;
+                
+                // Beta Badge
+                // FIX: Uppdaterade färger för aktivt läge i Dark Mode (dark:text-slate-900 dark:bg-slate-200) så den syns mot vit knapp
+                const betaBadge = isSkills 
+                    ? `<span class="ml-1.5 px-1.5 py-0.5 text-[9px] uppercase tracking-wider font-bold rounded ${isActive ? 'bg-white/20 text-white dark:bg-slate-200 dark:text-slate-900' : 'bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-900/40 dark:text-fuchsia-400'}">BETA</span>` 
+                    : '';
+                
+                return `<button onclick="setCategory('${cat.id}')" class="whitespace-nowrap flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border flex items-center gap-2 ${isActive ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border-transparent shadow-lg scale-105' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-primary/50 hover:text-primary'}">${iconHtml} ${cat.label} ${betaBadge}</button>`;
+            }).join('');
+
+            // --- SMART FILTER TOGGLE & DYNAMIC TEXTS ---
+            // Om kategorin är "Skills", dölj plattform och nivå och visa info-texten istället.
+            const filterWrapper = document.getElementById('filter-groups-wrapper');
+            const skillsInfo = document.getElementById('skills-info-message');
+            const requestText = document.getElementById('request-link-text');
+            
+            // Elements for dynamic updates
+            const searchInput = document.getElementById('search-input');
+            const bannerTitle = document.getElementById('banner-title');
+            const bannerText = document.getElementById('banner-text');
+
+            if (state.categoryFilter === 'skills') {
+                filterWrapper.classList.add('hidden', 'opacity-0');
+                filterWrapper.classList.remove('flex', 'opacity-100');
+                
+                if (skillsInfo) {
+                    skillsInfo.classList.remove('hidden');
+                    skillsInfo.classList.add('flex');
+                }
+                
+                // UPDATED: Dynamisk text för Skills-läge
+                if (requestText) requestText.textContent = "Önska en skill";
+                if (searchInput) searchInput.placeholder = "Sök Claude Skills (t.ex. 'Google Drive', 'Search')...";
+                
+                if (bannerTitle) bannerTitle.textContent = "Saknar du en MCP-server?";
+                if (bannerText) bannerText.textContent = "Vi bygger nya Claude Skills baserat på vad communityt behöver. Berätta vad du saknar!";
+
+            } else {
+                filterWrapper.classList.remove('hidden', 'opacity-0');
+                filterWrapper.classList.add('flex', 'opacity-100');
+                
+                if (skillsInfo) {
+                    skillsInfo.classList.add('hidden');
+                    skillsInfo.classList.remove('flex');
+                }
+                
+                // UPDATED: Återställ text för standard-läge
+                if (requestText) requestText.textContent = "Önska en automation";
+                if (searchInput) searchInput.placeholder = "Sök arbetsflöden (t.ex. 'AI agent', 'CRM sync', 'SEO')...";
+
+                if (bannerTitle) bannerTitle.textContent = "Saknar du ett flöde eller en agent?";
+                if (bannerText) bannerText.textContent = "Vi på NordSym bygger nya automationer varje vecka baserat på communityts behov. Berätta vad du behöver så prioriterar vi det.";
+            }
+
+            // NY RENDERING FÖR PLATTFORMS-KNAPPAR (Med Beta-tagg och Lås)
+            platformFiltersEl.innerHTML = PLATFORMS.map(p => {
+                const isActive = state.platformFilter === p.id;
+                const isSkills = p.id === 'skills';
+                const isLocked = isSkills && userState.tier !== 'pro';
+
+                // Beta Badge
+                const betaBadge = isSkills 
+                    ? `<span class="ml-1.5 px-1 py-0.5 text-[9px] uppercase tracking-wider font-bold rounded ${isActive ? 'bg-white/20 text-white' : 'bg-fuchsia-100 text-fuchsia-600 dark:bg-fuchsia-900/40 dark:text-fuchsia-400'}">BETA</span>` 
+                    : '';
+                
+                // Lock Icon
+                const lockIcon = isLocked
+                    ? `<i data-lucide="lock" class="w-3 h-3 ml-1 text-slate-400"></i>`
+                    : '';
+
+                return `
+                    <button onclick="setPlatform('${p.id}')" class="flex items-center px-3 py-1.5 rounded-md text-xs font-medium transition-all border ${isActive 
+                        ? 'bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-900 border-transparent shadow-md' 
+                        : 'bg-transparent text-slate-500 dark:text-slate-400 border-transparent hover:bg-slate-100 dark:hover:bg-slate-800'}">
+                        ${p.label}
+                        ${betaBadge}
+                        ${lockIcon}
+                    </button>
+                `;
+            }).join('');
+
+            difficultyFiltersEl.innerHTML = DIFFICULTIES.map(d => `<button onclick="setDifficulty('${d.id}')" class="px-2.5 py-1 rounded-md text-xs font-medium transition-colors border ${state.difficultyFilter === d.id ? 'bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white border-slate-300 dark:border-slate-600' : 'bg-transparent text-slate-500 dark:text-slate-400 border-transparent hover:bg-slate-100 dark:hover:bg-slate-800'}">${d.label}</button>`).join('');
+            
+            // Viktigt: Kör createIcons igen för att rita ut låset
+            lucide.createIcons();
+        }
+
+        // --- MODAL & DOWNLOAD ---
+        function openModal(id) {
+            const wf = WORKFLOWS.find(w => w.id === id);
+            if (!wf) return;
+            
+            // Stoppa eventuella pågående stängnings-timers så vi inte gömmer modalen mitt i öppningen
+            if (modalTimer) clearTimeout(modalTimer);
+
+            currentModalWorkflow = wf;
+            currentFileSelection = 'all';
+
+            // Check if Skill to adjust UI
+            const rawCat = wf.category || wf.fields?.category;
+            const cats = normalizeTags(rawCat);
+            const isSkill = cats.includes('skills') || cats.includes('claude skills');
+
+            document.getElementById('modal-title').textContent = wf.title;
+            document.getElementById('modal-description').textContent = wf.description;
+            
+            // --- DYNAMIC AUTHOR ---
+            const authorEl = document.getElementById('modal-author-wrapper');
+            // Använd wf.author om det finns, annars default till "NordSym" för verified skills
+            const authorName = wf.author && wf.author !== 'Community' ? wf.author : 'NordSym';
+            authorEl.innerHTML = `Av <span class="font-medium text-slate-700 dark:text-slate-300">${authorName}</span>`;
+
+            const pEl = document.getElementById('modal-platform'); pEl.textContent = wf.platform; pEl.className = `px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider border platform-${wf.platform}`;
+            
+            // --- DYNAMIC GUIDE TEXT & HELP BANNER ---
+            const guideTitle = document.getElementById('modal-guide-title');
+            const guideList = document.getElementById('modal-guide-list');
+            const helpTitle = document.getElementById('modal-help-title');
+            const helpText = document.getElementById('modal-help-text');
+            
+            if (isSkill) {
+                // GUIDE
+                guideTitle.innerHTML = `<i data-lucide="info" class="w-3 h-3"></i> Så installerar du denna Skill`;
+                guideList.innerHTML = `
+                    <li>Ladda ner <strong>.skill</strong>-filen.</li>
+                    <li>Ladda upp filen direkt i Claude.</li>
+                    <li>Klart! Ingen omstart krävs. 🧠</li>
+                `;
+                
+                // HELP BANNER (SKILL SPECIFIC)
+                helpTitle.textContent = "Behöver du skräddarsydda AI-agenter?";
+                helpText.textContent = "Vi på NordSym bygger och integrerar avancerade Claude Skills och MCP-servrar för företag.";
+            
+            } else {
+                // GUIDE
+                guideTitle.innerHTML = `<i data-lucide="info" class="w-3 h-3"></i> Så använder du flödet`;
+                guideList.innerHTML = `
+                    <li>Ladda ner JSON-filen.</li>
+                    <li>Öppna din egen <strong>n8n-instans</strong>.</li>
+                    <li>Klicka på menyn i hörnet → <strong>Import from File</strong>.</li>
+                    <li>Njut av automationen! 🚀</li>
+                `;
+
+                // HELP BANNER (STANDARD)
+                helpTitle.textContent = "Behöver du hjälp att sätta upp detta?";
+                helpText.textContent = "Vi på NordSym hjälper svenska företag att implementera och anpassa automationer.";
+            }
+
+            // --- DYNAMIC METADATA DISPLAY ---
+            const grid = document.getElementById('modal-metadata-grid');
+            const diffWrapper = document.getElementById('meta-difficulty-wrapper');
+            const timeWrapper = document.getElementById('meta-time-wrapper');
+
+            if (isSkill) {
+                // Dölj irrelevanta fält för Skills
+                diffWrapper.classList.add('hidden');
+                timeWrapper.classList.add('hidden');
+                // Justera gridet till 2 kolumner istället för 4 så det ser snyggt ut
+                grid.classList.remove('sm:grid-cols-4');
+                grid.classList.add('sm:grid-cols-2');
+            } else {
+                // Visa allt för vanliga flöden
+                diffWrapper.classList.remove('hidden');
+                timeWrapper.classList.remove('hidden');
+                grid.classList.add('sm:grid-cols-4');
+                grid.classList.remove('sm:grid-cols-2');
+                
+                // Sätt text (behövs bara om de visas)
+                document.getElementById('modal-difficulty').textContent = UI_TEXT.difficulties[wf.difficulty] || wf.difficulty;
+                document.getElementById('modal-time').textContent = wf.estimatedTime;
+            }
+
+            // Dessa visas alltid
+            document.getElementById('modal-downloads').textContent = wf.downloads;
+            document.getElementById('modal-platform-text').textContent = wf.platform;
+
+            document.getElementById('modal-usecases').innerHTML = wf.useCases.map(uc => `<span class="px-2 py-1 bg-primary/10 text-primary dark:text-primary-hover rounded text-xs font-semibold">${uc}</span>`).join('');
+            document.getElementById('modal-tags').innerHTML = wf.tags.map(tag => `<span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-xs font-medium border border-slate-200 dark:border-slate-700">#${tag}</span>`).join('');
+            
+            modalHelpBtn.href = getEmailLink(wf);
+            
+            // --- SKILL SPECIFIC UI ---
+            const btnDownload = document.getElementById('btn-download');
+            if (isSkill) {
+                // Skills laddas ner som .skill (binär zip)
+                btnDownload.innerHTML = `<i data-lucide="package" class="w-5 h-5"></i> <span>Hämta Skill (.skill)</span>`;
+                btnDownload.classList.remove('bg-primary', 'hover:bg-primary-hover');
+                btnDownload.classList.add('bg-indigo-500', 'hover:bg-indigo-600'); 
+            } else {
+                // Vanliga flöden laddas ner som JSON
+                btnDownload.innerHTML = `<i data-lucide="download" class="w-5 h-5"></i> <span>Ladda ner arbetsflöde</span>`;
+                btnDownload.classList.add('bg-primary', 'hover:bg-primary-hover');
+                btnDownload.classList.remove('bg-indigo-500', 'hover:bg-indigo-600');
+            }
+            btnDownload.onclick = () => tryDownload(wf);
+
+            // --- Multi-File Logic ---
+            const selectorEl = document.getElementById('multi-file-selector');
+            const optionsEl = document.getElementById('multi-file-options');
+            const notesEl = document.getElementById('multi-file-notes');
+
+            if (wf.fileCount && wf.fileCount > 1) {
+                selectorEl.classList.remove('hidden');
+                const descLines = wf.fileDescriptions ? wf.fileDescriptions.split('\n') : [];
+                
+                let html = `
+                    <label class="flex items-center gap-3 p-3 rounded-lg border bg-white dark:bg-slate-900 cursor-pointer hover:border-fuchsia-400 transition-colors group radio-label radio-selected" onclick="selectFileOption('all', this)">
+                        <div class="relative flex items-center justify-center">
+                            <input type="radio" name="file-select" value="all" checked class="peer sr-only">
+                            <div class="w-4 h-4 border-2 border-slate-300 dark:border-slate-600 rounded-full peer-checked:border-fuchsia-500 peer-checked:bg-fuchsia-500 transition-colors"></div>
+                            <div class="absolute w-2 h-2 bg-white rounded-full opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="text-sm font-bold text-slate-800 dark:text-white group-hover:text-fuchsia-600 transition-colors">Alla ${wf.fileCount} workflows (Komplett system)</div>
+                            <div class="text-xs text-slate-500">Laddas ner som en ZIP-fil</div>
+                        </div>
+                        <i data-lucide="package" class="w-4 h-4 text-fuchsia-500"></i>
+                    </label>
+                `;
+
+                for (let i = 1; i <= wf.fileCount; i++) {
+                    const desc = descLines[i-1] || `Del ${i}`;
+                    html += `
+                        <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 cursor-pointer hover:border-fuchsia-400 transition-colors group radio-label" onclick="selectFileOption(${i}, this)">
+                            <div class="relative flex items-center justify-center">
+                                <input type="radio" name="file-select" value="${i}" class="peer sr-only">
+                                <div class="w-4 h-4 border-2 border-slate-300 dark:border-slate-600 rounded-full peer-checked:border-fuchsia-500 peer-checked:bg-fuchsia-500 transition-colors"></div>
+                                <div class="absolute w-2 h-2 bg-white rounded-full opacity-0 peer-checked:opacity-100 transition-opacity"></div>
+                            </div>
+                            <div class="text-sm text-slate-700 dark:text-slate-300 group-hover:text-fuchsia-600 transition-colors">${desc}</div>
+                        </label>
+                    `;
+                }
+                optionsEl.innerHTML = html;
+
+                if (wf.installationNotes) {
+                    notesEl.textContent = `💡 Installation: ${wf.installationNotes}`;
+                    notesEl.classList.remove('hidden');
+                } else {
+                    notesEl.classList.add('hidden');
+                }
+                lucide.createIcons();
+
+            } else {
+                selectorEl.classList.add('hidden');
+            }
+
+            // 1. Visa bakgrunden först (men osynlig/transparent)
+            modalBackdrop.classList.remove('hidden');
+            
+            // 2. Tvinga webbläsaren att fatta att den är synlig (reflow) innan vi startar animationen
+            // Detta löser problemet med "suddig bakgrund men inget kort"
+            void modalBackdrop.offsetWidth; 
+
+            // 3. Starta animationen inåt
+            modalTimer = setTimeout(() => { 
+                modalBackdrop.classList.remove('opacity-0'); 
+                modalContent.classList.remove('scale-95', 'opacity-0'); 
+                modalContent.classList.add('scale-100', 'opacity-100'); 
+            }, 10);
+            
+            document.body.style.overflow = 'hidden';
+        }
+
+        function selectFileOption(val, labelEl) {
+            currentFileSelection = val;
+            document.querySelectorAll('.radio-label').forEach(el => {
+                el.classList.remove('radio-selected', 'border-fuchsia-500', 'bg-white', 'dark:bg-slate-900');
+                el.classList.add('border-slate-200', 'dark:border-slate-700', 'bg-white/50', 'dark:bg-slate-900/50');
+            });
+            labelEl.classList.remove('border-slate-200', 'dark:border-slate-700', 'bg-white/50', 'dark:bg-slate-900/50');
+            labelEl.classList.add('radio-selected', 'bg-white', 'dark:bg-slate-900');
+            
+            const radio = labelEl.querySelector('input');
+            if(radio) radio.checked = true;
+        }
+
+        function closeModal() {
+            if (modalTimer) clearTimeout(modalTimer);
+
+            // Starta animation utåt
+            modalBackdrop.classList.add('opacity-0'); 
+            modalContent.classList.remove('scale-100', 'opacity-100'); 
+            modalContent.classList.add('scale-95', 'opacity-0');
+            
+            // Vänta på animationen innan vi gömmer elementet helt
+            modalTimer = setTimeout(() => { 
+                modalBackdrop.classList.add('hidden'); 
+                document.body.style.overflow = ''; 
+                currentModalWorkflow = null; 
+            }, 200);
+        }
+
+        function handleWorkflowClick(id) {
+            const wf = WORKFLOWS.find(w => w.id === id);
+            if (wf.proBadge && userState.tier === 'free') openPaywall('pro_content');
+            else openModal(id);
+        }
+
+        function tryDownload(workflow) {
+            // LOGIK-ÄNDRING: Tvinga inloggning för ALLA nedladdningar
+            if (!userState.isAuthenticated) {
+                closeModal();
+                setTimeout(() => {
+                    showToast("Du måste logga in för att ladda ner.", true);
+                    openAuthModal();
+                }, 300);
+                return;
+            }
+
+            if (userState.tier === 'free') {
+                if (userState.downloads.length >= FREE_LIMIT) {
+                    closeModal(); setTimeout(() => openPaywall('limit_reached'), 300); return;
+                }
+            }
+            downloadJSON(workflow);
+        }
+
+        async function downloadJSON(workflow) {
+            const btn = document.getElementById('btn-download');
+            const originalText = btn.innerHTML;
+            const githubId = workflow.fields?.ID || workflow.ID || workflow.id;
+            
+            // Determine file extension
+            // SKILLS = .skill (omdöpt zip)
+            // N8N = .json
+            
+            // ROBUST CHECK: Använd samma logik som i filtret för att upptäcka skills
+            const rawCat = workflow.category || workflow.fields?.category;
+            const cats = normalizeTags(rawCat);
+            const isSkill = cats.includes('skills') || cats.includes('claude skills');
+            
+            const fileExt = isSkill ? 'skill' : 'json';
+
+            const baseUrl = `https://raw.githubusercontent.com/${GITHUB_CONFIG.user}/${GITHUB_CONFIG.repo}/${GITHUB_CONFIG.branch}`;
+
+            btn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Förbereder...';
+            btn.disabled = true;
+
+            try {
+                // SCENARIO 1: Bundle Download (Generated ZIP from multiple JSONs)
+                // Detta gäller INTE Skills, utan bara multi-file n8n workflows
+                if (!isSkill && currentFileSelection === 'all' && workflow.fileCount > 1) {
+                    btn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Skapar ZIP...';
+                    
+                    const zip = new JSZip();
+                    const folder = zip.folder(workflow.title.replace(/[^a-z0-9]/gi, '_').toLowerCase());
+                    
+                    const fetchPromises = [];
+                    
+                    for (let i = 1; i <= workflow.fileCount; i++) {
+                        const patterns = [`${githubId}_${i}.json`, `${githubId}-${i}.json`];
+                        if (i === 1) patterns.push(`${githubId}.json`); 
+                        
+                        const p = (async () => {
+                            let content = null;
+                            let filename = `${githubId}_${i}.json`; 
+
+                            for (const pattern of patterns) {
+                                try {
+                                    const res = await fetch(`${baseUrl}/${pattern}`);
+                                    if (res.ok) {
+                                        content = await res.text();
+                                        console.log(`✅ Found part ${i}: ${pattern}`);
+                                        break;
+                                    }
+                                } catch(e) {}
+                            }
+                            
+                            if (content) {
+                                folder.file(filename, content);
+                            } else {
+                                console.warn(`⚠️ Could not find file part ${i}`);
+                                folder.file(`MISSING_PART_${i}.txt`, "File not found in repository.");
+                            }
+                        })();
+                        fetchPromises.push(p);
+                    }
+
+                    await Promise.all(fetchPromises);
+                    
+                    const content = await zip.generateAsync({type:"blob"});
+                    const url = window.URL.createObjectURL(content);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `${workflow.title.replace(/[^a-z0-9]/gi, '_')}_COMPLETE.zip`;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+
+                    showToast(`ZIP-fil (${workflow.fileCount} delar) nedladdad! 📦`);
+                } 
+                // SCENARIO 2: Single File Download (Or pre-made ZIP for Skills)
+                else {
+                    let saveName = `${githubId}.${fileExt}`;
+                    const patterns = [];
+                    
+                    // Om det är n8n och vi valt en specifik del
+                    if (!isSkill && workflow.fileCount > 1 && currentFileSelection !== 'all') {
+                        patterns.push(`${githubId}_${currentFileSelection}.${fileExt}`);
+                        patterns.push(`${githubId}-${currentFileSelection}.${fileExt}`);
+                        saveName = `${githubId}_part_${currentFileSelection}.${fileExt}`;
+                    } else {
+                        // Standard nedladdning (Skills .zip eller n8n .json)
+                        patterns.push(`${githubId}.${fileExt}`);
+                        if (!isSkill) patterns.push(`${githubId}_1.${fileExt}`); // Fallback för n8n
+                    }
+
+                    let foundUrl = null;
+                    for (const pattern of patterns) {
+                        try {
+                            const checkUrl = `${baseUrl}/${pattern}`;
+                            // HEAD request för att se om filen finns utan att ladda ner den än
+                            const response = await fetch(checkUrl, { method: 'HEAD' });
+                            if (response.ok) {
+                                foundUrl = checkUrl;
+                                break;
+                            }
+                        } catch (e) {}
+                    }
+
+                    if (!foundUrl) throw new Error(`Fil saknas på servern: ${patterns.join(', ')}`);
+
+                    // Nu hämtar vi filen (som BLOB för att hantera både text och binära ZIPs korrekt)
+                    const response = await fetch(foundUrl);
+                    const blob = await response.blob();
+                    const downloadUrl = window.URL.createObjectURL(blob);
+                    
+                    const a = document.createElement('a');
+                    a.href = downloadUrl;
+                    a.download = saveName;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(downloadUrl);
+                    document.body.removeChild(a);
+
+                    showToast("Nedladdning startad! 🚀");
+                }
+
+                // --- TRACKING FIX (Updated to use FormData for better CORS handling) ---
+                // --- TRACKING FIX (Updated to use no-cors for guaranteed delivery) ---
+                if (USE_BACKEND && userState.isAuthenticated) {
+                    console.log(`📡 Skickar tracking-signal för ${githubId}...`);
+                    
+                    const trackingData = new URLSearchParams();
+                    trackingData.append('userId', userState.email || 'anonymous');
+                    trackingData.append('tier', userState.tier);
+                    trackingData.append('timestamp', new Date().toISOString());
+                    trackingData.append('fileCount', currentFileSelection === 'all' ? workflow.fileCount : 1);
+                    trackingData.append('githubId', githubId);
+
+                    // FIX: Använd no-cors. Vi får inget svar, men anropet garanteras gå igenom utan CORS-blockering.
+                    fetch(API_ENDPOINTS.download(workflow.id), {
+                        method: 'POST',
+                        mode: 'no-cors', 
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: trackingData
+                    })
+                    .then(() => console.log("✅ Tracking-signal skickad (fire-and-forget)."))
+                    .catch(err => console.warn('❌ Tracking nätverksfel:', err));
+                }
+
+                userState.downloads.push({ id: workflow.id, timestamp: new Date().toISOString() });
+                localStorage.setItem('flowvault_user_state', JSON.stringify(userState));
+                renderHeader();
+
+            } catch (error) {
+                console.error('Download error:', error);
+                showToast(`Kunde inte ladda ner filen. Kontakta support.`, true);
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const msgEl = document.getElementById('toast-message');
+            const titleEl = document.getElementById('toast-title');
+            const iconBg = document.getElementById('toast-icon-bg');
+            
+            msgEl.textContent = message;
+            
+            if (isError) {
+                titleEl.textContent = "Ett fel uppstod";
+                titleEl.classList.add('text-red-300', 'dark:text-red-600');
+                iconBg.className = "w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center shadow-lg shadow-red-500/30 shrink-0";
+                iconBg.innerHTML = '<i data-lucide="alert-triangle" class="w-5 h-5 text-white"></i>';
+            } else {
+                titleEl.textContent = "Framgång";
+                titleEl.classList.remove('text-red-300', 'dark:text-red-600');
+                iconBg.className = "w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30 shrink-0";
+                iconBg.innerHTML = '<i data-lucide="check" class="w-5 h-5 text-white"></i>';
+            }
+            
+            lucide.createIcons();
+
+            // Mjukare animation in
+            toast.classList.remove('translate-y-32', 'opacity-0');
+            
+            // Rensa tidigare timer så vi inte klipper en ny toast
+            if (window.toastTimeout) clearTimeout(window.toastTimeout);
+            
+            window.toastTimeout = setTimeout(() => {
+                toast.classList.add('translate-y-32', 'opacity-0');
+            }, 3000);
+        }
+
+        function getEmailLink(workflow = null) {
+            const subject = workflow ? `Hjälp med: ${workflow.title}` : 'Fråga om automation';
+            const body = workflow ? `Hej NordSym!\n\nJag hittade denna automation på FlowVault: ${workflow.title} (${workflow.id})` : `Hej NordSym!`;
+            return `mailto:support@nordsym.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        }
+
+        function renderStats() { 
+            animateValue("stat-workflows", 0, WORKFLOWS.length, 1000); 
+            animateValue("stat-downloads", 0, WORKFLOWS.reduce((acc, curr) => acc + (curr.downloads || 0), 0), 1500); 
+        }
+
+        function animateValue(id, start, end, duration) {
+            const obj = document.getElementById(id); if(!obj) return;
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                obj.innerHTML = Math.floor(progress * (end - start) + start).toLocaleString('sv-SE');
+                if (progress < 1) window.requestAnimationFrame(step);
+            }; window.requestAnimationFrame(step);
+        }
+
+        function initTheme() {
+            // Default till dark om inget val är gjort (eller om valet är 'dark')
+            if (localStorage.theme === 'light') {
+                document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
+            }
+            
+            document.getElementById('theme-toggle').addEventListener('click', () => { 
+                document.documentElement.classList.toggle('dark'); 
+                localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; 
+            });
+        }
+
+        // --- STARFALL SYSTEM (Canvas) ---
+        function initStarfall() {
+            const canvas = document.getElementById('starfall');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            let stars = [];
+            let meteors = [];
+
+            const STAR_COUNT = 400; 
+            const METEOR_COUNT = 4; 
+            
+            function resize() {
+                width = window.innerWidth;
+                height = window.innerHeight;
+                canvas.width = width;
+                canvas.height = height;
+                if (stars.length > 0) stars.forEach(star => star.reset(true));
+            }
+            
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Star {
+                constructor() { this.reset(true); }
+                reset(initial = false) {
+                    this.x = Math.random() * width;
+                    this.y = initial ? Math.random() * height : -10;
+                    this.size = Math.random() * 1.5 + 0.5;
+                    this.speed = Math.random() * 0.2 + 0.05;
+                    this.opacity = Math.random() * 0.5 + 0.1;
+                    this.twinkleDir = Math.random() > 0.5 ? 0.005 : -0.005;
+                }
+                update() {
+                    this.y += this.speed;
+                    this.opacity += this.twinkleDir;
+                    if (this.opacity > 0.7 || this.opacity < 0.1) this.twinkleDir = -this.twinkleDir;
+                    if (this.y > height) this.reset();
+                }
+                draw() {
+                    ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            class Meteor {
+                constructor() { this.reset(); }
+                reset() {
+                    this.x = Math.random() * width;
+                    this.y = -100;
+                    this.length = Math.random() * 80 + 20;
+                    this.speed = Math.random() * 10 + 5;
+                    this.size = Math.random() * 1 + 0.5;
+                    this.angle = Math.PI / 4 + (Math.random() * 0.2 - 0.1); 
+                    this.active = false;
+                    setTimeout(() => { this.active = true; }, Math.random() * 5000);
+                }
+                update() {
+                    if (!this.active) return;
+                    this.x -= this.speed * Math.cos(this.angle);
+                    this.y += this.speed * Math.sin(this.angle);
+                    if (this.y > height + 100 || this.x < -100) this.reset();
+                }
+                draw() {
+                    if (!this.active) return;
+                    const endX = this.x + this.length * Math.cos(this.angle);
+                    const endY = this.y - this.length * Math.sin(this.angle);
+                    const gradient = ctx.createLinearGradient(this.x, this.y, endX, endY);
+                    gradient.addColorStop(0, 'rgba(0, 191, 255, 1)'); 
+                    gradient.addColorStop(1, 'rgba(0, 191, 255, 0)'); 
+                    ctx.strokeStyle = gradient;
+                    ctx.lineWidth = this.size;
+                    ctx.lineCap = 'round';
+                    ctx.beginPath();
+                    ctx.moveTo(this.x, this.y);
+                    ctx.lineTo(endX, endY);
+                    ctx.stroke();
+                }
+            }
+
+            for (let i = 0; i < STAR_COUNT; i++) stars.push(new Star());
+            for (let i = 0; i < METEOR_COUNT; i++) meteors.push(new Meteor());
+
+            function animate() {
+                ctx.clearRect(0, 0, width, height);
+                if (document.documentElement.classList.contains('dark')) {
+                    stars.forEach(star => { star.update(); star.draw(); });
+                    meteors.forEach(meteor => { meteor.update(); meteor.draw(); });
+                }
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        // --- AI CHAT LOGIC ---
+        function toggleChat() { chatState.isOpen = !chatState.isOpen; if (chatState.isOpen) { chatPanel.classList.remove('hidden'); setTimeout(() => { chatPanel.classList.remove('scale-95', 'opacity-0'); chatPanel.classList.add('scale-100', 'opacity-100'); chatInput.focus(); }, 10); } else { chatPanel.classList.remove('scale-100', 'opacity-100'); chatPanel.classList.add('scale-95', 'opacity-0'); setTimeout(() => chatPanel.classList.add('hidden'), 300); } }
+        
+        async function handleChatSubmit(e) { 
+            e.preventDefault(); 
+            const text = chatInput.value.trim(); 
+            if(!text) return; 
+            
+            addMessage('user', text); 
+            chatInput.value = ''; 
+            typingIndicator.classList.remove('hidden'); 
+            chatMessages.appendChild(typingIndicator); 
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            let sessionId = localStorage.getItem('flowvault_chat_session');
+            if (!sessionId) {
+                sessionId = crypto.randomUUID();
+                localStorage.setItem('flowvault_chat_session', sessionId);
+            }
+
+            try {
+                if (!navigator.onLine) throw new Error('Offline');
+
+                const payload = { 
+                    message: text,
+                    chatInput: text,
+                    guardrailsInput: text,
+                    sessionId: sessionId,
+                    userId: userState.email || 'anonymous',
+                    metadata: { page: document.title, context: "FlowVault Web Widget" }
+                };
+
+                // UPDATED: Direct call to specific n8n chat webhook (No Proxy)
+                const response = await fetch(API_ENDPOINTS.chat, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (response.status === 404) throw new Error('N8N_404');
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+                const data = await response.json();
+                let aiResponse = "Jag fick inget svar. Försök igen.";
+                
+                if (data.output) aiResponse = data.output;
+                else if (data.text) aiResponse = data.text;
+                else if (data.message) aiResponse = data.message;
+                else if (typeof data === 'string') aiResponse = data;
+                else if (Array.isArray(data) && data[0]?.output) aiResponse = data[0].output;
+
+                typingIndicator.classList.add('hidden');
+                addMessage('assistant', aiResponse);
+
+            } catch (error) {
+                console.error('Chat error details:', error);
+                typingIndicator.classList.add('hidden');
+                let errorMsg = "Hoppsan! Något gick fel.";
+                if (error.message === 'N8N_404') errorMsg = "Agenten svarar inte (404). \n\n⚠️ VIKTIGT: Gå till n8n och se till att switchen 'Active' (uppe till höger) är GRÖN.";
+                else if (error.message.includes('Failed to fetch')) errorMsg = "Kunde inte nå servern. Kontrollera CORS i n8n eller nätverksanslutningen.";
+                addMessage('assistant', errorMsg);
+            }
+        }
+
+        function addMessage(role, content) { 
+            const msgDiv = document.createElement('div'); msgDiv.className = 'flex gap-3 message-enter mb-4 ' + (role === 'user' ? 'flex-row-reverse' : '');
+            const formattedContent = content.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" class="text-primary hover:underline underline-offset-2 break-all">$1</a>').replace(/\n/g, '<br>');
+            const bubbleClass = role === 'user' ? 'bg-primary text-white rounded-2xl rounded-tr-none' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-2xl rounded-tl-none';
+            msgDiv.innerHTML = `<div class="${bubbleClass} p-3 text-sm max-w-[85%] shadow-sm leading-relaxed">${formattedContent}</div>`;
+            chatMessages.appendChild(msgDiv); chatMessages.scrollTop = chatMessages.scrollHeight; 
+        }
+
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (!modalBackdrop.classList.contains('hidden')) closeModal(); else if (!paywallModal.classList.contains('hidden')) closePaywall(); else if (!authModal.classList.contains('hidden')) closeAuthModal(); else if (!requestModal.classList.contains('hidden')) closeRequestModal(); else if (!enterpriseModal.classList.contains('hidden')) closeEnterpriseModal(); else if (chatState.isOpen) toggleChat(); } });
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    </script>
+</body>
+</html>
