@@ -1,0 +1,966 @@
+{
+  "name": "2. N8N Concepts (JSON, Data, Logic, & AI)",
+  "nodes": [
+    {
+      "id": "nordsym-brand-header",
+      "name": "NordSym Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "content": "## 🔷 NordSym AB\n**Verifierad Automation**\n\n📦 **Källa:** FlowVault.se\n🏷️ **Version:** 1.0\n📧 **Support:** support@nordsym.com\n\n💡 **Installation:**\n1. Importera i n8n\n2. Konfigurera credentials\n3. Testa med test-data\n4. Aktivera workflow\n\n🔗 **Mer hjälp:** nordsym.com",
+        "height": 320,
+        "width": 300,
+        "color": 5
+      }
+    },
+    {
+      "parameters": {
+        "content": "## 1. Fixed fields & expression fields\n###    - Why to use expressions\n###    - Mapping different field inputs",
+        "width": 480
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1020,
+        880
+      ],
+      "id": "abdc8509-9e99-4ba4-ab21-b3af4eca48ca",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "\n## 2. JSON\n###    - Variables, types\n###    - Objects",
+        "width": 340
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -420,
+        880
+      ],
+      "id": "eb25b1f2-d7ff-43f4-9602-01b779f86da4",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "\n## 3. How data in N8N is represented\n###    - Array of objects\n###    - How to reference\n###    - Backtracking & referencing earlier fields\n###    - Common gotchas",
+        "height": 380,
+        "width": 520
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -600,
+        1120
+      ],
+      "id": "dd0add0b-08dc-4355-994b-5adeb3f4a81e",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "\n## 4. Foundational nodes\n### a) Nodes for doing things\n####    - HTTP request\n####    - Webhooks\n####    - OpenAI/AI nodes\n\n### b) Nodes that modify flow \n####    - If\n####    - Filter\n####    - Merge\n####    - Split into batches",
+        "height": 380,
+        "width": 340
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1020,
+        1120
+      ],
+      "id": "717f5b95-83ec-4ad9-a8be-ef45ccf61047",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1otrrat4cC-AmQVqW6wyl78hnexPV_Xg00ZkJ0wI5jqY",
+          "mode": "list",
+          "cachedResultName": "Leads, Jan 27 2025",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1otrrat4cC-AmQVqW6wyl78hnexPV_Xg00ZkJ0wI5jqY/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1otrrat4cC-AmQVqW6wyl78hnexPV_Xg00ZkJ0wI5jqY/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        460,
+        920
+      ],
+      "id": "61233a96-976c-47f8-8f38-540fe8d4bee7",
+      "name": "Google Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "EOibXIc4U8wcXyRR",
+          "name": "YouTube"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are a helpful, intelligent writing assistant.",
+              "role": "system"
+            },
+            {
+              "content": "Your task is to personalize an email.\n\nYou'll do this by taking, as input, a prospect LinkedIn profile, and then editing 5 templates for different sections of the email: subject line, icebreaker, elevator pitch, call to action, and a PS field.\n\nYour templates are below.\n\nSubject Line: \"hey {name}, think I have something for you re: {uniqueThingAboutThemOrTheirCompany}\"\n\nIcebreaker: \"I know you're doing {thing} and I've been following {relatedThing} for a while so I figured it made sense to chat\"\n\nElevator Pitch: \"The TLDR: I think I can add ~$5K/mo to {theirParaphrasedBusiness} with a few automated systems\"\n\nCall to Action: \"I just did this for a very similar {industry} company and we hit $28,350 in a few months—they do {relatedThing}—so am very confident I can duplicate this at minimum. Would be 100% risk-free, I'd guarantee at least 20 appts booked or you wouldn't pay.\"\n\nPS: \"even if we just chat I'd love to hear about what you're doing with {thing}\"\n\nGuidelines:\n1. Your tone of voice should be \"casual bar conversation\" and very spartan. No fancy language. \n2. Look for plausible (but vague) connections wherever possible.\n3. Do not just repeat data from the LinkedIn profile verbatim. Paraphrase, so they think a human wrote it.\n4. Make sure the subject line is non-capitalized, even if it's grammatically incorrect. This makes the email seem human.\n5. Respond in JSON using this format:\n\n{\"subjectLine\":\"\",\"icebreaker\":\"\",\"elevatorPitch\":\"\",\"callToAction\":\"\",\"ps\":\"\"}\n"
+            },
+            {
+              "content": "=fullName: {{ $json.fullName }}\ntitle: {{ $json.title }}\ncompany: {{ $json.Company }}\nsummary: {{ $json.summary }}\nindustry: {{ $json.industry }}\ncompanyLocation: {{ $json.companyLocation }}\ntitleDescription: {{ $json.titleDescription }}"
+            }
+          ]
+        },
+        "simplify": "={{ true }}",
+        "jsonOutput": "={{ true }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.6,
+      "position": [
+        680,
+        920
+      ],
+      "id": "43c994af-3cf8-4998-b348-5cc1096b23c2",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "oLLACDYfGm4C4ouV",
+          "name": "YouTube "
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "=1otrrat4cC-AmQVqW6wyl78hnexPV_Xg00ZkJ0wI5jqY",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1otrrat4cC-AmQVqW6wyl78hnexPV_Xg00ZkJ0wI5jqY/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Email": "={{ $json.message.content.subjectLine}}",
+            "Civility": "={{ $('Google Sheets').item.json.Civility }}",
+            "firstName": "={{ $('Google Sheets').item.json.firstName }}",
+            "First Name Suggestion": "={{ $('Google Sheets').item.json['First Name Suggestion']}}",
+            "lastName": "={{ $('Google Sheets').item.json.lastName}}",
+            "fullName": "={{ $('Google Sheets').item.json.fullName }}",
+            "title": "={{ $('Google Sheets').item.json.title }}",
+            "profileUrl": "={{ $('Google Sheets').item.json.profileUrl }}",
+            "Company": "={{ $('Google Sheets').item.json.Company }}",
+            "Company Legal Name": "={{ $('Google Sheets').item.json['Company Legal Name'] }}",
+            "Company Phone": "={{ $('Google Sheets').item.json['Company Phone'] }}",
+            "Website": "={{ $('Google Sheets').item.json.Website }}",
+            "Company LinkedIn": "={{ $('Google Sheets').item.json['Company LinkedIn'] }}",
+            "summary": "={{ $('Google Sheets').item.json.summary }}",
+            "regularCompanyUrl": "={{ $('Google Sheets').item.json.regularCompanyUrl }}",
+            "vmid": "={{ $('Google Sheets').item.json.vmid }}",
+            "query": "={{ $('Google Sheets').item.json.query }}",
+            "industry": "={{ $('Google Sheets').item.json.industry }}",
+            "linkedInProfileUrl": "={{ $('Google Sheets').item.json.linkedInProfileUrl }}",
+            "companyLocation": "={{ $('Google Sheets').item.json.companyLocation }}",
+            "defaultProfileUrl": "={{ $('Google Sheets').item.json.defaultProfileUrl }}",
+            "isOpenLink": "={{ $('Google Sheets').item.json.isOpenLink }}",
+            "companyId": "={{ $('Google Sheets').item.json.companyId }}",
+            "sharedConnectionsCount": "={{ $('Google Sheets').item.json.sharedConnectionsCount }}",
+            "connectionDegree": "={{ $('Google Sheets').item.json.connectionDegree }}",
+            "titleDescription": "={{ $('Google Sheets').item.json.titleDescription }}",
+            "durationInRole": "={{ $('Google Sheets').item.json.durationInRole }}",
+            "durationInCompany": "={{ $('Google Sheets').item.json.durationInCompany }}",
+            "location": "={{ $('Google Sheets').item.json.location }}",
+            "isPremium": "={{ $('Google Sheets').item.json.isPremium }}",
+            "profileImageUrl": "={{ $('Google Sheets').item.json.profileImageUrl }}",
+            "timestamp": "={{ $('Google Sheets').item.json.timestamp }}",
+            "subject": "={{ $json.message.content.subjectLine }}",
+            "icebreaker": "={{ $json.message.content.icebreaker}}",
+            "elevatorPitch": "={{ $json.message.content.elevatorPitch }}",
+            "callToAction": "={{ $json.message.content.callToAction }}",
+            "postScript": "={{ $json.message.content.ps }}"
+          },
+          "matchingColumns": [
+            "Email"
+          ],
+          "schema": [
+            {
+              "id": "Civility",
+              "displayName": "Civility",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "firstName",
+              "displayName": "firstName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "First Name Suggestion",
+              "displayName": "First Name Suggestion",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "lastName",
+              "displayName": "lastName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "fullName",
+              "displayName": "fullName",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "title",
+              "displayName": "title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "profileUrl",
+              "displayName": "profileUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company",
+              "displayName": "Company",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company Legal Name",
+              "displayName": "Company Legal Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company Phone",
+              "displayName": "Company Phone",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Website",
+              "displayName": "Website",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Company LinkedIn",
+              "displayName": "Company LinkedIn",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "summary",
+              "displayName": "summary",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "regularCompanyUrl",
+              "displayName": "regularCompanyUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "vmid",
+              "displayName": "vmid",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "industry",
+              "displayName": "industry",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "linkedInProfileUrl",
+              "displayName": "linkedInProfileUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "companyLocation",
+              "displayName": "companyLocation",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "defaultProfileUrl",
+              "displayName": "defaultProfileUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "isOpenLink",
+              "displayName": "isOpenLink",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "companyId",
+              "displayName": "companyId",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "sharedConnectionsCount",
+              "displayName": "sharedConnectionsCount",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "connectionDegree",
+              "displayName": "connectionDegree",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "titleDescription",
+              "displayName": "titleDescription",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "durationInRole",
+              "displayName": "durationInRole",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "durationInCompany",
+              "displayName": "durationInCompany",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "isPremium",
+              "displayName": "isPremium",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "profileImageUrl",
+              "displayName": "profileImageUrl",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timestamp",
+              "displayName": "timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "icebreaker",
+              "displayName": "icebreaker",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "elevatorPitch",
+              "displayName": "elevatorPitch",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "callToAction",
+              "displayName": "callToAction",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "postScript",
+              "displayName": "postScript",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1040,
+        920
+      ],
+      "id": "a1af4246-37e3-4d30-b6a1-f8996686e756",
+      "name": "Google Sheets1",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "EOibXIc4U8wcXyRR",
+          "name": "YouTube"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "={{ $json.subject }}",
+        "message": "=hi {{ $json.firstName }},\n\n{{ $json.icebreaker }}.\n\n{{ $json.elevatorPitch }}.\n\n{{ $json.callToAction }}\n\nps: {{ $json.postScript }}",
+        "options": {
+          "sendTo": "={{ $json.Email }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1260,
+        920
+      ],
+      "id": "676fbfb0-19c9-4e70-8f80-18b57667330f",
+      "name": "Gmail2",
+      "webhookId": "d92c4967-7335-4204-851f-af2abc573d5f",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YqmvyP5s2u0IHOHB",
+          "name": "Gmail account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "hour": 0
+            }
+          ]
+        },
+        "simple": "={{ false }}",
+        "filters": {
+          "q": "subject:\"SOS Media Queries for 11/25/24 - AM\""
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        240,
+        1220
+      ],
+      "id": "07d5be03-0115-486c-820d-2d415b177ef6",
+      "name": "Gmail Trigger",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YqmvyP5s2u0IHOHB",
+          "name": "Gmail account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6afefce9-c56f-422e-9d2d-23eb3180ced1",
+              "name": "below",
+              "value": "={{ $json.text.split(\"****************************\").last().split(\"_____\") }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        460,
+        1220
+      ],
+      "id": "8b0d3af2-18d8-49cf-bca7-81c17d959b02",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "below",
+        "options": {
+          "disableDotNotation": false
+        }
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        680,
+        1220
+      ],
+      "id": "fafc2d14-2c37-4d27-992a-957b8f3c2d84",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "maxItems": 3,
+        "keep": "lastItems"
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        940,
+        1220
+      ],
+      "id": "ef006707-d2e0-45e4-9b99-46f94c56a403",
+      "name": "Limit1"
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "Re: SOS inquiry",
+        "message": "={{ $json.message.content.emailBody }}",
+        "options": {
+          "sendTo": "={{ $json.message.content.emailAddress }}"
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1780,
+        1220
+      ],
+      "id": "25b2bd5b-de5e-40f5-b835-de8e46787b0d",
+      "name": "Gmail3",
+      "webhookId": "d4cc7f14-33ea-4dd7-af94-a71caea70c96",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YqmvyP5s2u0IHOHB",
+          "name": "Gmail account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "88c00ff2-89d4-4ffb-8185-cb5911361ce9",
+              "leftValue": "={{ $json.message.content.relevance }}",
+              "rightValue": "true",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1560,
+        1220
+      ],
+      "id": "c82f9c73-12d1-4851-bac5-f22a1ad95393",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "operation": "addLabels",
+        "messageId": "={{ $json.message.id }}",
+        "labelIds": [
+          "Label_9103162198201867632"
+        ]
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1980,
+        1220
+      ],
+      "id": "f73d52e9-c665-469b-9520-0570354e464c",
+      "name": "Gmail4",
+      "webhookId": "96016163-7a4d-4596-982b-9bdfcee2878d",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "YqmvyP5s2u0IHOHB",
+          "name": "Gmail account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "GPT-4O"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You're a helpful, intelligent administrative assistant.",
+              "role": "system"
+            },
+            {
+              "content": "I'm a business owner specializing in AI, automation, marketing, and software.\n\nBelow is an email request from a journalist looking for information about their story.\n\nYour task is to determine whether it is relevant to me, and if so, draft an email body that answers their questions using my tone of voice (casual spartan).\n\nIf it is relevant, return a JSON object as follows:\n\n{\"relevance\":\"true\",\"emailBody\":\"email body goes here\",\"emailAddress\":\"their email if relevant\"}\n\nIf it is not relevant, return \"false\" for relevance and leave emailBody blank.\n\n--\n\nSome information about me:\n\nI own 1SecondCopy, a successful AI marketing company that does over $90K/mo. My name is Nick Saraev. Here are my links (don't use it unless asked):\n\nLinkedIn: linkedin.com/in/nickolas-saraev\nInstagram: instagram.com/nick.saraev/\nTwitter: twitter.com/nicksaraev\nWebsite: 1secondcopy.com\nHeadshot: i.imgur.com/8ZOtiGf.png\n\nUse the following email template when responding to relevant inquiries:\n\n\"Hi {name},\n\nI own 1SecondCopy, a successful AI marketing company that does over $90K/mo.\n\n{your customized responses go here}\n\nWill be in the office for the rest of the day - if you need anything, just shout & I'll take care of it.\n\nCheers,\nNick\"\n\nMake sure to respond in JSON!\n\n---"
+            },
+            {
+              "content": "={{ $json.below }}"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.6,
+      "position": [
+        1180,
+        1220
+      ],
+      "id": "a2d727d8-9ce7-4d91-97a0-cafb6e44668a",
+      "name": "Filter & Create Email Body",
+      "credentials": {
+        "openAiApi": {
+          "id": "sni0XAbRQXjOeAUQ",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        240,
+        920
+      ],
+      "id": "d5c26f87-23cd-495a-8017-39e26e69d278",
+      "name": "When clicking ‘Test workflow’"
+    }
+  ],
+  "connections": {
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "Gmail2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "Limit1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit1": {
+      "main": [
+        [
+          {
+            "node": "Filter & Create Email Body",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Gmail3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail3": {
+      "main": [
+        [
+          {
+            "node": "Gmail4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter & Create Email Body": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "65a26212-7cb5-495f-92e4-7d3075fe79e0",
+  "meta": {
+    "instanceId": "d7661a849ead114a9aa6d9ceaf4160465aeb79532a35bde62160c840ffba9fc8",
+    "templateCreator": "NordSym AB",
+    "templateVersion": "1.0",
+    "verified": true,
+    "source": "FlowVault.se",
+    "contact": "support@nordsym.com",
+    "driveFileId": "1H92R8P6Q8zRHbbbU9ZJl4XvI09Tn6PnP",
+    "brandedAt": "2026-01-01T22:40:30.019Z"
+  },
+  "id": "VEtJ3ce5ksGFHF7t",
+  "tags": [
+    {
+      "createdAt": "2025-01-23T18:12:52.273Z",
+      "updatedAt": "2025-01-23T18:12:52.273Z",
+      "id": "l8MPK4ZirgwFWMno",
+      "name": "N8N Course"
+    }
+  ]
+}
