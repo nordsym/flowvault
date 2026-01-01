@@ -1,0 +1,127 @@
+{
+  "name": "Cold Email Agent Template",
+  "nodes": [
+    {
+      "id": "nordsym-brand-header",
+      "name": "NordSym Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "content": "## 🔷 NordSym AB\n**Verifierad Automation**\n\n📦 **Källa:** FlowVault.se\n🏷️ **Version:** 1.0\n📧 **Support:** support@nordsym.com\n\n💡 **Installation:**\n1. Importera i n8n\n2. Konfigurera credentials\n3. Testa med test-data\n4. Aktivera workflow\n\n🔗 **Mer hjälp:** nordsym.com",
+        "height": 320,
+        "width": 300,
+        "color": 5
+      }
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "ff56b561-b493-4cde-8e28-8276aa03905c",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "resource": "assistant",
+        "assistantId": {
+          "__rl": true,
+          "value": "asst_ruzdoJMpStaumjZRufwIw13D",
+          "mode": "list",
+          "cachedResultName": "Cold Email Copywriter"
+        },
+        "prompt": "define",
+        "text": "={{ $json.query }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        220,
+        0
+      ],
+      "id": "75369829-12e7-420c-8f49-9ff0aeeebb10",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "LCQSyEofGMlre7us",
+          "name": "OpenAi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7b1cd361-36ad-4529-8273-6f779936c934",
+              "name": "response",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        580,
+        0
+      ],
+      "id": "a4cc1aa7-04eb-4c9f-b704-02b09dd20c1b",
+      "name": "Edit Fields"
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "2ac97b1d-d8a1-46d6-ad41-f901407ac35c",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "9da288905fbe9354dea4b543fd7e960ac33b487ac1b02440ad591d7c90022103",
+    "templateCreator": "NordSym AB",
+    "templateVersion": "1.0",
+    "verified": true,
+    "source": "FlowVault.se",
+    "contact": "support@nordsym.com",
+    "driveFileId": "1TR72fSRmRKm9b710pKQ2tNC7EwA9K_Ac",
+    "brandedAt": "2026-01-01T22:37:17.381Z"
+  },
+  "id": "h9k7k5jYaaqEh2vz",
+  "tags": []
+}
