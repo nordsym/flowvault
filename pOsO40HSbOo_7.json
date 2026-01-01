@@ -1,0 +1,491 @@
+{
+  "name": "Social Media Agent",
+  "nodes": [
+    {
+      "id": "nordsym-brand-header",
+      "name": "NordSym Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "content": "## 🔷 NordSym AB\n**Verifierad Automation**\n\n📦 **Källa:** FlowVault.se\n🏷️ **Version:** 1.0\n📧 **Support:** support@nordsym.com\n\n💡 **Installation:**\n1. Importera i n8n\n2. Konfigurera credentials\n3. Testa med test-data\n4. Aktivera workflow\n\n🔗 **Mer hjälp:** nordsym.com",
+        "height": 320,
+        "width": 300,
+        "color": 5
+      }
+    },
+    {
+      "parameters": {
+        "inputSource": "jsonExample",
+        "jsonExample": "{\n  \"message\": \"\",\n  \"social_media_platforms\": \"\"\n}"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -260,
+        0
+      ],
+      "id": "679a7816-8edf-45df-ba0a-4fb0b54c6cc8",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are an intelligent bot, specializing in creating X (twitter) posts.",
+              "role": "system"
+            },
+            {
+              "content": "=Please create an X post about this topic:\n{{ $('When Executed by Another Workflow').item.json.message }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        660,
+        -60
+      ],
+      "id": "9c0e292a-c687-454d-a66c-f0710803656e",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "ijZWPGwLXdAOVFfI",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.social_media_platforms }}",
+                    "rightValue": "twitter",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f9467b34-2132-48d6-81cf-273ceef62829",
+                    "leftValue": "={{ $json.social_media_platforms }}",
+                    "rightValue": "linkedin",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "5415b2af-615b-4da4-a629-48cdece46f86",
+                    "leftValue": "={{ $json.social_media_platforms }}",
+                    "rightValue": "blog",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        300,
+        0
+      ],
+      "id": "8208863d-667a-4a2a-8d49-ab107a647bf2",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are an intelligent bot, specializing in creating LinkedIn posts.",
+              "role": "system"
+            },
+            {
+              "content": "=Please create an LinkedIn post about this topic:\n{{ $('When Executed by Another Workflow').item.json.message }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        660,
+        120
+      ],
+      "id": "8d4c22b8-f151-453c-8e7c-26737af4638c",
+      "name": "OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "ijZWPGwLXdAOVFfI",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.message.content }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.twitter",
+      "typeVersion": 2,
+      "position": [
+        1020,
+        -60
+      ],
+      "id": "59ac08ac-0bb0-4657-b8f4-4aca2d36f2f0",
+      "name": "X",
+      "credentials": {
+        "twitterOAuth2Api": {
+          "id": "E2JTjg3OF3R0z5xR",
+          "name": "X account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "postAs": "organization",
+        "text": "={{ $json.message.content }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.linkedIn",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        120
+      ],
+      "id": "fe17ccdc-a202-440a-8c04-a0db0866a3c3",
+      "name": "LinkedIn",
+      "credentials": {
+        "linkedInOAuth2Api": {
+          "id": "LMDUTnIpRBhj9VED",
+          "name": "LinkedIn account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "social_media_platforms",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        80,
+        0
+      ],
+      "id": "fef7f8b6-aabe-4b5d-a3c5-e37b3d506268",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are an intelligent bot, specializing in creating blog posts.\nThe blog_title and blog_content section should just be a text field",
+              "role": "system"
+            },
+            {
+              "content": "=Please create an blog post about this topic:\n{{ $('When Executed by Another Workflow').item.json.message }}"
+            },
+            {
+              "content": "Please output the data in JSON format:\n\n{\n  \"blog_title\": \"\",\n  \"blog_content\": \"\"\n{",
+              "role": "assistant"
+            }
+          ]
+        },
+        "jsonOutput": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        660,
+        300
+      ],
+      "id": "86809bc2-a132-4542-9f2b-27ff10e0632b",
+      "name": "OpenAI2",
+      "credentials": {
+        "openAiApi": {
+          "id": "ijZWPGwLXdAOVFfI",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "39c2f302-03be-4464-a17a-d7cc481d6d44",
+              "name": "=response",
+              "value": "={{$json.output}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "1e3caca3-323e-4ae5-a46f-e6e9d03481ad",
+      "name": "Success",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1280,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "39c2f302-03be-4464-a17a-d7cc481d6d44",
+              "name": "=response",
+              "value": "={{$json.output}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f0aaa6c3-d048-486e-b82b-29ceb977ab27",
+      "name": "Success1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1280,
+        120
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "39c2f302-03be-4464-a17a-d7cc481d6d44",
+              "name": "=response",
+              "value": "={{$json.output}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b2558b02-5cfa-47e0-9d39-580f2f40a49d",
+      "name": "Success2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1280,
+        -60
+      ]
+    },
+    {
+      "parameters": {
+        "title": "={{ $json.message.content.blog_title }}",
+        "additionalFields": {
+          "content": "={{ $json.message.content.blog_content }}"
+        }
+      },
+      "type": "n8n-nodes-base.wordpress",
+      "typeVersion": 1,
+      "position": [
+        1020,
+        300
+      ],
+      "id": "c8f99d27-dc7f-4e40-bb1f-481c624eb839",
+      "name": "Wordpress1",
+      "credentials": {
+        "wordpressApi": {
+          "id": "QWX2vYvnFHJqMT9s",
+          "name": "Wordpress account 2"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [],
+        [],
+        [
+          {
+            "node": "OpenAI2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        []
+      ]
+    },
+    "OpenAI1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI2": {
+      "main": [
+        []
+      ]
+    },
+    "X": {
+      "main": [
+        [
+          {
+            "node": "Success2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LinkedIn": {
+      "main": [
+        [
+          {
+            "node": "Success1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Success": {
+      "main": [
+        []
+      ]
+    },
+    "Wordpress1": {
+      "main": [
+        [
+          {
+            "node": "Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c18a9c89-1f1c-4ea4-b6db-d4b325fbb8ac",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d2017cc6d1e4b956d269a8123bffa72fb7aaa41ad37a73b7c0fb64c7d0e2edae",
+    "templateCreator": "NordSym AB",
+    "templateVersion": "1.0",
+    "verified": true,
+    "source": "FlowVault.se",
+    "contact": "support@nordsym.com",
+    "driveFileId": "19Nd5VkE5-tHPvyqeX1VI0c59daHvwt1o",
+    "brandedAt": "2026-01-01T22:39:54.323Z"
+  },
+  "id": "p6nGOhnZ2Ib03UQC",
+  "tags": []
+}
