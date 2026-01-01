@@ -1,0 +1,733 @@
+{
+  "name": "Main AI Agent",
+  "nodes": [
+    {
+      "id": "nordsym-brand-header",
+      "name": "NordSym Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "content": "## 🔷 NordSym AB\n**Verifierad Automation**\n\n📦 **Källa:** FlowVault.se\n🏷️ **Version:** 1.0\n📧 **Support:** support@nordsym.com\n\n💡 **Installation:**\n1. Importera i n8n\n2. Konfigurera credentials\n3. Testa med test-data\n4. Aktivera workflow\n\n🔗 **Mer hjälp:** nordsym.com",
+        "height": 320,
+        "width": 300,
+        "color": 5
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=You are a helpful voice AI agent that excels at calling people on behalf of your user. You'll either have to find people through the personal contacts tool or find phone numbers on Google Maps.\n\n##Tools\n1. Call the contact_finder tool to find people in the users contacts list. Always ask the user to confirm after this step which contact they're interested in calling.\n2. Call the google_maps_scraper tool to find businesses. The user should provide how many businesses they want you to find, but if they don't provide an answer, please provide 5. Always ask the user to confirm after this step which business they're interested in calling.\n3. Call the voice_agent tool to call the contact or business. Never call multiple contacts or businesses during the same message or request. Always make sure that you confirm which contact the user wants to call from the result provided from the contact_finder or google_maps_scraper tool before calling. If you book an appointment successfully, always schedule it on the calendar tool immediately afterwards\n4. Call the Google Calendar tool after a call to book a successful event. If there is no successful event, do not book anything on the calendar.\n\n##Rules\n- If you find contacts or businesses on Google Maps, please always clarify which contact you'd like the user to call. You can only call one contact or business per request. \n- NEVER call multiple people simultaenously under any circumstances\n- ALWAYS ask the context of the call. They need to provide: who you're calling, what the goal is, timeframes if necessary, and what happens if you can't achieve the outcome.\n- Only book a calendar event 1) after the voice agent and 2) if the voice agent was successful in booking something\n\nToday's date is {{ $now }}"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        220,
+        0
+      ],
+      "id": "4cb587ed-3df0-4dfb-a568-ccf9d2b76d12",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        60,
+        220
+      ],
+      "id": "a0e33e3f-ea8a-47c5-b9d3-9797fb771ae7",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "ijZWPGwLXdAOVFfI",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        180,
+        220
+      ],
+      "id": "75203854-94f8-43cc-bb6d-d778baa06a74",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "name": "contact_finder",
+        "description": "Call this tool to find my personal contacts",
+        "workflowId": {
+          "__rl": true,
+          "value": "nKNLrKOkRx6ohVvV",
+          "mode": "list",
+          "cachedResultName": "Personal Contact Finder"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "name": "={{ $fromAI(\"name\", \"name of person\") }}"
+          },
+          "matchingColumns": [
+            "name"
+          ],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        440,
+        220
+      ],
+      "id": "2e73f4c2-4302-4c16-b3c5-97f630a70df8",
+      "name": "Personal Contact Finder"
+    },
+    {
+      "parameters": {
+        "name": "google_maps_scraper",
+        "description": "Call this tool to search for a business using google maps",
+        "workflowId": {
+          "__rl": true,
+          "value": "tWSdcM1eNNTcgGsN",
+          "mode": "list",
+          "cachedResultName": "Feb 17th Google Maps"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "results": "={{ $fromAI(\"numberOfSearchResults\", \"how many search results does the user want, which is a numerical value\") }}",
+            "country": "={{ $fromAI(\"countryCodeLowerCase\", \"this is the country code that you'll use to search Google Maps with, such asus, ca, etc - it must be lower case\") }}",
+            "state": "={{ $fromAI(\"stateInitials\", \"this is the intials of the state that you'll use to search Google Maps with, such as NY, CA, etc - uppercase\") }}",
+            "location": "={{ $fromAI(\"city\", \"this is the city that you'll use to search Google Maps with, such as New York, Los Angeles, etc\") }}",
+            "search": "={{ $fromAI(\"industry\", \"this is the industry that you'll use to search Google Maps with, such as landscaping, roofing, photography, etc\") }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "search",
+              "displayName": "search",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "location",
+              "displayName": "location",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "state",
+              "displayName": "state",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "country",
+              "displayName": "country",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "results",
+              "displayName": "results",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "number"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        300,
+        220
+      ],
+      "id": "19d515a9-54ae-45c0-b60a-9bb397228213",
+      "name": "Google Maps"
+    },
+    {
+      "parameters": {
+        "name": "voice_agent",
+        "description": "Call this tool to make voice calls",
+        "workflowId": {
+          "__rl": true,
+          "value": "XyFfj6eWQZSJw870",
+          "mode": "list",
+          "cachedResultName": "Feb 17 Voice Agent"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "end_time": "={{ $fromAI(\"endTime\", \"the end time of the booking the user is looking to book if any\") }}",
+            "start_time": "={{ $fromAI(\"startTime\", \"the start time of the booking the user is looking to book if any\") }}",
+            "date": "={{ $fromAI(\"date\", \"the date of the user is looking to book if any\") }}",
+            "first_message": "={{ $fromAI(\"first_message\", \"Please provide what the opening first message should be out of the voice agents mouth\") }}",
+            "context": "={{ $fromAI(\"context\", \"please provide the context of the call, so that the call agent knows exactly what to talk about\") }}",
+            "goal": "={{ $fromAI(\"conversation_goal\", \"Please provide what the goal is of the conversation\") }}",
+            "relationship": "={{ $fromAI(\"relationship\", \"Please provide the relationship the user has with this entity. Is it a friend or a business?\") }}",
+            "name": "={{ $fromAI(\"name\", \"Please providethe person or businesses name\") }}",
+            "fall_back_plan": "={{ $fromAI(\"fall_back_plan\", \"Please provide a fallback plan in case the entity is not available at the given time. Should default to calling back in 10 minutes if user wants to move forward with it\") }}",
+            "special_requests": "={{ $fromAI(\"special_requests\", \"Please provide any special requests here\") }}",
+            "special_request_required": "={{ $fromAI(\"special_requests_required\", \"Is the special request required? This is a boolean field - either true or false\") }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "date",
+              "displayName": "date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "start_time",
+              "displayName": "start_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "end_time",
+              "displayName": "end_time",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            },
+            {
+              "id": "context",
+              "displayName": "context",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "first_message",
+              "displayName": "first_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "goal",
+              "displayName": "goal",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "relationship",
+              "displayName": "relationship",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "fall_back_plan",
+              "displayName": "fall_back_plan",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "special_requests",
+              "displayName": "special_requests",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            },
+            {
+              "id": "special_request_required",
+              "displayName": "special_request_required",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "boolean",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2,
+      "position": [
+        580,
+        220
+      ],
+      "id": "2a528ded-bf7f-4494-b61b-183eb248735e",
+      "name": "Voice Agent"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "e65463fc466fd521dc1ecc1964b4d6dbac77710e2a00f0a73b597f41477d9def@group.calendar.google.com",
+          "mode": "list",
+          "cachedResultName": "AI Agent"
+        },
+        "start": "={{ $fromAI(\"startTime\", \"the start time of the booking\") }}",
+        "end": "={{ $fromAI(\"endTime\", \"the end time of the booking\") }}",
+        "additionalFields": {
+          "description": "={{ $fromAI(\"event_description\", \"the description of the booking\") }}",
+          "summary": "={{ $fromAI(\"event_summary\", \"the title/summary of the booking\") }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.3,
+      "position": [
+        720,
+        220
+      ],
+      "id": "495f6364-c5f0-4fa2-8526-af8c5231f0d8",
+      "name": "Google Calendar",
+      "credentials": {
+        "googleCalendarOAuth2Api": {
+          "id": "vH8czuEshd95ultk",
+          "name": "Google Calendar account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -800,
+        -20
+      ],
+      "id": "01284d13-1c56-491f-92ce-ea82bb1f3dd4",
+      "name": "Telegram Trigger",
+      "webhookId": "600c6d64-98f1-4597-9448-1397bd15b675",
+      "credentials": {
+        "telegramApi": {
+          "id": "JhhDodcWIfzrpm2J",
+          "name": "Telegram account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}"
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -420,
+        -100
+      ],
+      "id": "d99cc146-f9d7-4d3c-948d-24e3f78ad89c",
+      "name": "Telegram1",
+      "webhookId": "8b826288-7a45-4a12-bbf7-e07462532efb",
+      "credentials": {
+        "telegramApi": {
+          "id": "OGKm4F9KSKep4HTN",
+          "name": "Telegram account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -180,
+        -100
+      ],
+      "id": "a75623ea-864f-4678-bf96-c74a5be81ebc",
+      "name": "OpenAI",
+      "credentials": {
+        "openAiApi": {
+          "id": "ijZWPGwLXdAOVFfI",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        20,
+        0
+      ],
+      "id": "aeeafa96-f1fc-44e2-bf29-e1aaf29e9940",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "31c62aff-11d6-4909-9803-9a4574da9fb3",
+              "name": "text",
+              "value": "={{ $('Telegram Trigger').item.json.message.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -420,
+        60
+      ],
+      "id": "00a1b6f9-d18e-4416-9a50-c08729aa6766",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "b59a106b-1951-414f-8a7d-28586d74750a",
+                    "leftValue": "={{ $json.message.voice }}",
+                    "rightValue": "d",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "f45c3cc7-dc14-4a4a-bcf0-f8a112acb88c",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -620,
+        -20
+      ],
+      "id": "a0301622-f867-41dc-b30b-cbe09c1c5a31",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        580,
+        0
+      ],
+      "id": "ebce7bf3-040a-40d8-ba15-7c9aa6d4611a",
+      "name": "Telegram",
+      "webhookId": "43eeb17e-4ed7-4476-adad-7b22f5484bdd",
+      "credentials": {
+        "telegramApi": {
+          "id": "OGKm4F9KSKep4HTN",
+          "name": "Telegram account 4"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Personal Contact Finder": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Maps": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Voice Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram1": {
+      "main": [
+        [
+          {
+            "node": "OpenAI",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0bc14fc7-e15c-4697-a83f-a5360a12aa19",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "d2017cc6d1e4b956d269a8123bffa72fb7aaa41ad37a73b7c0fb64c7d0e2edae",
+    "templateCreator": "NordSym AB",
+    "templateVersion": "1.0",
+    "verified": true,
+    "source": "FlowVault.se",
+    "contact": "support@nordsym.com",
+    "driveFileId": "1VD_WTaUoLRgG-dWuPJ71_bLMCzgLtpmO",
+    "brandedAt": "2026-01-01T22:39:34.373Z"
+  },
+  "id": "ghWar12uN4Jow7Kc",
+  "tags": []
+}
