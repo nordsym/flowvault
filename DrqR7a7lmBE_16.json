@@ -1,0 +1,39 @@
+{
+  "dependencies": [
+    "."
+  ],
+  "graphs": {
+    "agent": "./agent_graph.py:travel_agent_graph"
+  },
+  "env": ".env",
+  "nodes": [
+    {
+      "id": "nordsym-brand-header",
+      "name": "NordSym Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "content": "## 🔷 NordSym AB\n**Verifierad Automation**\n\n📦 **Källa:** FlowVault.se\n🏷️ **Version:** 1.0\n📧 **Support:** support@nordsym.com\n\n💡 **Installation:**\n1. Importera i n8n\n2. Konfigurera credentials\n3. Testa med test-data\n4. Aktivera workflow\n\n🔗 **Mer hjälp:** nordsym.com",
+        "height": 320,
+        "width": 300,
+        "color": 5
+      }
+    }
+  ],
+  "meta": {
+    "templateCreator": "NordSym AB",
+    "templateVersion": "1.0",
+    "verified": true,
+    "source": "FlowVault.se",
+    "contact": "support@nordsym.com",
+    "driveFileId": "15e7FTAwSaE4gQug90E2upjDv2enDI1Os",
+    "brandedAt": "2026-01-01T22:36:54.138Z"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

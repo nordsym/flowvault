@@ -1,0 +1,90 @@
+{
+  "mcpServers": {
+    "timezone": {
+      "command": "python",
+      "args": [
+        "-m",
+        "mcp_server_time",
+        "--local-timezone=America/New_York"
+      ],
+      "enable": true
+    },
+    "weather": {
+      "command": "python",
+      "args": [
+        "./weather-server-python/src/weather/server.py"
+      ],
+      "enable": true
+    },
+    "sequentialthinking": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "mcp/sequentialthinking"
+      ],
+      "enable": true
+    },
+    "memory": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "mcp/memory"
+      ],
+      "env": null,
+      "enable": true
+    },
+    "fetch": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "mcp/fetch"
+      ],
+      "env": null,
+      "enable": true
+    },
+    "mcp-pandoc": {
+      "command": "uvx",
+      "args": [
+        "mcp-pandoc"
+      ],
+      "env": null,
+      "enable": true
+    }
+  },
+  "nodes": [
+    {
+      "id": "nordsym-brand-header",
+      "name": "NordSym Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "content": "## 🔷 NordSym AB\n**Verifierad Automation**\n\n📦 **Källa:** FlowVault.se\n🏷️ **Version:** 1.0\n📧 **Support:** support@nordsym.com\n\n💡 **Installation:**\n1. Importera i n8n\n2. Konfigurera credentials\n3. Testa med test-data\n4. Aktivera workflow\n\n🔗 **Mer hjälp:** nordsym.com",
+        "height": 320,
+        "width": 300,
+        "color": 5
+      }
+    }
+  ],
+  "meta": {
+    "templateCreator": "NordSym AB",
+    "templateVersion": "1.0",
+    "verified": true,
+    "source": "FlowVault.se",
+    "contact": "support@nordsym.com",
+    "driveFileId": "1xbH16wLu3vE83wKbIqkMpn6-2VaJrmzv",
+    "brandedAt": "2026-01-01T22:37:00.574Z"
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

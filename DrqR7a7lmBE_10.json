@@ -1,0 +1,667 @@
+{
+  "name": "Web Scraper Multi-Page",
+  "nodes": [
+    {
+      "id": "nordsym-brand-header",
+      "name": "NordSym Info",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {
+        "content": "## 🔷 NordSym AB\n**Verifierad Automation**\n\n📦 **Källa:** FlowVault.se\n🏷️ **Version:** 1.0\n📧 **Support:** support@nordsym.com\n\n💡 **Installation:**\n1. Importera i n8n\n2. Konfigurera credentials\n3. Testa med test-data\n4. Aktivera workflow\n\n🔗 **Mer hjälp:** nordsym.com",
+        "height": 320,
+        "width": 300,
+        "color": 5
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{$('Prep Input Fields1').item.json.session_id}}",
+        "tableName": "messages",
+        "contextWindowLength": 10
+      },
+      "id": "f751dcb5-9bf1-42d3-a2f2-aa344ca7ec75",
+      "name": "Postgres Chat Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        1040,
+        300
+      ],
+      "credentials": {
+        "postgres": {
+          "id": "PPVUOCGy8dTN3kdl",
+          "name": "Live Agent Studio Test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{$('Prep Input Fields1').item.json.query}}",
+        "options": {
+          "systemMessage": "=# Role\n\nYou are an agent specialized in knowledge that the user asks about.\n\n# Goal\n\n- Make complex subjects easy to understand.\n- Create a teaching methodology to convey the content in the most didactic way possible.\n- Find patterns in the content and organize it chronologically to make it even more didactic.\n\n# Interaction with user\n\n- Ask the user if they want to know information from a Website.\n- Use the website_scraping tool to obtain the correct information.\n- After acquiring the knowledge, clarify the user's doubts with the acquired knowledge.\n\n# Task\n\nThe user will send you one or more Website links, use the website_scraping tool to search for the correct information to accurately answer the user's questions about the topics.\n\n# Tools\n\n- website_scraping\n\n# Link identification\n\nCorrectly identify and separate each link you receive, usually the URL is composed of: network communication protocol, a subdomain, a domain and its extension.\nE.g.:\n<url_example>\nI need help with this content:\nhttps://edition.cnn.com/world\nhttps://www.reddit.com/r/PromptEngineering/\nhttps://bloomberg.com/\n</url_example>\n\n# Time\nCurrent date and time: {{ $now.toLocal().format('DDDD t') }}"
+        }
+      },
+      "id": "fd05646e-5b48-4fa3-8c54-56f9abc17fc0",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1020,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "X-n8n-Signature",
+                "value": ""
+              }
+            ]
+          }
+        }
+      },
+      "id": "557ac9dd-615b-480f-b828-1c0f3af5c081",
+      "name": "Respond to Webhook1",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1580,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b5eaa2a2-a6bc-40ab-af5e-baa8a5dda1a7",
+              "name": "success",
+              "value": "=true",
+              "type": "boolean"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4b0be839-fa24-44b8-9983-428a8ea769ff",
+      "name": "Prep Output Fields1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1400,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "api/agent/web-search/v1",
+        "authentication": "headerAuth",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "e98ebb29-2c67-4f73-8021-ac543e1cd794",
+      "name": "Webhook1",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        500,
+        60
+      ],
+      "webhookId": "b3326f84-3efd-431e-84dd-7911daee0c41",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "o5akNgXQQR74Sezh",
+          "name": "Header Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-exp",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        920,
+        300
+      ],
+      "id": "961e7630-8b92-4199-84dd-cece2aa18d87",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "mOuOVUXJMjWz8V9h",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [
+        500,
+        520
+      ],
+      "id": "f13f206d-b383-4791-9147-3e1c63618c41",
+      "name": "Execute Workflow Trigger"
+    },
+    {
+      "parameters": {
+        "content": "## Agent Web Scraper Multi-Pages v1\n\nThe agent searches multiple websites on the internet; the user simply needs to enter the URL.\n",
+        "height": 240,
+        "width": 460,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "50677856-b9d6-4cd1-8b5e-d7dc3941ce38",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ee2bcd57-3b4c-43f9-b4b7-3a25687b9a68",
+              "name": "query",
+              "value": "={{ $json.body.query }}",
+              "type": "string"
+            },
+            {
+              "id": "63f23e51-af2b-47c4-a288-5abaf9b6c357",
+              "name": "user_id",
+              "value": "={{ $json.body.user_id }}",
+              "type": "string"
+            },
+            {
+              "id": "b97a3670-8a87-481b-8695-db44624be7d8",
+              "name": "request_id",
+              "value": "={{ $json.body.request_id }}",
+              "type": "string"
+            },
+            {
+              "id": "7d3fa06d-08f7-4517-b9c5-3c46ff476f55",
+              "name": "session_id",
+              "value": "={{ $json.body.session_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "594d727f-2406-4e56-a4a3-85af2c8cb66d",
+      "name": "Prep Input Fields1",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        780,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "name": "website_scraping",
+        "description": "Chame essa tool quando o usuário enviar qualquer tipo de link de websites que ele deseja obter informações. (com exceções de links do Youtube). Caso haja mais de um link separe corretamente, o formato de input precise ser array.",
+        "workflowId": {
+          "__rl": true,
+          "value": "={{ $workflow.id }}",
+          "mode": "id"
+        },
+        "fields": {
+          "values": [
+            {
+              "name": "action",
+              "stringValue": "website_scraping"
+            },
+            {
+              "name": "session_id",
+              "stringValue": "={{ $('Prep Input Fields1').item.json.session_id }}"
+            }
+          ]
+        },
+        "specifyInputSchema": true,
+        "jsonSchemaExample": "{\n\t\"website_url\": [\n    \"https://www.youtube.com/watch?v=exemplo1\",\n    \"https://www.youtube.com/watch?v=exemplo2\"\n  ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 1.3,
+      "position": [
+        1220,
+        300
+      ],
+      "id": "1a451ecc-a680-44ec-a68b-bc4444ce3053",
+      "name": "website_scraping"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "95507aba-920b-40f3-ba67-614bdea04601",
+              "leftValue": "={{ $json.action }}",
+              "rightValue": "website_scraping",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        740,
+        520
+      ],
+      "id": "79bd24f2-3a7e-41d1-a052-173b2f0113a7",
+      "name": "Filter_website_scraping"
+    },
+    {
+      "parameters": {
+        "tableId": "messages",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "session_id",
+              "fieldValue": "={{ $json.session_id }}"
+            },
+            {
+              "fieldId": "message",
+              "fieldValue": "={{ {\n\"type\": \"ai\",\n\"content\": \"-> Getting content...\",\n\"additional_kwargs\": {},\n\"response_metadata\": {}\n} }}"
+            }
+          ]
+        }
+      },
+      "id": "7e57989c-d8f2-4e00-8abd-f6aa79e6a621",
+      "name": "Add User Message to DB1",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        960,
+        520
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "Eu6anmgplJHxqZu2",
+          "name": "Studio Test"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1580,
+        520
+      ],
+      "id": "9733d429-8e99-4aba-bbd7-fb10b742a72d",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c96a52ea-c5c1-456d-ba22-002195a6e3fd",
+              "name": "session_id",
+              "value": "={{ $('Execute Workflow Trigger').item.json.session_id }}",
+              "type": "string"
+            },
+            {
+              "id": "6a04833d-3b50-4963-ae77-e1131fcf0524",
+              "name": "website_url",
+              "value": "={{ $('Filter_website_scraping').item.json.query.website_url }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1180,
+        520
+      ],
+      "id": "2e5cd6e5-c104-41e5-aa90-5a35a6b57eed",
+      "name": "normalization"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "video_id, website_url",
+        "include": "allOtherFields",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        520
+      ],
+      "id": "a7341d5c-27ed-4d9e-be43-34dfa2c1087b",
+      "name": "split_out_urls"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2040,
+        760
+      ],
+      "id": "5c3f2ace-5f19-4933-ab68-2f6e6bf48d1d",
+      "name": "Wait",
+      "webhookId": "5ea3843c-8c68-418e-8f8e-4659d782d300"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1820,
+        440
+      ],
+      "id": "cf4b9418-86cf-48c8-ad86-e43f02c64812",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "url": "=https://r.jina.ai/{{ $json.website_url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1820,
+        640
+      ],
+      "id": "5ce7402f-91a8-4bd8-97c7-aa372a67a4d9",
+      "name": "get_scraping_website",
+      "retryOnFail": true,
+      "waitBetweenTries": 5000,
+      "maxTries": 5,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "tableId": "messages",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "session_id",
+              "fieldValue": "={{ $('normalization').first().json.session_id }}"
+            },
+            {
+              "fieldId": "message",
+              "fieldValue": "={{ {\n\"type\": \"ai\",\n\"content\": `-> ${$json.data[0].toJsonString()}`,\n\"additional_kwargs\": {},\n\"response_metadata\": {}\n} }}"
+            }
+          ]
+        }
+      },
+      "id": "ea8cfce1-971b-41c4-8c77-9b7c6fa73967",
+      "name": "Add User Message to DB2",
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        2040,
+        440
+      ],
+      "credentials": {
+        "supabaseApi": {
+          "id": "Eu6anmgplJHxqZu2",
+          "name": "Studio Test"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Prep Output Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prep Output Fields1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Prep Input Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prep Input Fields1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Workflow Trigger": {
+      "main": [
+        [
+          {
+            "node": "Filter_website_scraping",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "website_scraping": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter_website_scraping": {
+      "main": [
+        [
+          {
+            "node": "Add User Message to DB1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add User Message to DB1": {
+      "main": [
+        [
+          {
+            "node": "normalization",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "get_scraping_website",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "normalization": {
+      "main": [
+        [
+          {
+            "node": "split_out_urls",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "split_out_urls": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_scraping_website": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Add User Message to DB2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "5553bff2-5359-41ea-906a-04a0278d76fd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "f65a08c0adc90a3cde2c633d24c6daecde3817033b75588ee10a781b0b7aa3f5",
+    "templateCreator": "NordSym AB",
+    "templateVersion": "1.0",
+    "verified": true,
+    "source": "FlowVault.se",
+    "contact": "support@nordsym.com",
+    "driveFileId": "1Xu9Egek6OYsIOcONMipJDhIZOKpkyqF5",
+    "brandedAt": "2026-01-01T22:36:44.294Z"
+  },
+  "id": "v2Dyb7UQW3T6qPd4",
+  "tags": [
+    {
+      "createdAt": "2024-12-10T13:21:06.912Z",
+      "updatedAt": "2024-12-10T13:21:06.912Z",
+      "id": "0tXJXfH2daB7QdK5",
+      "name": "studio-test"
+    }
+  ]
+}
