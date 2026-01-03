@@ -153,11 +153,11 @@
                 <img src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Final%20logo%20no%20text.svg" alt="NordSym Logo" class="w-8 h-8 sm:w-10 sm:h-10 object-contain">
                 <div class="flex flex-col justify-center">
                     <div class="flex items-center gap-2">
-                        <h1 class="font-heading text-lg sm:text-xl font-bold tracking-tight leading-none text-slate-900 dark:text-white">FlowVault</h1>
+                        <h1 class="font-heading text-lg sm:text-xl font-bold tracking-tight leading-none text-slate-900 dark:text-white">FlowVault.se</h1>
                         <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/10 text-primary border border-primary/20 whitespace-nowrap">BETA</span>
                     </div>
-                    <!-- HIDDEN ON MOBILE TO SAVE SPACE -->
-                    <span class="text-[10px] text-slate-500 font-medium tracking-wide uppercase hidden sm:block">Drivs av NordSym</span>
+                    <!-- HIDDEN ON MOBILE REMOVED, TEXT UPDATED -->
+                    <span class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wide uppercase block mt-0.5">DRIVS AV NORDSYM AB</span>
                 </div>
             </div>
             
@@ -1261,8 +1261,9 @@
                     upgradeBtn.classList.add('hidden');
                 }
                 
-                // Download Counter -> Show PRO badge
+                // Download Counter -> Show PRO badge & FORCE VISIBLE ON MOBILE
                 if (dlCounter) {
+                    dlCounter.className = 'flex flex-col items-end mr-2'; // Reset classes to force visibility
                     dlCounter.innerHTML = '<span class="text-xs font-bold text-fuchsia-500 bg-fuchsia-100 dark:bg-fuchsia-900/30 px-2 py-1 rounded border border-fuchsia-200 dark:border-fuchsia-700">PRO PLAN</span>';
                 }
 
@@ -1293,6 +1294,8 @@
                 if (pricingProStatus) pricingProStatus.classList.add('hidden');
 
                 if (dlCounter) {
+                    // Restore default classes for Free users (Hidden on mobile)
+                    dlCounter.className = 'hidden md:flex flex-col items-end mr-2';
                     dlCounter.innerHTML = `
                         <div class="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Gratis Nedladdningar</div>
                         <div class="flex items-center gap-1 text-sm font-medium">
