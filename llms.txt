@@ -1,0 +1,29 @@
+# FlowVault - Library for n8n workflows
+
+## What is FlowVault?
+Production-ready n8n workflow marketplace. Skip starting from scratch - get verified automations built by professionals.
+
+## Key Features
+- Curated n8n workflows
+- Swedish API integrations (Fortnox, etc.)
+- Advanced AI swarms
+- Filter by platform, level, popularity
+- 3 free downloads/month
+- Pro plan for unlimited downloads
+
+## Categories
+- Content Creation
+- Data Processing
+- Integrations
+- AI Automation
+- Notifications
+- And more...
+
+## Pricing
+- Free: 3 downloads/month
+- Pro: Unlimited downloads
+
+## Contact
+Built by NordSym AB
+Website: https://flowvault.se
+Company: https://nordsym.com

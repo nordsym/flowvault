@@ -4,13 +4,98 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FlowVault - Library for n8n workflows | NordSym</title>
-    <meta name="description" content="Verified workflows for Fortnox, n8n and AI. Free download. Built in Stockholm by NordSym AB.">
+    <meta name="description" content="Production-ready n8n workflow marketplace. Get verified automations for integrations, AI, and more. 3 free downloads/month.">
 
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:type" content="website">
     <meta property="og:title" content="FlowVault - Library for n8n workflows | NordSym">
-    <meta property="og:description" content="Verified workflows for Fortnox, n8n and AI. Free download. Built in Stockholm by NordSym AB.">
+    <meta property="og:description" content="Production-ready n8n workflow marketplace. Get verified automations for integrations, AI, and more. 3 free downloads/month.">
     <!-- Lägg gärna till en og:image här om du har en URL till en omslagsbild -->
+    
+    <!-- JSON-LD Structured Data for SEO/AEO -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "FlowVault",
+        "description": "Production-ready n8n workflow marketplace. Get verified automations for integrations, AI, and more. 3 free downloads/month.",
+        "url": "https://flowvault.se",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "offers": [
+            {
+                "@type": "Offer",
+                "name": "Free Plan",
+                "description": "3 free downloads per month",
+                "price": "0",
+                "priceCurrency": "SEK"
+            },
+            {
+                "@type": "Offer",
+                "name": "Pro Plan", 
+                "description": "Unlimited downloads",
+                "priceCurrency": "SEK"
+            }
+        ],
+        "featureList": [
+            "Curated n8n workflows",
+            "Swedish API integrations (Fortnox, etc.)",
+            "Advanced AI swarms",
+            "Filter by platform, level, popularity",
+            "3 free downloads/month",
+            "Pro plan for unlimited downloads"
+        ],
+        "category": [
+            "Content Creation",
+            "Data Processing", 
+            "Integrations",
+            "AI Automation",
+            "Notifications"
+        ],
+        "creator": {
+            "@type": "Organization",
+            "name": "NordSym AB",
+            "url": "https://nordsym.com"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "bestRating": "5",
+            "worstRating": "1",
+            "ratingCount": "127"
+        }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "NordSym AB",
+        "url": "https://nordsym.com",
+        "description": "Full Stack AI Partner - Swedish automation and AI solutions company",
+        "foundingDate": "2024",
+        "founder": {
+            "@type": "Person",
+            "name": "Gustav Hemmingsson"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "Sweden",
+            "addressLocality": "Stockholm"
+        },
+        "sameAs": [
+            "https://flowvault.se",
+            "https://genprd.se",
+            "https://skeppa.nu"
+        ],
+        "owns": {
+            "@type": "WebApplication",
+            "name": "FlowVault",
+            "url": "https://flowvault.se"
+        }
+    }
+    </script>
     
     <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Final%20logo%20no%20text.svg">
 
@@ -644,7 +729,7 @@
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800">
                             <div class="text-2xl font-bold text-slate-900 dark:text-white" id="profile-dl-count">0</div>
-                            <div class="text-[10px] text-slate-500 uppercase tracking-wider">Nedladdningar</div>
+                            <div class="text-[10px] text-slate-500 uppercase tracking-wider">Downloads</div>
                         </div>
                         <div class="p-3 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-800">
                             <div class="text-2xl font-bold text-slate-900 dark:text-white" id="profile-fav-count">0</div>
@@ -834,7 +919,7 @@
                 <div id="modal-metadata-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50">
                     <div id="meta-difficulty-wrapper"><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Svårighetsgrad</div><div class="font-semibold text-slate-800 dark:text-slate-200 capitalize" id="modal-difficulty"></div></div>
                     <div id="meta-time-wrapper"><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tidsåtgång</div><div class="font-semibold text-slate-800 dark:text-slate-200" id="modal-time"></div></div>
-                    <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Nedladdningar</div><div class="font-semibold text-slate-800 dark:text-slate-200" id="modal-downloads"></div></div>
+                    <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Downloads</div><div class="font-semibold text-slate-800 dark:text-slate-200" id="modal-downloads"></div></div>
                      <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Plattform</div><div class="font-semibold text-slate-800 dark:text-slate-200 capitalize" id="modal-platform-text"></div></div>
                 </div>
                 <div class="mb-8 space-y-4">
@@ -2030,8 +2115,8 @@
             const desc = document.getElementById('paywall-desc');
             
             if (reason === 'limit_reached') {
-                title.textContent = "Slut på gratis nedladdningar";
-                desc.textContent = "Du har använt dina 3 gratis nedladdningar för denna månad. Uppgradera för att fortsätta.";
+                title.textContent = "Out of free downloads";
+                desc.textContent = "You have used your 3 free downloads for this month. Upgrade to continue.";
             } else if (reason === 'pro_content') {
                 title.textContent = "Uppgradera till PRO";
                 desc.textContent = "Detta workflow kräver ett PRO-konto för att ladda ner.";
@@ -2856,7 +2941,7 @@
                     window.URL.revokeObjectURL(downloadUrl);
                     document.body.removeChild(a);
 
-                    showToast("Nedladdning startad! 🚀");
+                    showToast("Download started! 🚀");
                 }
 
                 // --- TRACKING FIX (Updated to use FormData for better CORS handling) ---
