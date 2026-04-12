@@ -10,7 +10,7 @@
     <meta property="og:type" content="website">
     <meta property="og:title" content="FlowVault - Library for n8n workflows | NordSym">
     <meta property="og:description" content="Production-ready n8n workflow marketplace. Get verified automations for integrations, AI, and more. 3 free downloads/month.">
-    <!-- Lägg gärna till en og:image här om du har en URL till en omslagsbild -->
+    <!-- Add og:image here if you have a cover image URL -->
     
     <!-- JSON-LD Structured Data for SEO/AEO -->
     <script type="application/ld+json">
@@ -204,27 +204,7 @@
         }
         .dark .grid-bg { opacity: 0; }
 
-        /* Chat & Paywall Animations */
-        .chat-pulse { box-shadow: 0 0 0 0 rgba(0, 191, 255, 0.7); animation: pulse-blue 2s infinite; }
-        @keyframes pulse-blue { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 191, 255, 0.7); } 70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 191, 255, 0); } 100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 191, 255, 0); } }
-        
-        /* Mobile Chat Panel Polish */
-        @media (max-width: 640px) {
-            #chat-panel {
-                right: 1rem !important;
-                left: 1rem !important;
-                width: auto !important;
-                max-width: none !important;
-                bottom: 5.5rem !important; /* Above the toggle button */
-                height: 60vh !important;
-            }
-        }
-
-        .typing-dot { width: 6px; height: 6px; background-color: currentColor; border-radius: 50%; animation: typing 1.4s infinite ease-in-out both; }
-        .typing-dot:nth-child(1) { animation-delay: -0.32s; } .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes typing { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
-        .message-enter { animation: slideInUp 0.3s ease-out forwards; }
-        @keyframes slideInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Paywall Animations */
         
         /* Radio Button Custom Style - Updated to Fuchsia */
         .radio-selected { background-color: rgba(217, 70, 239, 0.1); border-color: #d946ef; }
@@ -363,7 +343,7 @@
                     <div class="leading-tight">
                         <span class="font-bold text-slate-900 dark:text-white">Claude Skills (MCP)</span>
                         <br>
-                        <span class="text-xs text-slate-500">Körs lokalt i Claude Desktop. Kräver ingen n8n-server.</span>
+                        <span class="text-xs text-slate-500">Runs locally in Claude Desktop. No n8n server required.</span>
                     </div>
                 </div>
                 
@@ -375,7 +355,7 @@
                             <option value="popular">Most popular</option>
                             <option value="recent">Recently added</option>
                             <option value="downloads">Most downloads</option>
-                            <option value="alphabetical">Namn (A-Ö)</option>
+                            <option value="alphabetical">Name (A-Z)</option>
                         </select>
                         <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none"></i>
                     </div>
@@ -396,11 +376,11 @@
             <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-900 mb-4">
                 <i data-lucide="search-x" class="w-8 h-8 text-slate-400"></i>
             </div>
-            <h3 class="text-lg font-medium mb-1">Inga träffar</h3>
+            <h3 class="text-lg font-medium mb-1">No results</h3>
             <p class="text-slate-500 dark:text-slate-400 mb-6 max-w-md mx-auto">
-                Vi har både svenska integrationer och globala AI-flöden. Prova att justera dina filter eller kontakta oss.
+                We have both Swedish integrations and global AI flows. Try adjusting your filters or contact us.
             </p>
-            <button onclick="resetApp()" class="px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-700 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm">Rensa filter</button>
+            <button onclick="resetApp()" class="px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-700 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm">Clear filters</button>
         </div>
 
         <!-- Request Banner (New) -->
@@ -417,7 +397,7 @@
                 </p>
                 <button onclick="openRequestModal()" class="px-8 py-3.5 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:opacity-90 transition-all shadow-xl shadow-slate-200/50 dark:shadow-none flex items-center gap-2 mx-auto active:scale-95">
                     <i data-lucide="sparkles" class="w-4 h-4"></i>
-                    <span>Skicka önskemål</span>
+                    <span>Submit request</span>
                 </button>
             </div>
         </div>
@@ -433,23 +413,23 @@
                 <!-- View: Marketing / Pricing (Visible for Free/Logged out) -->
                 <div id="pricing-marketing">
                     <div class="text-center mb-10">
-                        <h3 class="font-heading text-2xl font-bold mb-2">Välj din nivå</h3>
-                        <p class="text-slate-500">Skala upp din automation när du är redo</p>
+                        <h3 class="font-heading text-2xl font-bold mb-2">Choose your plan</h3>
+                        <p class="text-slate-500">Scale your automation when you're ready</p>
                     </div>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
                         <!-- FREE -->
                         <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 flex flex-col">
                             <div class="mb-4">
                                 <h4 class="font-bold text-lg">FREE</h4>
                                 <div class="text-3xl font-bold mt-2">0 kr</div>
-                                <div class="text-sm text-slate-500">för alltid</div>
+                                <div class="text-sm text-slate-500">forever</div>
                             </div>
                             <ul class="space-y-3 mb-8 flex-1">
                                 <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> 3 downloads / month</li>
-                                <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Tillgång till Community flows</li>
-                                <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Svenska integrationer</li>
+                                <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Access to Community flows</li>
+                                <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-emerald-500"></i> Swedish integrations</li>
                             </ul>
-                            <button class="w-full py-3 rounded-xl border border-slate-200 dark:border-slate-700 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Nuvarande plan</button>
+                            <button class="w-full py-3 rounded-xl border border-slate-200 dark:border-slate-700 font-bold hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Current plan</button>
                         </div>
 
                         <!-- PRO (Polished Version) -->
@@ -467,9 +447,9 @@
                                     <h4 class="font-heading font-bold text-lg text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-purple-600">PRO</h4>
                                     <div class="flex items-baseline mt-2">
                                         <span class="text-4xl font-bold text-slate-900 dark:text-white">299 kr</span>
-                                        <span class="text-sm font-medium text-slate-500 ml-1">/mån</span>
+                                        <span class="text-sm font-medium text-slate-500 ml-1">/mo</span>
                                     </div>
-                                    <div class="text-xs text-slate-400 font-medium mt-1">exkl. moms</div>
+                                    <div class="text-xs text-slate-400 font-medium mt-1">excl. VAT</div>
                                 </div>
 
                                 <ul class="space-y-4 mb-8 flex-1">
@@ -483,37 +463,23 @@
                                         <div class="w-5 h-5 rounded-full bg-fuchsia-100 dark:bg-fuchsia-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
                                             <i data-lucide="check" class="w-3 h-3 text-fuchsia-600 dark:text-fuchsia-400"></i>
                                         </div>
-                                        <span class="text-sm text-slate-700 dark:text-slate-300 font-medium">Tillgång till PRO-flöden & <strong>Skills</strong></span>
+                                        <span class="text-sm text-slate-700 dark:text-slate-300 font-medium">Access to PRO flows & <strong>Skills</strong></span>
                                     </li>
                                     <li class="flex items-start gap-3">
                                         <div class="w-5 h-5 rounded-full bg-fuchsia-100 dark:bg-fuchsia-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
                                             <i data-lucide="sparkles" class="w-3 h-3 text-fuchsia-600 dark:text-fuchsia-400"></i>
                                         </div>
                                         <!-- UPDATED COPY -->
-                                        <span class="text-sm font-bold bg-gradient-to-r from-fuchsia-600 to-purple-600 bg-clip-text text-transparent">Ladda upp & dela flöden</span>
+                                        <span class="text-sm font-bold bg-gradient-to-r from-fuchsia-600 to-purple-600 bg-clip-text text-transparent">Upload & share flows</span>
                                     </li>
                                 </ul>
 
                                 <button onclick="openPaywall('pricing_footer')" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-fuchsia-500 to-purple-600 hover:from-fuchsia-600 hover:to-purple-700 text-white font-bold shadow-lg shadow-fuchsia-500/25 transition-all hover:shadow-fuchsia-500/40 hover:scale-[1.02] active:scale-[0.98]">
-                                    Uppgradera nu
+                                    Upgrade now
                                 </button>
                             </div>
                         </div>
 
-                        <!-- ENTERPRISE -->
-                        <div class="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200 dark:border-slate-700 flex flex-col opacity-75 hover:opacity-100 transition-opacity">
-                            <div class="mb-4">
-                                <h4 class="font-bold text-lg text-ent">ENTERPRISE</h4>
-                                <div class="text-3xl font-bold mt-2">Anpassat</div>
-                                <div class="text-sm text-slate-500">Vi hjälper er skala</div>
-                            </div>
-                            <ul class="space-y-3 mb-8 flex-1">
-                                <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-ent"></i> Hjälp med implementation</li>
-                                <li class="flex items-center gap-2 text-sm"><i data-lucide="check" class="w-4 h-4 text-ent"></i> Strategisk rådgivning</li>
-                                <li class="flex items-center gap-2 text-sm"><i data-lucide="star" class="w-4 h-4 text-amber-400"></i> Förtur till Auto-Connect</li>
-                            </ul>
-                            <button onclick="openEnterpriseModal()" class="block w-full py-3 rounded-xl border border-ent text-ent font-bold text-center hover:bg-ent-light dark:hover:bg-slate-800 transition-colors">Boka rådgivning</button>
-                        </div>
                     </div>
                 </div>
 
@@ -524,16 +490,13 @@
                          <div class="mb-4 inline-flex items-center justify-center w-12 h-12 rounded-full bg-fuchsia-100 dark:bg-fuchsia-900/30 text-fuchsia-600 dark:text-fuchsia-400">
                              <i data-lucide="crown" class="w-6 h-6"></i>
                          </div>
-                         <h3 class="font-heading text-2xl font-bold mb-2 text-slate-900 dark:text-white">Du har FlowVault <span class="text-fuchsia-500">PRO</span></h3>
+                         <h3 class="font-heading text-2xl font-bold mb-2 text-slate-900 dark:text-white">You have FlowVault <span class="text-fuchsia-500">PRO</span></h3>
                          <p class="text-slate-500 dark:text-slate-400 mb-6 max-w-lg mx-auto">
-                             Tack för att du stöttar utvecklingen av nya integrationer. Du har obegränsad tillgång till hela biblioteket.
+                             Thank you for supporting the development of new integrations. You have unlimited access to the full library.
                          </p>
                          <div class="flex justify-center gap-4">
                              <button onclick="openUploadModal()" class="px-6 py-2 rounded-lg bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold hover:opacity-90 transition-opacity flex items-center gap-2">
-                                 <i data-lucide="upload-cloud" class="w-4 h-4"></i> Ladda upp flow
-                             </button>
-                             <button onclick="openEnterpriseModal()" class="px-6 py-2 rounded-lg border border-slate-200 dark:border-slate-700 font-medium hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors text-sm">
-                                 Kontakta Enterprise
+                                 <i data-lucide="upload-cloud" class="w-4 h-4"></i> Upload flow
                              </button>
                          </div>
                     </div>
@@ -546,25 +509,25 @@
                 <!-- Col 1: Om -->
                 <div>
                     <img src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Final%20logo%20no%20text.svg" alt="NordSym Logo" class="w-8 h-8 mb-4 object-contain">
-                    <h3 class="font-heading font-bold mb-3 text-slate-900 dark:text-white">Om FlowVault</h3>
+                    <h3 class="font-heading font-bold mb-3 text-slate-900 dark:text-white">About FlowVault</h3>
                     <p class="text-sm text-slate-500 dark:text-slate-400 mb-4 leading-relaxed">
-                        Sveriges största bibliotek för n8n-arbetsflöden och AI-agenter. Byggt med ❤️ i Stockholm av <a href="https://www.nordsym.com" target="_blank" class="text-slate-900 dark:text-white font-medium hover:text-primary transition-colors underline decoration-slate-300 dark:decoration-slate-700 underline-offset-2">NordSym AB</a>.
+                        The leading library for n8n workflows and AI agents. Built with ❤️ in Stockholm by <a href="https://www.nordsym.com" target="_blank" class="text-slate-900 dark:text-white font-medium hover:text-primary transition-colors underline decoration-slate-300 dark:decoration-slate-700 underline-offset-2">NordSym AB</a>.
                     </p>
                 </div>
 
                 <!-- Col 2: Legal/Security (NEW) -->
                 <div>
-                    <h3 class="font-heading font-bold mb-3 text-slate-900 dark:text-white">Juridik & Säkerhet</h3>
+                    <h3 class="font-heading font-bold mb-3 text-slate-900 dark:text-white">Legal & Security</h3>
                     <ul class="space-y-2 text-sm text-slate-500 dark:text-slate-400">
-                        <li><button onclick="openSecurityModal('privacy')" class="hover:text-primary transition-colors text-left flex items-center gap-2"><i data-lucide="shield-check" class="w-3 h-3"></i> Integritetspolicy</button></li>
-                        <li><button onclick="openSecurityModal('security')" class="hover:text-primary transition-colors text-left flex items-center gap-2"><i data-lucide="lock" class="w-3 h-3"></i> Säkerhet</button></li>
-                        <li><button onclick="openSecurityModal('terms')" class="hover:text-primary transition-colors text-left flex items-center gap-2"><i data-lucide="file-text" class="w-3 h-3"></i> Användarvillkor</button></li>
+                        <li><button onclick="openSecurityModal('privacy')" class="hover:text-primary transition-colors text-left flex items-center gap-2"><i data-lucide="shield-check" class="w-3 h-3"></i> Privacy Policy</button></li>
+                        <li><button onclick="openSecurityModal('security')" class="hover:text-primary transition-colors text-left flex items-center gap-2"><i data-lucide="lock" class="w-3 h-3"></i> Security</button></li>
+                        <li><button onclick="openSecurityModal('terms')" class="hover:text-primary transition-colors text-left flex items-center gap-2"><i data-lucide="file-text" class="w-3 h-3"></i> Terms of Use</button></li>
                     </ul>
                 </div>
 
                 <!-- Col 3: Kontakt -->
                 <div>
-                    <h3 class="font-heading font-bold mb-3 text-slate-900 dark:text-white">Kontakt</h3>
+                    <h3 class="font-heading font-bold mb-3 text-slate-900 dark:text-white">Contact</h3>
                     <div class="space-y-2">
                         <a href="mailto:support@nordsym.com" class="text-slate-500 hover:text-primary transition-colors text-sm font-medium flex items-center gap-2">
                             <i data-lucide="mail" class="w-4 h-4 text-slate-400"></i> support@nordsym.com
@@ -582,7 +545,7 @@
                 </div>
             </div>
             <div class="text-center pt-8 border-t border-slate-200 dark:border-slate-800 mt-8">
-                <p class="text-slate-500 text-sm">&copy; 2025 FlowVault by NordSym AB. Alla rättigheter förbehållna.</p>
+                <p class="text-slate-500 text-sm">&copy; 2026 FlowVault by NordSym AB. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -597,8 +560,8 @@
                         <i data-lucide="shield" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <h3 class="font-heading text-xl font-bold text-slate-900 dark:text-white">Säkerhet & Villkor</h3>
-                        <p class="text-slate-500 dark:text-slate-400 text-xs">Transparens är vår grundsten.</p>
+                        <h3 class="font-heading text-xl font-bold text-slate-900 dark:text-white">Security & Terms</h3>
+                        <p class="text-slate-500 dark:text-slate-400 text-xs">Transparency is our foundation.</p>
                     </div>
                 </div>
                 <button onclick="closeSecurityModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
@@ -609,14 +572,14 @@
                 <!-- UPDATED: Added ID for scrolling -->
                 <div id="sec-privacy" class="mb-8 scroll-mt-4">
                     <h4 class="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white mb-3">
-                        <i data-lucide="lock" class="w-4 h-4 text-primary"></i> Integritet & Data
+                        <i data-lucide="lock" class="w-4 h-4 text-primary"></i> Privacy & Data
                     </h4>
                     <p class="text-slate-600 dark:text-slate-400">
-                        Vi värnar om din integritet. FlowVault samlar endast in minimal data nödvändig för tjänstens funktion (inloggning och nedladdningshistorik). Vi säljer aldrig din data till tredje part.
+                        We care about your privacy. FlowVault collects only minimal data necessary for the service (login and download history). We never sell your data to third parties.
                     </p>
                     <ul class="list-disc pl-5 mt-2 text-slate-600 dark:text-slate-400">
-                        <li><strong>E-post:</strong> Används endast för inloggning och (om du valt det) nyhetsbrev.</li>
-                        <li><strong>Cookies:</strong> Vi använder endast funktionella cookies för att hålla dig inloggad. Ingen spårning.</li>
+                        <li><strong>Email:</strong> Used only for login and (if you opted in) newsletters.</li>
+                        <li><strong>Cookies:</strong> We only use functional cookies to keep you logged in. No tracking.</li>
                     </ul>
                 </div>
 
@@ -624,13 +587,13 @@
                 <!-- UPDATED: Added ID for scrolling -->
                 <div id="sec-security" class="mb-8 scroll-mt-4">
                     <h4 class="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white mb-3">
-                        <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i> Säkerhet i Arbetsflöden
+                        <i data-lucide="shield-check" class="w-4 h-4 text-emerald-500"></i> Workflow Security
                     </h4>
                     <p class="text-slate-600 dark:text-slate-400">
-                        Alla arbetsflöden och Skills på FlowVault granskas manuellt av NordSyms experter innan publicering för att säkerställa hög kvalitet och säkerhet.
+                        All workflows and Skills on FlowVault are manually reviewed by NordSym's experts before publishing to ensure high quality and security.
                     </p>
                     <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-100 dark:border-amber-900/50 p-3 rounded-lg mt-3 text-amber-800 dark:text-amber-200 text-xs">
-                        <strong>Observera:</strong> Du ansvarar själv för att hantera dina API-nycklar säkert när du använder flödena i din egen miljö. Lämna aldrig nycklar synliga i koden.
+                        <strong>Note:</strong> You are responsible for handling your API keys securely when using the flows in your own environment. Never leave keys visible in the code.
                     </div>
                 </div>
 
@@ -638,16 +601,16 @@
                 <!-- UPDATED: Added ID for scrolling -->
                 <div id="sec-terms" class="scroll-mt-4">
                     <h4 class="flex items-center gap-2 text-lg font-bold text-slate-900 dark:text-white mb-3">
-                        <i data-lucide="file-text" class="w-4 h-4 text-slate-400"></i> Användarvillkor
+                        <i data-lucide="file-text" class="w-4 h-4 text-slate-400"></i> Terms of Use
                     </h4>
                     <p class="text-slate-600 dark:text-slate-400">
-                        Genom att använda FlowVault godkänner du att materialet tillhandahålls "i befintligt skick". NordSym AB ansvarar inte för eventuella driftstopp eller fel som uppstår i din egen n8n-miljö vid användning av våra mallar.
+                        By using FlowVault, you agree that the material is provided "as is". NordSym AB is not responsible for any downtime or errors that occur in your own n8n environment when using our templates.
                     </p>
                 </div>
             </div>
             
             <div class="p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 text-center">
-                <button onclick="closeSecurityModal()" class="px-6 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-lg hover:opacity-90 transition-opacity w-full sm:w-auto">Jag förstår</button>
+                <button onclick="closeSecurityModal()" class="px-6 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-lg hover:opacity-90 transition-opacity w-full sm:w-auto">Got it</button>
             </div>
         </div>
     </div>
@@ -660,24 +623,24 @@
                 <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
                 <div class="relative z-10">
                     <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3 backdrop-blur-sm"><i data-lucide="lock" class="w-6 h-6 text-white"></i></div>
-                    <h3 id="paywall-title" class="text-2xl font-bold font-heading">Uppgradera till PRO</h3>
-                    <p id="paywall-desc" class="text-fuchsia-100 mt-1 text-sm">Lås upp detta workflow och få obegränsad tillgång.</p>
+                    <h3 id="paywall-title" class="text-2xl font-bold font-heading">Upgrade to PRO</h3>
+                    <p id="paywall-desc" class="text-fuchsia-100 mt-1 text-sm">Unlock this workflow and get unlimited access.</p>
                 </div>
                 <button onclick="closePaywall()" class="absolute top-4 right-4 text-white/70 hover:text-white"><i data-lucide="x" class="w-6 h-6"></i></button>
             </div>
             <div class="p-8">
                 <ul class="space-y-4 mb-8">
-                    <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400"><i data-lucide="check" class="w-3 h-3"></i></div><span class="text-slate-700 dark:text-slate-300 font-medium">Obegränsade nedladdningar</span></li>
+                    <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400"><i data-lucide="check" class="w-3 h-3"></i></div><span class="text-slate-700 dark:text-slate-300 font-medium">Unlimited downloads</span></li>
                     <!-- COPY UPDATED HERE TOO -->
-                    <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400"><i data-lucide="check" class="w-3 h-3"></i></div><span class="text-slate-700 dark:text-slate-300 font-medium">Tillgång till exklusiva PRO-flöden</span></li>
-                    <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400"><i data-lucide="check" class="w-3 h-3"></i></div><span class="text-slate-700 dark:text-slate-300 font-medium">Stöd vidareutveckling</span></li>
+                    <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400"><i data-lucide="check" class="w-3 h-3"></i></div><span class="text-slate-700 dark:text-slate-300 font-medium">Access to exclusive PRO flows</span></li>
+                    <li class="flex items-center gap-3"><div class="w-6 h-6 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center text-green-600 dark:text-green-400"><i data-lucide="check" class="w-3 h-3"></i></div><span class="text-slate-700 dark:text-slate-300 font-medium">Support ongoing development</span></li>
                 </ul>
                 <div class="flex flex-col gap-3">
                     <!-- BUTTON UPDATED TO FUCHSIA -->
                     <button onclick="handleProUpgrade(event)" class="w-full py-4 rounded-xl bg-fuchsia-500 hover:bg-fuchsia-600 text-white font-bold text-lg text-center shadow-lg shadow-fuchsia-500/20 transition-all hover:scale-[1.02] flex justify-center items-center gap-2">
-                        <span>Skaffa PRO för 299 kr/mån</span> <i data-lucide="credit-card" class="w-5 h-5"></i>
+                        <span>Get PRO — 299 kr/mo</span> <i data-lucide="credit-card" class="w-5 h-5"></i>
                     </button>
-                    <p class="text-center text-xs text-slate-400">Ingen bindningstid. Avsluta när du vill.</p>
+                    <p class="text-center text-xs text-slate-400">No commitment. Cancel anytime.</p>
                 </div>
             </div>
         </div>
@@ -692,15 +655,15 @@
                 <!-- View: Login (Email) -->
                 <div id="auth-view-email" class="block">
                     <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4 text-primary"><i data-lucide="log-in" class="w-6 h-6"></i></div>
-                    <h3 class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">Logga in på FlowVault</h3>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Ange din e-postadress för att få en inloggningskod.</p>
+                    <h3 class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">Log in to FlowVault</h3>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Enter your email to receive a login code.</p>
                     <form onsubmit="handleEmailSubmit(event)" class="space-y-4">
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-500 mb-1">E-postadress</label>
+                            <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Email address</label>
                             <input type="email" id="auth-email" required placeholder="namn@foretag.se" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white">
                         </div>
                         <button type="submit" id="auth-email-btn" class="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
-                            <span>Skicka kod</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            <span>Send code</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </button>
                     </form>
                 </div>
@@ -708,15 +671,15 @@
                 <!-- View: Verify (Code) -->
                 <div id="auth-view-code" class="hidden">
                     <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4 text-green-600 dark:text-green-400"><i data-lucide="mail-check" class="w-6 h-6"></i></div>
-                    <h3 class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">Kolla din inkorg</h3>
+                    <h3 class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">Check your inbox</h3>
                     <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Vi har skickat en kod till <span id="auth-email-display" class="font-medium text-slate-800 dark:text-slate-200"></span>.</p>
                     <form onsubmit="handleCodeSubmit(event)" class="space-y-4">
                         <div>
-                            <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Verifieringskod</label>
+                            <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Verification code</label>
                             <input type="text" id="auth-code" required placeholder="123456" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white text-center text-2xl tracking-widest font-mono">
                         </div>
-                        <button type="submit" id="auth-code-btn" class="w-full py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary-hover transition-colors flex justify-center gap-2">Verifiera & Logga in</button>
-                        <button type="button" onclick="switchAuthView('email')" class="w-full text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 mt-2">Ändra e-post</button>
+                        <button type="submit" id="auth-code-btn" class="w-full py-3 bg-primary text-white font-bold rounded-xl hover:bg-primary-hover transition-colors flex justify-center gap-2">Verify & Log in</button>
+                        <button type="button" onclick="switchAuthView('email')" class="w-full text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 mt-2">Change email</button>
                     </form>
                 </div>
 
@@ -737,7 +700,7 @@
                         </div>
                     </div>
 
-                    <button onclick="handleLogout()" class="w-full py-3 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Logga ut</button>
+                    <button onclick="handleLogout()" class="w-full py-3 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 font-bold rounded-xl hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Log out</button>
                 </div>
 
             </div>
@@ -751,45 +714,25 @@
                 <button onclick="closeRequestModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
                 <div class="w-12 h-12 bg-amber-100 dark:bg-amber-900/30 rounded-full flex items-center justify-center mb-4 text-amber-600 dark:text-amber-400"><i data-lucide="lightbulb" class="w-6 h-6"></i></div>
                 <!-- UPDATED: Added IDs for dynamic text -->
-                <h3 id="req-modal-title" class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">Önska en automation</h3>
-                <p id="req-modal-desc" class="text-slate-500 dark:text-slate-400 text-sm mb-6">Beskriv vad du behöver. Vi prioriterar baserat på efterfrågan.</p>
+                <h3 id="req-modal-title" class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">Request an automation</h3>
+                <p id="req-modal-desc" class="text-slate-500 dark:text-slate-400 text-sm mb-6">Describe what you need. We prioritize based on demand.</p>
                 <form onsubmit="handleRequestSubmit(event)" class="space-y-4">
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Din E-post</label>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Your Email</label>
                         <input type="email" id="request-email" required placeholder="namn@foretag.se" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white">
                     </div>
                     <div>
-                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Beskrivning</label>
-                        <textarea id="request-desc" required rows="4" placeholder="Jag behöver ett flöde som..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white resize-none"></textarea>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Description</label>
+                        <textarea id="request-desc" required rows="4" placeholder="I need a flow that..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white resize-none"></textarea>
                     </div>
                     <button type="submit" id="req-submit-btn" class="w-full py-3 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-xl hover:opacity-90 transition-opacity flex justify-center items-center gap-2">
-                        <span>Skicka önskemål</span> <i data-lucide="send" class="w-4 h-4"></i>
+                        <span>Submit request</span> <i data-lucide="send" class="w-4 h-4"></i>
                     </button>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Enterprise Modal (Fix: Added missing modal) -->
-    <div id="enterprise-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[80] hidden transition-opacity opacity-0 flex items-center justify-center p-4" onclick="closeEnterpriseModal()">
-        <div class="bg-white dark:bg-slate-900 w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-slate-200 dark:border-slate-800" onclick="event.stopPropagation()">
-            <div class="p-6 relative">
-                <button onclick="closeEnterpriseModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
-                <div class="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center mb-4 text-purple-600 dark:text-purple-400"><i data-lucide="building-2" class="w-6 h-6"></i></div>
-                <h3 class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">Enterprise Väntelista</h3>
-                <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Få tillgång till prioriterad support och skräddarsydda lösningar. Skriv upp dig så kontaktar vi dig.</p>
-                <form onsubmit="handleEnterpriseSubmit(event)" class="space-y-4">
-                    <div>
-                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Din E-post</label>
-                        <input type="email" id="enterprise-email" required placeholder="namn@foretag.se" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white">
-                    </div>
-                    <button type="submit" id="ent-submit-btn" class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-xl transition-colors flex justify-center items-center gap-2">
-                        <span>Gå med i listan</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                    </button>
-                </form>
-            </div>
-        </div>
-    </div>
 
     <!-- NEW: Upload Modal (Marketplace) -->
     <div id="upload-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[80] hidden transition-opacity opacity-0 flex items-center justify-center p-4" onclick="closeUploadModal()">
@@ -797,17 +740,17 @@
             <!-- Header -->
             <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
                 <div>
-                    <h3 class="font-heading text-xl font-bold text-slate-900 dark:text-white">Ladda upp till FlowVault</h3>
+                    <h3 class="font-heading text-xl font-bold text-slate-900 dark:text-white">Upload to FlowVault</h3>
                     <!-- UPDATED COPY -->
-                    <p class="text-slate-500 dark:text-slate-400 text-xs">Dela dina automationer med communityt.</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs">Share your automations with the community.</p>
                 </div>
                 <button onclick="closeUploadModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
 
             <!-- Tabs -->
             <div class="flex border-b border-slate-100 dark:border-slate-800">
-                <button onclick="switchUploadTab('json')" id="tab-json" class="flex-1 py-3 text-sm font-bold text-primary border-b-2 border-primary bg-slate-50 dark:bg-slate-800/50 transition-colors">Klistra in JSON</button>
-                <button onclick="switchUploadTab('file')" id="tab-file" class="flex-1 py-3 text-sm font-bold text-slate-500 border-b-2 border-transparent hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Ladda upp Fil</button>
+                <button onclick="switchUploadTab('json')" id="tab-json" class="flex-1 py-3 text-sm font-bold text-primary border-b-2 border-primary bg-slate-50 dark:bg-slate-800/50 transition-colors">Paste JSON</button>
+                <button onclick="switchUploadTab('file')" id="tab-file" class="flex-1 py-3 text-sm font-bold text-slate-500 border-b-2 border-transparent hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">Upload File</button>
             </div>
 
             <!-- Content -->
@@ -815,7 +758,7 @@
                 <form onsubmit="handleUploadSubmit(event)" class="space-y-4">
                     <!-- JSON Input -->
                     <div id="upload-view-json" class="block">
-                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Arbetsflödes-kod (JSON)</label>
+                        <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Workflow code (JSON)</label>
                         <textarea id="upload-json-content" rows="8" class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary outline-none transition-all dark:text-white font-mono text-xs resize-none" placeholder='{"nodes": [...], "connections": {...}}'></textarea>
                     </div>
 
@@ -825,8 +768,8 @@
                             <div class="w-12 h-12 bg-slate-100 dark:bg-slate-800 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
                                 <i data-lucide="upload" class="w-6 h-6 text-slate-400 group-hover:text-primary"></i>
                             </div>
-                            <span class="text-sm font-medium text-slate-600 dark:text-slate-300">Klicka för att välja .json fil</span>
-                            <span class="text-xs text-slate-400 mt-1">eller dra och släpp här</span>
+                            <span class="text-sm font-medium text-slate-600 dark:text-slate-300">Click to select a .json file</span>
+                            <span class="text-xs text-slate-400 mt-1">or drag and drop here</span>
                             <input type="file" id="upload-file-input" accept=".json" class="hidden" onchange="handleFileSelect(this)">
                         </label>
                         <div id="file-name-display" class="hidden mt-2 text-xs font-bold text-emerald-500 flex items-center gap-1"><i data-lucide="check" class="w-3 h-3"></i> <span></span></div>
@@ -846,9 +789,9 @@
                     </div>
 
                     <div class="pt-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3">
-                        <button type="button" onclick="closeUploadModal()" class="px-4 py-2 rounded-lg text-sm font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">Avbryt</button>
+                        <button type="button" onclick="closeUploadModal()" class="px-4 py-2 rounded-lg text-sm font-bold text-slate-500 hover:text-slate-700 dark:hover:text-slate-300">Cancel</button>
                         <button type="submit" class="px-6 py-2 bg-primary hover:bg-primary-hover text-white rounded-lg text-sm font-bold shadow-lg shadow-primary/20 transition-transform active:scale-95 flex items-center gap-2">
-                            <span>Ladda upp</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                            <span>Upload</span> <i data-lucide="arrow-right" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </form>
@@ -866,7 +809,7 @@
                 <div class="mb-6 pr-8">
                     <div class="flex flex-wrap items-center gap-2 mb-3">
                         <span id="modal-platform" class="px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider border border-transparent"></span>
-                        <div id="modal-verified" class="flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded border border-emerald-100 dark:border-emerald-900"><i data-lucide="check-circle-2" class="w-3 h-3"></i> Verifierad av NordSym</div>
+                        <div id="modal-verified" class="flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30 px-2 py-0.5 rounded border border-emerald-100 dark:border-emerald-900"><i data-lucide="check-circle-2" class="w-3 h-3"></i> Verified by NordSym</div>
                     </div>
                     <h2 id="modal-title" class="font-heading text-2xl font-bold text-slate-900 dark:text-white leading-tight"></h2>
                     <!-- UPDATED: Author wrapper controlled by JS entirely -->
@@ -880,14 +823,14 @@
                 <!-- UPDATED: Added IDs for dynamic content -->
                 <div class="bg-slate-50 dark:bg-slate-800/50 rounded-xl p-4 mb-6 border border-slate-100 dark:border-slate-800">
                     <h4 id="modal-guide-title" class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2 flex items-center gap-2">
-                        <i data-lucide="info" class="w-3 h-3"></i> Så använder du flödet
+                        <i data-lucide="info" class="w-3 h-3"></i> How to use this flow
                     </h4>
                     <ol id="modal-guide-list" class="text-sm text-slate-600 dark:text-slate-300 space-y-1 list-decimal list-inside pl-1">
                         <!-- Populated dynamically via JS -->
-                        <li>Ladda ner JSON-filen.</li>
-                        <li>Öppna din egen <strong>n8n-instans</strong>.</li>
-                        <li>Klicka på menyn i hörnet → <strong>Import from File</strong>.</li>
-                        <li>Njut av automationen! 🚀</li>
+                        <li>Download the JSON file.</li>
+                        <li>Open your own <strong>n8n instance</strong>.</li>
+                        <li>Click the menu in the corner → <strong>Import from File</strong>.</li>
+                        <li>Enjoy the automation! 🚀</li>
                     </ol>
                 </div>
                 
@@ -909,26 +852,26 @@
                 <div class="p-4 bg-gradient-to-r from-primary/5 to-primary/10 dark:from-primary/10 dark:to-primary/20 rounded-xl border border-primary/20 mb-6 flex items-start gap-4">
                     <div class="flex-shrink-0 w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center mt-1"><i data-lucide="headphones" class="w-5 h-5 text-primary"></i></div>
                     <div class="flex-1">
-                        <h4 id="modal-help-title" class="font-semibold text-slate-900 dark:text-white mb-1 text-sm sm:text-base">Behöver du hjälp att sätta upp detta?</h4>
-                        <p id="modal-help-text" class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-3">Vi på NordSym hjälper svenska företag att implementera och anpassa automationer.</p>
-                        <a id="modal-help-btn" href="#" class="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary-hover transition-colors group">Kontakta oss för hjälp <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></a>
+                        <h4 id="modal-help-title" class="font-semibold text-slate-900 dark:text-white mb-1 text-sm sm:text-base">Need help setting this up?</h4>
+                        <p id="modal-help-text" class="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-3">NordSym helps businesses implement and customize automations.</p>
+                        <a id="modal-help-btn" href="#" class="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary-hover transition-colors group">Contact us for help <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i></a>
                     </div>
                 </div>
                 <!-- Metadata -->
                 <!-- UPDATED: Added IDs to grid and wrappers for visibility toggling -->
                 <div id="modal-metadata-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6 p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700/50">
-                    <div id="meta-difficulty-wrapper"><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Svårighetsgrad</div><div class="font-semibold text-slate-800 dark:text-slate-200 capitalize" id="modal-difficulty"></div></div>
-                    <div id="meta-time-wrapper"><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Tidsåtgång</div><div class="font-semibold text-slate-800 dark:text-slate-200" id="modal-time"></div></div>
+                    <div id="meta-difficulty-wrapper"><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Difficulty</div><div class="font-semibold text-slate-800 dark:text-slate-200 capitalize" id="modal-difficulty"></div></div>
+                    <div id="meta-time-wrapper"><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Est. time</div><div class="font-semibold text-slate-800 dark:text-slate-200" id="modal-time"></div></div>
                     <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Downloads</div><div class="font-semibold text-slate-800 dark:text-slate-200" id="modal-downloads"></div></div>
-                     <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Plattform</div><div class="font-semibold text-slate-800 dark:text-slate-200 capitalize" id="modal-platform-text"></div></div>
+                     <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1">Platform</div><div class="font-semibold text-slate-800 dark:text-slate-200 capitalize" id="modal-platform-text"></div></div>
                 </div>
                 <div class="mb-8 space-y-4">
-                    <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Perfekt för</div><div id="modal-usecases" class="flex flex-wrap gap-2"></div></div>
+                    <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Perfect for</div><div id="modal-usecases" class="flex flex-wrap gap-2"></div></div>
                     <div><div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-2">Taggar</div><div id="modal-tags" class="flex flex-wrap gap-2"></div></div>
                 </div>
                 <!-- UPDATE: Removed Copy Button, Full Width Download -->
                 <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-slate-100 dark:border-slate-800">
-                    <button id="btn-download" class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white font-semibold py-3 px-6 rounded-xl transition-all active:scale-[0.98] shadow-md shadow-primary/20"><i data-lucide="download" class="w-5 h-5"></i> <span>Ladda ner arbetsflöde</span></button>
+                    <button id="btn-download" class="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-hover text-white font-semibold py-3 px-6 rounded-xl transition-all active:scale-[0.98] shadow-md shadow-primary/20"><i data-lucide="download" class="w-5 h-5"></i> <span>Download workflow</span></button>
                 </div>
             </div>
         </div>
@@ -941,8 +884,8 @@
                 <i data-lucide="check" class="w-5 h-5 text-white"></i>
             </div>
             <div class="flex-1">
-                <h4 id="toast-title" class="text-[10px] font-bold uppercase tracking-wider opacity-60 mb-0.5 transition-colors">Notis</h4>
-                <p id="toast-message" class="text-sm font-bold leading-tight">Operationen lyckades</p>
+                <h4 id="toast-title" class="text-[10px] font-bold uppercase tracking-wider opacity-60 mb-0.5 transition-colors">Notice</h4>
+                <p id="toast-message" class="text-sm font-bold leading-tight">Operation successful</p>
             </div>
         </div>
     </div>
@@ -955,87 +898,17 @@
                     <i data-lucide="cookie" class="w-4 h-4"></i>
                 </div>
                 <p class="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-                    Vi använder kakor för att spara dina favoriter och hålla dig inloggad. Inget spårande, bara funktion. 🍪
+                    We use cookies to save your favorites and keep you logged in. No tracking, just functionality. 🍪
                 </p>
             </div>
             <div class="flex gap-2">
-                <button onclick="acceptCookies()" class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-2 rounded-lg text-xs font-bold hover:opacity-90 transition-opacity">Okej, kör!</button>
-                <button onclick="closeCookieBanner()" class="px-3 py-2 rounded-lg text-xs font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">Senare</button>
+                <button onclick="acceptCookies()" class="flex-1 bg-slate-900 dark:bg-white text-white dark:text-slate-900 py-2 rounded-lg text-xs font-bold hover:opacity-90 transition-opacity">Got it!</button>
+                <button onclick="closeCookieBanner()" class="px-3 py-2 rounded-lg text-xs font-medium text-slate-500 hover:text-slate-700 dark:hover:text-slate-200 transition-colors">Later</button>
             </div>
         </div>
     </div>
 
-    <!-- Chat Widget UI -->
-    <button id="chat-toggle" onclick="toggleChat()" class="fixed bottom-6 right-6 z-50 w-14 h-14 bg-primary hover:bg-primary-hover text-white rounded-full shadow-lg hover:shadow-primary/50 transition-all hover:scale-105 active:scale-95 flex items-center justify-center chat-pulse group">
-        <i data-lucide="message-square" class="w-7 h-7 fill-white group-hover:scale-90 transition-transform"></i>
-        <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full border-2 border-white dark:border-slate-900"></span>
-    </button>
 
-    <div id="chat-panel" class="fixed bottom-24 right-6 z-50 w-full max-w-[360px] h-[550px] max-h-[70vh] bg-white dark:bg-slate-900 rounded-2xl shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col overflow-hidden transition-all duration-300 origin-bottom-right scale-95 opacity-0 hidden">
-        <!-- Chat Header -->
-        <div class="p-4 bg-slate-900 dark:bg-slate-950 text-white flex items-center justify-between shrink-0 relative overflow-hidden">
-            <div class="absolute inset-0 bg-primary/10"></div>
-            <div class="flex items-center gap-3 relative z-10">
-                <div class="w-9 h-9 rounded-full bg-gradient-to-br from-primary to-blue-600 p-0.5 shadow-lg shadow-primary/20">
-                    <div class="w-full h-full bg-slate-900 rounded-full flex items-center justify-center">
-                    <i data-lucide="bot" class="w-5 h-5 text-primary"></i>
-                </div>
-            </div>
-            <div>
-                <div class="flex items-center gap-2">
-                    <h3 class="font-bold text-sm tracking-wide">FlowVault AI</h3>
-                    <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-primary/20 text-primary border border-primary/30">BETA</span>
-                </div>
-                <div class="flex items-center gap-1.5 text-[10px] text-emerald-400 font-medium">
-                    <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]"></span>
-                    Online
-                    </div>
-                </div>
-            </div>
-            <button onclick="toggleChat()" class="p-1.5 hover:bg-white/10 rounded-lg transition-colors relative z-10"><i data-lucide="x" class="w-5 h-5 text-slate-300 hover:text-white"></i></button>
-        </div>
-
-        <!-- Chat Messages -->
-        <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-4 bg-slate-50 dark:bg-slate-900/50 scroll-smooth">
-            <div class="flex gap-3 message-enter">
-                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1 border border-primary/20">
-                    <i data-lucide="bot" class="w-4 h-4 text-primary"></i>
-                </div>
-                <div class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 p-3.5 rounded-2xl rounded-tl-none text-sm shadow-sm text-slate-600 dark:text-slate-300 leading-relaxed">
-                    Hej! Jag kan hjälpa dig hitta rätt automation eller svara på frågor om n8n och Make. Vad funderar du på? 👋
-                </div>
-            </div>
-            
-            <!-- Typing Indicator -->
-            <div id="typing-indicator" class="flex gap-3 hidden">
-                <div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1">
-                    <i data-lucide="bot" class="w-4 h-4 text-primary"></i>
-                </div>
-                <div class="bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 p-4 rounded-2xl rounded-tl-none flex gap-1 items-center h-10 shadow-sm">
-                    <div class="typing-dot text-slate-400"></div>
-                    <div class="typing-dot text-slate-400"></div>
-                    <div class="typing-dot text-slate-400"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Chat Input -->
-        <div class="p-3 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 shrink-0">
-            <form onsubmit="handleChatSubmit(event)" class="relative flex items-center gap-2">
-                <input type="text" id="chat-input" placeholder="Skriv din fråga..." class="flex-1 pl-4 pr-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none text-sm transition-all dark:text-white placeholder:text-slate-400" autocomplete="off">
-                <button type="submit" class="p-3 bg-primary hover:bg-primary-hover text-white rounded-xl transition-colors shadow-sm disabled:opacity-50 flex-shrink-0 active:scale-95">
-                    <i data-lucide="send" class="w-4 h-4"></i>
-                </button>
-            </form>
-            <div class="text-center mt-2 opacity-60">
-                <div class="flex items-center justify-center gap-1.5">
-                    <i data-lucide="zap" class="w-3 h-3 text-primary"></i>
-                    <p class="text-[10px] text-slate-400">Drivs av NordSym AB</p>
-                </div>
-                <p class="text-[9px] text-slate-400 mt-0.5">AI-agenten kan göra misstag.</p>
-            </div>
-        </div>
-    </div>
 
     <script>
         // --- CONFIG ---
@@ -1045,7 +918,7 @@
             branch: 'main'            
         };
 
-        const UI_TEXT = { difficulties: { beginner: "Nybörjare", intermediate: "Medel", advanced: "Avancerad" } };
+        const UI_TEXT = { difficulties: { beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" } };
         const AI_CONFIG = { apiKey: 'PLACEHOLDER_API_KEY', model: 'claude-3-sonnet-20240229', endpoint: 'https://api.anthropic.com/v1/messages' };
         
         // --- API INTEGRATION ---
@@ -1113,18 +986,18 @@
 
         // --- UPDATED CATEGORIES FOR SKILLS ---
         const CATEGORIES = [
-            { id: 'all', label: 'Alla', icon: 'layout-grid', aliases: [] },
+            { id: 'all', label: 'All', icon: 'layout-grid', aliases: [] },
             // ÄNDRING: Tog bort generiska ord som "automation", "tool" som matchade vanliga flöden
             { id: 'skills', label: 'Claude Skills', icon: 'folder-code', aliases: ['mcp', 'claude desktop'] },
-            { id: 'favorites', label: 'Favoriter', icon: 'star', aliases: [] },
+            { id: 'favorites', label: 'Favorites', icon: 'star', aliases: [] },
             // ÄNDRING: "Svenska Integrationer" -> "Svensk Integration" för att matcha Airtable exakt
-            { id: 'swedish', label: 'Svensk Integration', icon: '🇸🇪', aliases: ['svensk', 'sweden', 'swedish'] },
+            { id: 'swedish', label: 'Swedish Integration', icon: '🇸🇪', aliases: ['svensk', 'sweden', 'swedish'] },
             { id: 'ai-automation', label: 'AI Automation', icon: 'bot', aliases: ['ai', 'artificiell', 'gpt', 'llm'] },
             { id: 'social', label: 'Social Media', icon: 'megaphone', aliases: ['social', 'some', 'linkedin', 'facebook', 'instagram', 'tiktok'] },
-            { id: 'sales', label: 'Sälj & CRM', icon: 'briefcase', aliases: ['sälj', 'sales', 'crm', 'pipe'] },
+            { id: 'sales', label: 'Sales & CRM', icon: 'briefcase', aliases: ['sälj', 'sales', 'crm', 'pipe'] },
             { id: 'content', label: 'Content Creation', icon: 'palette', aliases: ['content', 'creation', 'design', 'image'] },
-            { id: 'productivity', label: 'Produktivitet', icon: 'zap', aliases: ['produktivitet', 'effektivitet', 'admin'] },
-            { id: 'specialized', label: 'Specialiserad', icon: 'wrench', aliases: ['special', 'bygg', 'fastighet', 'nisch'] }
+            { id: 'productivity', label: 'Productivity', icon: 'zap', aliases: ['produktivitet', 'effektivitet', 'admin'] },
+            { id: 'specialized', label: 'Specialized', icon: 'wrench', aliases: ['special', 'bygg', 'fastighet', 'nisch'] }
         ];
 
         const STATIC_WORKFLOWS = [
@@ -1132,32 +1005,32 @@
             // RENSAT: Nu hämtas dessa från Airtable istället
             
             // KATEGORI: 🇸🇪 Svenska Integrationer (20)
-            { id: "fortnox-invoice-sync", title: "Fortnox Faktura till Sheets", description: "Synka godkända fakturor från Fortnox till Google Sheets automatiskt varje natt.", category: "swedish", tags: ["fortnox", "faktura", "sheets", "ekonomi"], platform: "n8n", verified: true, downloads: 842, difficulty: "intermediate", estimatedTime: "15 min", useCases: ["Småföretag", "Konsulter"], author: "NordSym", category: "swedish" },
+            { id: "fortnox-invoice-sync", title: "Fortnox Invoice to Sheets", description: "Automatically sync approved invoices from Fortnox to Google Sheets every night.", category: "swedish", tags: ["fortnox", "invoice", "sheets", "finance"], platform: "n8n", verified: true, downloads: 842, difficulty: "intermediate", estimatedTime: "15 min", useCases: ["Small businesses", "Consultants"], author: "NordSym", category: "swedish" },
             // UPDATED: Added fileCount for testing multi-file system
             { 
                 id: "kvitto-fortnox", 
                 title: "Kvittoredovisning Dropbox → Fortnox (Complete System)", 
-                description: "Komplett system. Hämtar kvitton från Dropbox, kör OCR, och skapar verifikatutkast i Fortnox automatiskt. Innehåller även felhanteringsmodul.", 
-                category: "swedish", 
-                tags: ["fortnox", "dropbox", "ocr", "kvitto"], 
+                description: "Complete system. Fetches receipts from Dropbox, runs OCR, and creates draft vouchers in Fortnox automatically. Includes error handling module.",
+                category: "swedish",
+                tags: ["fortnox", "dropbox", "ocr", "receipt"],
                 platform: "n8n", 
                 verified: true, 
                 downloads: 620, 
                 difficulty: "advanced", 
                 estimatedTime: "40 min", 
-                useCases: ["Konsulter", "Småföretag"], 
-                author: "NordSym", 
+                useCases: ["Consultants", "Small businesses"],
+                author: "NordSym",
                 category: "swedish",
-                fileCount: 3, 
+                fileCount: 3,
                 workflowType: "modular",
                 fileDescriptions: "Del 1: Huvudprocess (Dropbox trigger)\nDel 2: OCR & AI Processing\nDel 3: Fortnox Integration & Error Handling",
-                installationNotes: "Importera delarna i ordning 1-3. Se till att koppla ihop webhook-noderna enligt diagrammet i dokumentationen."
+                installationNotes: "Import the parts in order 1-3. Make sure to connect the webhook nodes according to the diagram in the documentation."
             },
             // NEW: Multi-file Agent Test
             {
                 id: "ai-agent-swarm",
                 title: "AI Agent Swarm - Content Team",
-                description: "Ett team av 5 specialiserade AI-agenter som samarbetar. Research, Skrivande, SEO, Granskning och Publicering.",
+                description: "A team of 5 specialized AI agents collaborating. Research, Writing, SEO, Review, and Publishing.",
                 category: "ai-automation",
                 tags: ["ai", "agents", "openai", "automation"],
                 platform: "n8n",
@@ -1165,31 +1038,31 @@
                 downloads: 1205,
                 difficulty: "advanced",
                 estimatedTime: "2h",
-                useCases: ["Marknadsavdelningar", "Byråer"],
+                useCases: ["Marketing teams", "Agencies"],
                 author: "NordSym",
                 fileCount: 5,
                 workflowType: "bundle",
                 fileDescriptions: "Agent 1: Researcher\nAgent 2: Writer\nAgent 3: SEO Specialist\nAgent 4: Editor\nAgent 5: Publisher",
-                installationNotes: "Dessa agenter använder n8n:s nya LangChain-noder. Kräver n8n version 1.0+."
+                installationNotes: "These agents use n8n's new LangChain nodes. Requires n8n version 1.0+."
             },
-            { id: "visma-bokio-sync", title: "Stripe till Bokio", description: "Sammanställ dagliga utbetalningar från Stripe och skapa samlat verifikat i Bokio.", category: "swedish", tags: ["stripe", "bokio", "betalningar"], platform: "n8n", verified: true, downloads: 410, difficulty: "intermediate", estimatedTime: "25 min", useCases: ["E-handlare"], author: "NordSym", category: "swedish" },
-            { id: "rot-xml-generator", title: "ROT-avdrag XML Generator", description: "Skapar XML-fil för Skatteverket baserat på arbetsorder. Perfekt för byggfirmor.", category: "swedish", tags: ["skatteverket", "rot", "xml", "bygg"], platform: "n8n", verified: true, downloads: 420, difficulty: "advanced", estimatedTime: "60 min", useCases: ["Byggfirmor", "Hantverkare"], author: "NordSym", category: "swedish" },
-            { id: "scrive-signing", title: "Avtalssignering via Scrive", description: "Skapa avtal från Google Docs-mall, konvertera till PDF och skicka för e-signering via Scrive.", category: "swedish", tags: ["scrive", "avtal", "esignering"], platform: "n8n", verified: true, downloads: 380, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["Konsulter", "Säljare"], author: "NordSym", category: "swedish" },
-            { id: "bankid-verification", title: "BankID Verifiering", description: "Integrera BankID-verifiering i dina workflows för säker identifiering.", category: "swedish", tags: ["bankid", "verifiering", "säkerhet"], platform: "n8n", verified: true, downloads: 290, difficulty: "advanced", estimatedTime: "45 min", useCases: ["Fintech", "Byråer"], author: "NordSym", category: "swedish" },
-            { id: "byggprojekt-foton", title: "Projektbilder till Kund", description: "Vattenstämpla projektbilder med datum/logga och SMS:a automatiskt till kund.", category: "swedish", tags: ["bygg", "bilder", "sms", "kundvård"], platform: "n8n", verified: true, downloads: 280, difficulty: "beginner", estimatedTime: "20 min", useCases: ["Hantverkare", "Byggfirmor"], author: "NordSym", category: "swedish" },
-            { id: "fortnox-product-sync", title: "Fortnox Produkter → Shopify", description: "Synka produkter och lager mellan Fortnox och Shopify automatiskt.", category: "swedish", tags: ["fortnox", "shopify", "lager", "ehandel"], platform: "n8n", verified: true, downloads: 510, difficulty: "advanced", estimatedTime: "50 min", useCases: ["E-handlare"], author: "NordSym", category: "swedish" },
-            { id: "tripletex-timesheet", title: "Tripletex Tidrapportering", description: "Automatisera tidrapporter från Google Calendar till Tripletex.", category: "swedish", tags: ["tripletex", "tid", "kalender"], platform: "n8n", verified: true, downloads: 195, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["Konsulter"], author: "NordSym", category: "swedish" },
-            { id: "swish-notifications", title: "Swish Betalningsnotiser", description: "Få Slack/Email-notiser när Swish-betalningar kommer in.", category: "swedish", tags: ["swish", "betalning", "notiser"], platform: "n8n", verified: true, downloads: 340, difficulty: "beginner", estimatedTime: "15 min", useCases: ["Småföretag"], author: "NordSym", category: "swedish" },
-            { id: "postnord-tracking", title: "PostNord Spårning", description: "Automatisk spårning av PostNord-paket med kundnotiser via SMS/Email.", category: "swedish", tags: ["postnord", "spårning", "logistik"], platform: "n8n", verified: true, downloads: 220, difficulty: "intermediate", estimatedTime: "25 min", useCases: ["E-handlare"], author: "NordSym", category: "swedish" },
-            { id: "kivra-invoices", title: "Kivra Fakturautskick", description: "Skicka fakturor via Kivra direkt från ditt faktureringssystem.", category: "swedish", tags: ["kivra", "faktura", "digital"], platform: "n8n", verified: true, downloads: 175, difficulty: "intermediate", estimatedTime: "35 min", useCases: ["Småföretag"], author: "NordSym", category: "swedish" },
-            { id: "fortnox-payroll", title: "Fortnox Lön Automation", description: "Automatisera lönekörning från tidrapporter i Fortnox.", category: "swedish", tags: ["fortnox", "lön", "hr"], platform: "n8n", verified: true, downloads: 310, difficulty: "advanced", estimatedTime: "60 min", useCases: ["HR-avdelningar"], author: "NordSym", category: "swedish" },
-            { id: "arbetsformedlingen-api", title: "Arbetsförmedlingen Platsannonser", description: "Publicera jobbannoner automatiskt till Arbetsförmedlingens API.", category: "swedish", tags: ["arbetsförmedlingen", "rekrytering", "jobb"], platform: "n8n", verified: true, downloads: 145, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["HR", "Rekrytering"], author: "NordSym", category: "swedish" },
-            { id: "uc-credit-check", title: "UC Kreditkontroll", description: "Automatisk kreditkontroll via UC innan orderbekräftelse.", category: "swedish", tags: ["uc", "kredit", "riskbedömning"], platform: "n8n", verified: true, downloads: 265, difficulty: "advanced", estimatedTime: "40 min", useCases: ["B2B-försäljning"], author: "NordSym", category: "swedish" },
-            { id: "skatteverket-vat", title: "Skatteverket Momsrapport", description: "Sammanställ momsunderlag från Fortnox för Skatteverket.", category: "swedish", tags: ["skatteverket", "moms", "rapportering"], platform: "n8n", verified: true, downloads: 390, difficulty: "advanced", estimatedTime: "50 min", useCases: ["Ekonomiavdelningar"], author: "NordSym", category: "swedish" },
-            { id: "bolagsverket-registration", title: "Bolagsverket Ändringsanmälan", description: "Automatisera delar av ändringsanmälningar till Bolagsverket.", category: "swedish", tags: ["bolagsverket", "företag", "registrering"], platform: "n8n", verified: true, downloads: 128, difficulty: "advanced", estimatedTime: "45 min", useCases: ["Byråer", "Jurister"], author: "NordSym", category: "swedish" },
-            { id: "swedish-bank-reconciliation", title: "Svensk Bankavstämning", description: "Automatisk avstämning mellan svenska banker och bokföringssystem.", category: "swedish", tags: ["bank", "avstämning", "ekonomi"], platform: "n8n", verified: true, downloads: 445, difficulty: "advanced", estimatedTime: "55 min", useCases: ["Ekonomiavdelningar"], author: "NordSym", category: "swedish" },
-            { id: "digital-mailbox", title: "Digital Brevlåda Integration", description: "Hämta och processera post från Kivra, MinMyndighetsPost automatiskt.", category: "swedish", tags: ["kivra", "myndighetspost", "digital"], platform: "n8n", verified: true, downloads: 198, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["Företag"], author: "NordSym", category: "swedish" },
-            { id: "swedish-holidays", title: "Svenska helgdagar i automation", description: "Automatisk hänsyn till svenska helgdagar i schemalagda flöden.", category: "swedish", tags: ["helgdagar", "schema", "kalender"], platform: "n8n", verified: true, downloads: 312, difficulty: "beginner", estimatedTime: "10 min", useCases: ["Alla"], author: "NordSym", category: "swedish" },
+            { id: "visma-bokio-sync", title: "Stripe till Bokio", description: "Consolidate daily payouts from Stripe and create combined vouchers in Bokio.", category: "swedish", tags: ["stripe", "bokio", "payments"], platform: "n8n", verified: true, downloads: 410, difficulty: "intermediate", estimatedTime: "25 min", useCases: ["E-commerce"], author: "NordSym", category: "swedish" },
+            { id: "rot-xml-generator", title: "ROT-avdrag XML Generator", description: "Creates XML file for Skatteverket based on work orders. Perfect for construction companies.", category: "swedish", tags: ["skatteverket", "rot", "xml", "construction"], platform: "n8n", verified: true, downloads: 420, difficulty: "advanced", estimatedTime: "60 min", useCases: ["Construction companies", "Craftsmen"], author: "NordSym", category: "swedish" },
+            { id: "scrive-signing", title: "Contract signing via Scrive", description: "Create contracts from Google Docs template, convert to PDF and send for e-signing via Scrive.", category: "swedish", tags: ["scrive", "contract", "esigning"], platform: "n8n", verified: true, downloads: 380, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["Consultants", "Sales"], author: "NordSym", category: "swedish" },
+            { id: "bankid-verification", title: "BankID Verification", description: "Integrate BankID verification into your workflows for secure identification.", category: "swedish", tags: ["bankid", "verification", "security"], platform: "n8n", verified: true, downloads: 290, difficulty: "advanced", estimatedTime: "45 min", useCases: ["Fintech", "Agencies"], author: "NordSym", category: "swedish" },
+            { id: "byggprojekt-foton", title: "Project Photos to Client", description: "Watermark project images with date/logo and automatically SMS them to the client.", category: "swedish", tags: ["construction", "images", "sms", "customer-care"], platform: "n8n", verified: true, downloads: 280, difficulty: "beginner", estimatedTime: "20 min", useCases: ["Craftsmen", "Construction companies"], author: "NordSym", category: "swedish" },
+            { id: "fortnox-product-sync", title: "Fortnox Produkter → Shopify", description: "Automatically sync products and inventory between Fortnox and Shopify.", category: "swedish", tags: ["fortnox", "shopify", "inventory", "ecommerce"], platform: "n8n", verified: true, downloads: 510, difficulty: "advanced", estimatedTime: "50 min", useCases: ["E-commerce"], author: "NordSym", category: "swedish" },
+            { id: "tripletex-timesheet", title: "Tripletex Time Reporting", description: "Automate time reports from Google Calendar to Tripletex.", category: "swedish", tags: ["tripletex", "time", "calendar"], platform: "n8n", verified: true, downloads: 195, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["Consultants"], author: "NordSym", category: "swedish" },
+            { id: "swish-notifications", title: "Swish Payment Notifications", description: "Get Slack/Email notifications when Swish payments arrive.", category: "swedish", tags: ["swish", "payment", "notifications"], platform: "n8n", verified: true, downloads: 340, difficulty: "beginner", estimatedTime: "15 min", useCases: ["Small businesses"], author: "NordSym", category: "swedish" },
+            { id: "postnord-tracking", title: "PostNord Tracking", description: "Automatic tracking of PostNord packages with customer notifications via SMS/Email.", category: "swedish", tags: ["postnord", "tracking", "logistics"], platform: "n8n", verified: true, downloads: 220, difficulty: "intermediate", estimatedTime: "25 min", useCases: ["E-commerce"], author: "NordSym", category: "swedish" },
+            { id: "kivra-invoices", title: "Kivra Invoice Distribution", description: "Send invoices via Kivra directly from your billing system.", category: "swedish", tags: ["kivra", "invoice", "digital"], platform: "n8n", verified: true, downloads: 175, difficulty: "intermediate", estimatedTime: "35 min", useCases: ["Small businesses"], author: "NordSym", category: "swedish" },
+            { id: "fortnox-payroll", title: "Fortnox Payroll Automation", description: "Automate payroll runs from time reports in Fortnox.", category: "swedish", tags: ["fortnox", "payroll", "hr"], platform: "n8n", verified: true, downloads: 310, difficulty: "advanced", estimatedTime: "60 min", useCases: ["HR departments"], author: "NordSym", category: "swedish" },
+            { id: "arbetsformedlingen-api", title: "Arbetsförmedlingen Job Listings", description: "Automatically publish job listings to Arbetsförmedlingen's API.", category: "swedish", tags: ["arbetsförmedlingen", "recruitment", "jobs"], platform: "n8n", verified: true, downloads: 145, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["HR", "Recruitment"], author: "NordSym", category: "swedish" },
+            { id: "uc-credit-check", title: "UC Credit Check", description: "Automatic credit check via UC before order confirmation.", category: "swedish", tags: ["uc", "credit", "risk-assessment"], platform: "n8n", verified: true, downloads: 265, difficulty: "advanced", estimatedTime: "40 min", useCases: ["B2B sales"], author: "NordSym", category: "swedish" },
+            { id: "skatteverket-vat", title: "Skatteverket VAT Report", description: "Compile VAT data from Fortnox for Skatteverket.", category: "swedish", tags: ["skatteverket", "vat", "reporting"], platform: "n8n", verified: true, downloads: 390, difficulty: "advanced", estimatedTime: "50 min", useCases: ["Finance departments"], author: "NordSym", category: "swedish" },
+            { id: "bolagsverket-registration", title: "Bolagsverket Change Notification", description: "Automate parts of change notifications to Bolagsverket.", category: "swedish", tags: ["bolagsverket", "company", "registration"], platform: "n8n", verified: true, downloads: 128, difficulty: "advanced", estimatedTime: "45 min", useCases: ["Agencies", "Legal"], author: "NordSym", category: "swedish" },
+            { id: "swedish-bank-reconciliation", title: "Swedish Bank Reconciliation", description: "Automatic reconciliation between Swedish banks and accounting systems.", category: "swedish", tags: ["bank", "reconciliation", "finance"], platform: "n8n", verified: true, downloads: 445, difficulty: "advanced", estimatedTime: "55 min", useCases: ["Finance departments"], author: "NordSym", category: "swedish" },
+            { id: "digital-mailbox", title: "Digital Mailbox Integration", description: "Fetch and process mail from Kivra, MinMyndighetsPost automatically.", category: "swedish", tags: ["kivra", "government-mail", "digital"], platform: "n8n", verified: true, downloads: 198, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["Businesses"], author: "NordSym", category: "swedish" },
+            { id: "swedish-holidays", title: "Swedish Holidays in Automation", description: "Automatic handling of Swedish public holidays in scheduled flows.", category: "swedish", tags: ["holidays", "schedule", "calendar"], platform: "n8n", verified: true, downloads: 312, difficulty: "beginner", estimatedTime: "10 min", useCases: ["Everyone"], author: "NordSym", category: "swedish" },
             // (Remaining workflows omitted for brevity, but array structure remains same)
         ];
 
@@ -1197,16 +1070,16 @@
         
         // --- UPDATED PLATFORMS ---
         const PLATFORMS = [ 
-            { id: 'all', label: 'Alla' }, 
+            { id: 'all', label: 'All' },
             { id: 'n8n', label: 'n8n' }
         ];
-        const DIFFICULTIES = [ { id: 'all', label: 'Alla' } ];
+        const DIFFICULTIES = [ { id: 'all', label: 'All' } ];
 
         // NEW: ITEMS_PER_PAGE and currentPage added to state
         const ITEMS_PER_PAGE = 20;
         // ÄNDRING: platformFilter är nu 'n8n' som default istället för 'all'
         let state = { search: '', categoryFilter: 'all', platformFilter: 'n8n', difficultyFilter: 'all', sort: 'popular', currentPage: 1 };
-        let chatState = { isOpen: false, history: [] };
+
         let currentModalWorkflow = null;
         let currentFileSelection = 'all'; // 'all' or index (1, 2, 3...)
         let modalTimer; // Fix för race conditions vid snabba klick
@@ -1222,12 +1095,6 @@
         const modalContent = document.getElementById('modal-content');
         const modalHelpBtn = document.getElementById('modal-help-btn');
         
-        // Chat Elements - Restored
-        const chatPanel = document.getElementById('chat-panel');
-        const chatToggle = document.getElementById('chat-toggle');
-        const chatInput = document.getElementById('chat-input');
-        const chatMessages = document.getElementById('chat-messages');
-        const typingIndicator = document.getElementById('typing-indicator');
 
         const paywallModal = document.getElementById('paywall-modal');
         const dlCountEl = document.getElementById('dl-count');
@@ -1237,8 +1104,7 @@
         // --- AUTH & MODAL ELEMENTS ---
         const authModal = document.getElementById('auth-modal');
         // REMOVED: const authBtnDot = document.getElementById('auth-status-dot'); // Hanteras nu direkt i updateAuthUI
-        const requestModal = document.getElementById('request-modal'); 
-        const enterpriseModal = document.getElementById('enterprise-modal');
+        const requestModal = document.getElementById('request-modal');
         // NEW
         const uploadModal = document.getElementById('upload-modal');
 
@@ -1330,7 +1196,7 @@
         function acceptCookies() {
             localStorage.setItem('flowvault_cookies_accepted', 'true');
             closeCookieBanner();
-            showToast("Inställningar sparade! 👍");
+            showToast("Settings saved! 👍");
         }
 
         function closeCookieBanner() {
@@ -1440,11 +1306,11 @@
             const descEl = document.getElementById('req-modal-desc');
 
             if (state.categoryFilter === 'skills') {
-                titleEl.textContent = "Önska en Claude Skill";
-                descEl.textContent = "Saknar du en MCP-server eller specifik förmåga i Claude? Berätta vad du vill bygga!";
+                titleEl.textContent = "Request a Claude Skill";
+                descEl.textContent = "Missing an MCP server or specific capability in Claude? Tell us what you want to build!";
             } else {
-                titleEl.textContent = "Önska en automation";
-                descEl.textContent = "Beskriv vad du behöver. Vi prioriterar baserat på efterfrågan.";
+                titleEl.textContent = "Request an automation";
+                descEl.textContent = "Describe what you need. We prioritize based on demand.";
             }
 
             requestModal.classList.remove('hidden');
@@ -1456,23 +1322,10 @@
             setTimeout(() => requestModal.classList.add('hidden'), 300);
         }
 
-        function openEnterpriseModal() {
-            if (userState.isAuthenticated && userState.email) {
-                document.getElementById('enterprise-email').value = userState.email;
-            }
-            enterpriseModal.classList.remove('hidden');
-            setTimeout(() => { enterpriseModal.classList.remove('opacity-0'); enterpriseModal.firstElementChild.classList.remove('scale-95'); enterpriseModal.firstElementChild.classList.add('scale-100'); }, 10);
-        }
-
-        function closeEnterpriseModal() {
-            enterpriseModal.classList.add('opacity-0'); enterpriseModal.firstElementChild.classList.remove('scale-100'); enterpriseModal.firstElementChild.classList.add('scale-95');
-            setTimeout(() => enterpriseModal.classList.add('hidden'), 300);
-        }
-
         // --- UPLOAD MODAL LOGIC (NEW) ---
         function openUploadModal() {
             if (!userState.isAuthenticated) {
-                showToast("Du måste logga in för att ladda upp.", true);
+                showToast("You must be logged in to upload.", true);
                 openAuthModal();
                 return;
             }
@@ -1547,13 +1400,13 @@
             e.preventDefault();
             
             if (!userState.isAuthenticated || !userState.email) {
-                showToast("Du måste vara inloggad för att ladda upp.", true);
+                showToast("You must be logged in to upload.", true);
                 return;
             }
 
             const btn = e.target.querySelector('button[type="submit"]');
             const originalContent = btn.innerHTML;
-            btn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Laddar upp...';
+            btn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Uploading...';
             btn.disabled = true;
 
             try {
@@ -1568,7 +1421,7 @@
                 if (isJsonTab) {
                     contentToSend = document.getElementById('upload-json-content').value;
                     uploadType = 'json_paste';
-                    if (!contentToSend.trim()) throw new Error("Klistra in JSON-koden först.");
+                    if (!contentToSend.trim()) throw new Error("Please paste the JSON code first.");
                 } else {
                     const fileInput = document.getElementById('upload-file-input');
                     if (fileInput.files.length > 0) {
@@ -1577,7 +1430,7 @@
                         contentToSend = await file.text();
                         uploadType = 'file_upload';
                     } else {
-                        throw new Error("Välj en fil först.");
+                        throw new Error("Please select a file first.");
                     }
                 }
 
@@ -1585,7 +1438,7 @@
                 try {
                     JSON.parse(contentToSend);
                 } catch (err) {
-                    throw new Error("Ogiltigt JSON-format. Kontrollera koden.");
+                    throw new Error("Invalid JSON format. Please check the code.");
                 }
 
                 console.log("📤 Skickar uppladdning...", { title, category, uploadType });
@@ -1607,7 +1460,7 @@
                 });
 
                 if (response.ok) {
-                    showToast("Tack! Ditt flöde har skickats för granskning. 🚀");
+                    showToast("Thanks! Your flow has been submitted for review. 🚀");
                     closeUploadModal();
                     // Rensa formulär
                     document.getElementById('upload-json-content').value = '';
@@ -1617,53 +1470,12 @@
                 } else {
                     const errText = await response.text();
                     console.error("Upload error:", errText);
-                    showToast("Något gick fel vid uppladdning.", true);
+                    showToast("Something went wrong during upload.", true);
                 }
 
             } catch (error) {
                 console.error("Upload Error:", error);
-                showToast(error.message || "Ett fel uppstod.", true);
-            } finally {
-                btn.innerHTML = originalContent;
-                btn.disabled = false;
-            }
-        }
-
-        async function handleEnterpriseSubmit(e) {
-            e.preventDefault();
-            const email = document.getElementById('enterprise-email').value;
-            const btn = document.getElementById('ent-submit-btn');
-            const originalContent = btn.innerHTML;
-            
-            btn.innerHTML = '<div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
-            btn.disabled = true;
-
-            try {
-                // FIX: Vi använder URLSearchParams (Form Data) istället för JSON.
-                // Detta gör anropet till ett "Simple Request" och hoppar över CORS-kontrollen (OPTIONS).
-                const formData = new URLSearchParams();
-                formData.append('email', email);
-                formData.append('description', "ENTERPRISE WAITLIST REQUEST");
-                formData.append('type', "enterprise_waitlist");
-
-                const response = await fetch(API_ENDPOINTS.request, {
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: formData
-                });
-
-                if (response.ok) {
-                    showToast("Du är nu uppskriven på listan! 🚀");
-                    closeEnterpriseModal();
-                    document.getElementById('enterprise-email').value = ''; 
-                } else {
-                    const errorText = await response.text();
-                    console.error("Server Error:", errorText);
-                    showToast("Något gick fel. Försök igen.", true);
-                }
-            } catch (error) {
-                console.error("Enterprise request error:", error);
-                showToast("Kunde inte ansluta till servern.", true);
+                showToast(error.message || "An error occurred.", true);
             } finally {
                 btn.innerHTML = originalContent;
                 btn.disabled = false;
@@ -1697,20 +1509,20 @@
                 });
 
                 if (response.ok) {
-                    showToast("Tack för ditt önskemål! 🚀");
+                    showToast("Thanks for your request! 🚀");
                     document.getElementById('request-desc').value = '';
                     closeRequestModal();
                 } else {
                     console.error("Server responded with:", response.status);
-                    showToast(`Serverfel (${response.status}). Försök igen.`, true);
+                    showToast(`Server error (${response.status}). Please try again.`, true);
                 }
             } catch (error) {
                 console.error("Request error details:", error);
                 
                 if (error.message.includes('Failed to fetch')) {
-                    showToast("Kunde inte nå servern (CORS).", true);
+                    showToast("Could not connect to the server.", true);
                 } else {
-                    showToast("Något gick fel. Försök igen.", true);
+                    showToast("Something went wrong. Please try again.", true);
                 }
             } finally {
                 btn.innerHTML = originalContent;
@@ -1761,7 +1573,7 @@
                 // Utloggad vy: Tydlig "Logga in" knapp med puls-effekt
                 btn.className = "flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-white font-bold text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700 relative";
                 btn.innerHTML = `
-                    <span>Logga in</span>
+                    <span>Log in</span>
                     <i data-lucide="log-in" class="w-3 h-3"></i>
                     <span class="absolute -top-1 -right-1 flex h-3 w-3">
                       <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
@@ -1817,18 +1629,18 @@
                     }
 
                     document.getElementById('auth-email-display').textContent = email;
-                    showToast("Kod skickad till din e-post!");
+                    showToast("Code sent to your email!");
                     switchAuthView('code');
                 } else {
                     console.error("Auth Init Error:", response.status, await response.text());
-                    showToast("Kunde inte skicka kod. Serverfel.", true);
+                    showToast("Could not send code. Server error.", true);
                 }
             } catch (error) {
                 console.error("Auth init error details:", error);
                 if (error.message.includes('Failed to fetch')) {
-                    showToast("Kunde inte nå servern (CORS). Kolla Executions i n8n.", true);
+                    showToast("Could not reach the server. Check Executions in n8n.", true);
                 } else {
-                    showToast("Nätverksfel. Kontrollera din anslutning.", true);
+                    showToast("Network error. Check your connection.", true);
                 }
             } finally {
                 if (email.toLowerCase() !== 'dev@nordsym.com' && email.toLowerCase() !== 'pro@nordsym.com') {
@@ -1901,21 +1713,21 @@
                     saveUserState();
                     
                     const tierMsg = userState.tier === 'pro' ? 'PRO 🚀' : 'Free';
-                    showToast(`Inloggad som ${tierMsg}!`);
+                    showToast(`Logged in as ${tierMsg}!`);
                     
                     closeAuthModal();
                     updateAuthUI();
                     renderHeader();
                     renderWorkflows(); 
                 } else {
-                    showToast("Felaktig kod", true);
+                    showToast("Incorrect code", true);
                 }
             } catch (err) {
                 console.error("Auth verify error details:", err);
                 if (err.message.includes('Failed to fetch')) {
-                    showToast("Serverfel (CORS). Kolla att n8n-flödet är AKTIVT!", true);
+                    showToast("Server error (CORS). Check that the n8n workflow is ACTIVE!", true);
                 } else {
-                    showToast("Kunde inte verifiera kod.", true);
+                    showToast("Could not verify code.", true);
                 }
             } finally {
                 if (!((email.toLowerCase() === 'dev@nordsym.com' || email.toLowerCase() === 'pro@nordsym.com') && code === '123456')) {
@@ -1935,7 +1747,7 @@
             userState.downloads = []; 
             
             saveUserState();
-            showToast("Utloggad");
+            showToast("Logged out");
             closeAuthModal();
             updateAuthUI();
             renderHeader();
@@ -1953,7 +1765,7 @@
             if (!userState.isAuthenticated || !userState.email) {
                 closePaywall();
                 setTimeout(() => {
-                    showToast("Logga in för att uppgradera", true);
+                    showToast("Log in to upgrade", true);
                     openAuthModal();
                 }, 300);
                 return;
@@ -2010,13 +1822,13 @@
 
                     if (targetUrl) {
                         console.log("✅ Opening Payment Link:", targetUrl);
-                        showToast("Öppnar betalning i ny flik...", false);
+                        showToast("Opening payment in new tab...", false);
                         
                         // VIKTIGT: Använd window.open för att undvika sandbox-krasch/utloggning
                         window.open(targetUrl, '_blank');
                     } else {
                         console.error("❌ Saknar URL i data:", data);
-                        throw new Error("Kunde inte hitta betallänk i svaret.");
+                        throw new Error("Could not find payment link in response.");
                     }
                 } else {
                     const errText = await res.text();
@@ -2042,12 +1854,12 @@
             
             if (urlParams.get('canceled') === 'true') {
                 console.log("🚫 Stripe Checkout Cancelled");
-                showToast("Uppgradering avbruten.", true);
+                showToast("Upgrade cancelled.", true);
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
             else if (urlParams.get('success') === 'true') {
                 console.log("✅ Stripe Checkout Success! Starting polling...");
-                showToast("Betalning mottagen! Verifierar status...", false);
+                showToast("Payment received! Verifying status...", false);
                 window.history.replaceState({}, document.title, window.location.pathname);
                 
                 // ÖKAD POLLING: 20 försök x 3 sekunder = 60 sekunder totalt
@@ -2065,7 +1877,7 @@
 
             if (retriesLeft <= 0) {
                 console.warn("⚠️ Polling timed out. User is still free.");
-                showToast("Kunde inte se uppdateringen än. Ladda om sidan om en stund.", true);
+                showToast("Could not see the update yet. Reload the page in a moment.", true);
                 return;
             }
 
@@ -2091,7 +1903,7 @@
                         saveUserState();
                         renderHeader();
                         renderWorkflows(); 
-                        showToast("Välkommen till PRO! 🚀");
+                        showToast("Welcome to PRO! 🚀");
                         
                         // Visuell feedback på uppgraderingen
                         const dlCounter = document.getElementById('download-counter');
@@ -2118,15 +1930,14 @@
                 title.textContent = "Out of free downloads";
                 desc.textContent = "You have used your 3 free downloads for this month. Upgrade to continue.";
             } else if (reason === 'pro_content') {
-                title.textContent = "Uppgradera till PRO";
-                desc.textContent = "Detta workflow kräver ett PRO-konto för att ladda ner.";
+                title.textContent = "Upgrade to PRO";
+                desc.textContent = "This workflow requires a PRO account to download.";
             } else if (reason === 'skills_locked') {
-                // NYTT MEDDELANDE FÖR SKILLS
-                title.textContent = "Lås upp Skills";
-                desc.textContent = "Claude Skills (MCP) är en avancerad funktion som kräver PRO-konto.";
+                title.textContent = "Unlock Skills";
+                desc.textContent = "Claude Skills (MCP) is an advanced feature that requires a PRO account.";
             } else {
-                title.textContent = "Uppgradera till PRO";
-                desc.textContent = "Få obegränsad tillgång till alla automationer.";
+                title.textContent = "Upgrade to PRO";
+                desc.textContent = "Get unlimited access to all automations.";
             }
 
             paywallModal.classList.remove('hidden');
@@ -2188,7 +1999,7 @@
                 } else {
                     console.error(`❌ Backend Error: ${response.status} ${response.statusText}`);
                     // Visa toast om backend är nere så du vet direkt
-                    showToast(`Kunde inte hämta flöden: ${response.status}`, true);
+                    showToast(`Could not fetch workflows: ${response.status}`, true);
                 }
             } catch (error) {
                 console.error('❌ Nätverksfel / CORS vid hämtning av workflows:', error);
@@ -2260,7 +2071,7 @@
                 const totalSkills = WORKFLOWS.filter(isSkillItem).length; 
                 const totalFlows = WORKFLOWS.length - totalSkills; 
                 
-                let typeLabel = "arbetsflöden"; 
+                let typeLabel = "workflows";
                 let totalBase = totalFlows; // Basen är "vanliga" flöden (exkluderar skills)
 
                 // 1. Om man specifikt filtrerar på Skills-kategorin
@@ -2270,16 +2081,16 @@
                 } 
                 // 2. Om man visar "Alla" kategorier OCH "Alla" plattformar (helt blandat)
                 else if (state.categoryFilter === 'all' && state.platformFilter === 'all') {
-                    typeLabel = "arbetsflöden & skills";
-                    totalBase = WORKFLOWS.length; 
-                } 
-                // 3. Alla andra fall (t.ex. n8n, Sales, Svensk Integration)
+                    typeLabel = "workflows & skills";
+                    totalBase = WORKFLOWS.length;
+                }
+                // 3. All other cases (e.g. n8n, Sales, Swedish Integration)
                 else {
-                    typeLabel = "arbetsflöden";
+                    typeLabel = "workflows";
                     totalBase = totalFlows;
                 }
 
-                counterEl.innerHTML = `Visar <span class="font-bold text-slate-900 dark:text-white">${filtered.length}</span> av <span class="font-medium">${totalBase}</span> ${typeLabel}`;
+                counterEl.innerHTML = `Showing <span class="font-bold text-slate-900 dark:text-white">${filtered.length}</span> of <span class="font-medium">${totalBase}</span> ${typeLabel}`;
             }
 
             if (state.sort === 'popular') filtered.sort((a, b) => b.downloads - a.downloads);
@@ -2343,7 +2154,7 @@
 
                 const isLocked = wf.proBadge && userState.tier === 'free';
                 const actionIcon = isLocked ? 'lock' : 'arrow-right';
-                const actionText = isLocked ? 'Lås upp' : 'Visa';
+                const actionText = isLocked ? 'Unlock' : 'View';
                 const isFav = userState.favorites.includes(wf.id);
 
                 return `
@@ -2358,7 +2169,7 @@
                         </div>
                         <div class="flex items-center gap-2">
                             ${wf.verified ? `<span class="text-emerald-500 dark:text-emerald-400" title="Verifierad"><i data-lucide="check-circle-2" class="w-5 h-5"></i></span>` : ''}
-                            <button onclick="toggleFavorite(event, '${wf.id}')" class="text-slate-400 hover:text-amber-400 hover:scale-110 transition-all focus:outline-none z-20" title="${isFav ? 'Ta bort favorit' : 'Lägg till favorit'}">
+                            <button onclick="toggleFavorite(event, '${wf.id}')" class="text-slate-400 hover:text-amber-400 hover:scale-110 transition-all focus:outline-none z-20" title="${isFav ? 'Remove from favorites' : 'Add to favorites'}">
                                 <i data-lucide="star" class="w-5 h-5 ${isFav ? 'fill-amber-400 text-amber-400' : ''}"></i>
                             </button>
                         </div>
@@ -2420,7 +2231,7 @@
             const index = userState.favorites.indexOf(id);
             if (index === -1) {
                 userState.favorites.push(id);
-                showToast("Tillagd i favoriter");
+                showToast("Added to favorites");
             } else {
                 userState.favorites.splice(index, 1);
             }
@@ -2458,7 +2269,7 @@
             const searchInput = document.getElementById('search-input');
             if (searchInput) {
                 searchInput.value = '';
-                searchInput.placeholder = "Sök arbetsflöden (t.ex. 'AI agent', 'CRM sync', 'SEO')...";
+                searchInput.placeholder = "Search workflows (e.g. 'AI agent', 'CRM sync', 'SEO')...";
             }
             
             renderControls(); 
@@ -2535,11 +2346,11 @@
                 }
                 
                 // UPDATED: Dynamisk text för Skills-läge
-                if (requestText) requestText.textContent = "Önska en skill";
-                if (searchInput) searchInput.placeholder = "Sök Claude Skills (t.ex. 'Google Drive', 'Search')...";
+                if (requestText) requestText.textContent = "Request a skill";
+                if (searchInput) searchInput.placeholder = "Search Claude Skills (e.g. 'Google Drive', 'Search')...";
                 
                 if (bannerTitle) bannerTitle.textContent = "Saknar du en MCP-server?";
-                if (bannerText) bannerText.textContent = "Vi bygger nya Claude Skills baserat på vad communityt behöver. Berätta vad du saknar!";
+                if (bannerText) bannerText.textContent = "We build new Claude Skills based on what the community needs. Tell us what you're missing!";
 
             } else {
                 filterWrapper.classList.remove('hidden', 'opacity-0');
@@ -2551,7 +2362,7 @@
                 }
                 
                 // UPDATED: Återställ text för standard-läge
-                if (requestText) requestText.textContent = "Önska en automation";
+                if (requestText) requestText.textContent = "Request an automation";
                 if (searchInput) searchInput.placeholder = "Search workflows (e.g. 'AI agent', 'CRM sync', 'SEO')...";
 
                 if (bannerTitle) bannerTitle.textContent = "Missing a workflow or agent?";
@@ -2626,30 +2437,30 @@
             
             if (isSkill) {
                 // GUIDE
-                guideTitle.innerHTML = `<i data-lucide="info" class="w-3 h-3"></i> Så installerar du denna Skill`;
+                guideTitle.innerHTML = `<i data-lucide="info" class="w-3 h-3"></i> How to install this Skill`;
                 guideList.innerHTML = `
-                    <li>Ladda ner <strong>.skill</strong>-filen.</li>
-                    <li>Ladda upp filen direkt i Claude.</li>
-                    <li>Klart! Ingen omstart krävs. 🧠</li>
+                    <li>Download the <strong>.skill</strong> file.</li>
+                    <li>Upload the file directly in Claude.</li>
+                    <li>Done! No restart required. 🧠</li>
                 `;
                 
                 // HELP BANNER (SKILL SPECIFIC)
-                helpTitle.textContent = "Behöver du skräddarsydda AI-agenter?";
-                helpText.textContent = "Vi på NordSym bygger och integrerar avancerade Claude Skills och MCP-servrar för företag.";
+                helpTitle.textContent = "Need custom AI agents?";
+                helpText.textContent = "NordSym builds and integrates advanced Claude Skills and MCP servers for businesses.";
             
             } else {
                 // GUIDE
-                guideTitle.innerHTML = `<i data-lucide="info" class="w-3 h-3"></i> Så använder du flödet`;
+                guideTitle.innerHTML = `<i data-lucide="info" class="w-3 h-3"></i> How to use this flow`;
                 guideList.innerHTML = `
-                    <li>Ladda ner JSON-filen.</li>
-                    <li>Öppna din egen <strong>n8n-instans</strong>.</li>
-                    <li>Klicka på menyn i hörnet → <strong>Import from File</strong>.</li>
-                    <li>Njut av automationen! 🚀</li>
+                    <li>Download the JSON file.</li>
+                    <li>Open your own <strong>n8n instance</strong>.</li>
+                    <li>Click the menu in the corner → <strong>Import from File</strong>.</li>
+                    <li>Enjoy the automation! 🚀</li>
                 `;
 
                 // HELP BANNER (STANDARD)
-                helpTitle.textContent = "Behöver du hjälp att sätta upp detta?";
-                helpText.textContent = "Vi på NordSym hjälper svenska företag att implementera och anpassa automationer.";
+                helpTitle.textContent = "Need help setting this up?";
+                helpText.textContent = "NordSym helps businesses implement and customize automations.";
             }
 
             // --- DYNAMIC METADATA DISPLAY ---
@@ -2689,12 +2500,12 @@
             const btnDownload = document.getElementById('btn-download');
             if (isSkill) {
                 // Skills laddas ner som .skill (binär zip)
-                btnDownload.innerHTML = `<i data-lucide="package" class="w-5 h-5"></i> <span>Hämta Skill (.skill)</span>`;
+                btnDownload.innerHTML = `<i data-lucide="package" class="w-5 h-5"></i> <span>Get Skill (.skill)</span>`;
                 btnDownload.classList.remove('bg-primary', 'hover:bg-primary-hover');
                 btnDownload.classList.add('bg-indigo-500', 'hover:bg-indigo-600'); 
             } else {
                 // Vanliga flöden laddas ner som JSON
-                btnDownload.innerHTML = `<i data-lucide="download" class="w-5 h-5"></i> <span>Ladda ner arbetsflöde</span>`;
+                btnDownload.innerHTML = `<i data-lucide="download" class="w-5 h-5"></i> <span>Download workflow</span>`;
                 btnDownload.classList.add('bg-primary', 'hover:bg-primary-hover');
                 btnDownload.classList.remove('bg-indigo-500', 'hover:bg-indigo-600');
             }
@@ -2718,7 +2529,7 @@
                         </div>
                         <div class="flex-1">
                             <div class="text-sm font-bold text-slate-800 dark:text-white group-hover:text-fuchsia-600 transition-colors">All ${wf.fileCount} workflows (Complete system)</div>
-                            <div class="text-xs text-slate-500">Laddas ner som en ZIP-fil</div>
+                            <div class="text-xs text-slate-500">Downloaded as a ZIP file</div>
                         </div>
                         <i data-lucide="package" class="w-4 h-4 text-fuchsia-500"></i>
                     </label>
@@ -2808,7 +2619,7 @@
             if (!userState.isAuthenticated) {
                 closeModal();
                 setTimeout(() => {
-                    showToast("Du måste logga in för att ladda ner.", true);
+                    showToast("You must be logged in to download.", true);
                     openAuthModal();
                 }, 300);
                 return;
@@ -2895,7 +2706,7 @@
                     window.URL.revokeObjectURL(url);
                     document.body.removeChild(a);
 
-                    showToast(`ZIP-fil (${workflow.fileCount} delar) nedladdad! 📦`);
+                    showToast(`ZIP file (${workflow.fileCount} parts) downloaded! 📦`);
                 } 
                 // SCENARIO 2: Single File Download (Or pre-made ZIP for Skills)
                 else {
@@ -2926,7 +2737,7 @@
                         } catch (e) {}
                     }
 
-                    if (!foundUrl) throw new Error(`Fil saknas på servern: ${patterns.join(', ')}`);
+                    if (!foundUrl) throw new Error(`File not found on server: ${patterns.join(', ')}`);
 
                     // Nu hämtar vi filen (som BLOB för att hantera både text och binära ZIPs korrekt)
                     const response = await fetch(foundUrl);
@@ -2973,7 +2784,7 @@
 
             } catch (error) {
                 console.error('Download error:', error);
-                showToast(`Kunde inte ladda ner filen. Kontakta support.`, true);
+                showToast(`Could not download the file. Contact support.`, true);
             } finally {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
@@ -2989,12 +2800,12 @@
             msgEl.textContent = message;
             
             if (isError) {
-                titleEl.textContent = "Ett fel uppstod";
+                titleEl.textContent = "An error occurred";
                 titleEl.classList.add('text-red-300', 'dark:text-red-600');
                 iconBg.className = "w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-red-600 flex items-center justify-center shadow-lg shadow-red-500/30 shrink-0";
                 iconBg.innerHTML = '<i data-lucide="alert-triangle" class="w-5 h-5 text-white"></i>';
             } else {
-                titleEl.textContent = "Framgång";
+                titleEl.textContent = "Success";
                 titleEl.classList.remove('text-red-300', 'dark:text-red-600');
                 iconBg.className = "w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30 shrink-0";
                 iconBg.innerHTML = '<i data-lucide="check" class="w-5 h-5 text-white"></i>';
@@ -3014,7 +2825,7 @@
         }
 
         function getEmailLink(workflow = null) {
-            const subject = workflow ? `Hjälp med: ${workflow.title}` : 'Fråga om automation';
+            const subject = workflow ? `Help with: ${workflow.title}` : 'Question about automation';
             const body = workflow ? `Hej NordSym!\n\nJag hittade denna automation på FlowVault: ${workflow.title} (${workflow.id})` : `Hej NordSym!`;
             return `mailto:support@nordsym.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         }
@@ -3144,79 +2955,7 @@
             animate();
         }
 
-        // --- AI CHAT LOGIC ---
-        function toggleChat() { chatState.isOpen = !chatState.isOpen; if (chatState.isOpen) { chatPanel.classList.remove('hidden'); setTimeout(() => { chatPanel.classList.remove('scale-95', 'opacity-0'); chatPanel.classList.add('scale-100', 'opacity-100'); chatInput.focus(); }, 10); } else { chatPanel.classList.remove('scale-100', 'opacity-100'); chatPanel.classList.add('scale-95', 'opacity-0'); setTimeout(() => chatPanel.classList.add('hidden'), 300); } }
-        
-        async function handleChatSubmit(e) { 
-            e.preventDefault(); 
-            const text = chatInput.value.trim(); 
-            if(!text) return; 
-            
-            addMessage('user', text); 
-            chatInput.value = ''; 
-            typingIndicator.classList.remove('hidden'); 
-            chatMessages.appendChild(typingIndicator); 
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            let sessionId = localStorage.getItem('flowvault_chat_session');
-            if (!sessionId) {
-                sessionId = crypto.randomUUID();
-                localStorage.setItem('flowvault_chat_session', sessionId);
-            }
-
-            try {
-                if (!navigator.onLine) throw new Error('Offline');
-
-                const payload = { 
-                    message: text,
-                    chatInput: text,
-                    guardrailsInput: text,
-                    sessionId: sessionId,
-                    userId: userState.email || 'anonymous',
-                    metadata: { page: document.title, context: "FlowVault Web Widget" }
-                };
-
-                // UPDATED: Direct call to specific n8n chat webhook (No Proxy)
-                const response = await fetch(API_ENDPOINTS.chat, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (response.status === 404) throw new Error('N8N_404');
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-                const data = await response.json();
-                let aiResponse = "Jag fick inget svar. Försök igen.";
-                
-                if (data.output) aiResponse = data.output;
-                else if (data.text) aiResponse = data.text;
-                else if (data.message) aiResponse = data.message;
-                else if (typeof data === 'string') aiResponse = data;
-                else if (Array.isArray(data) && data[0]?.output) aiResponse = data[0].output;
-
-                typingIndicator.classList.add('hidden');
-                addMessage('assistant', aiResponse);
-
-            } catch (error) {
-                console.error('Chat error details:', error);
-                typingIndicator.classList.add('hidden');
-                let errorMsg = "Hoppsan! Något gick fel.";
-                if (error.message === 'N8N_404') errorMsg = "Agenten svarar inte (404). \n\n⚠️ VIKTIGT: Gå till n8n och se till att switchen 'Active' (uppe till höger) är GRÖN.";
-                else if (error.message.includes('Failed to fetch')) errorMsg = "Kunde inte nå servern. Kontrollera CORS i n8n eller nätverksanslutningen.";
-                addMessage('assistant', errorMsg);
-            }
-        }
-
-        function addMessage(role, content) { 
-            const msgDiv = document.createElement('div'); msgDiv.className = 'flex gap-3 message-enter mb-4 ' + (role === 'user' ? 'flex-row-reverse' : '');
-            const formattedContent = content.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" class="text-primary hover:underline underline-offset-2 break-all">$1</a>').replace(/\n/g, '<br>');
-            const bubbleClass = role === 'user' ? 'bg-primary text-white rounded-2xl rounded-tr-none' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 rounded-2xl rounded-tl-none';
-            msgDiv.innerHTML = `<div class="${bubbleClass} p-3 text-sm max-w-[85%] shadow-sm leading-relaxed">${formattedContent}</div>`;
-            chatMessages.appendChild(msgDiv); chatMessages.scrollTop = chatMessages.scrollHeight; 
-        }
-
-        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (!modalBackdrop.classList.contains('hidden')) closeModal(); else if (!paywallModal.classList.contains('hidden')) closePaywall(); else if (!authModal.classList.contains('hidden')) closeAuthModal(); else if (!requestModal.classList.contains('hidden')) closeRequestModal(); else if (!enterpriseModal.classList.contains('hidden')) closeEnterpriseModal(); else if (chatState.isOpen) toggleChat(); } });
+        document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { if (!modalBackdrop.classList.contains('hidden')) closeModal(); else if (!paywallModal.classList.contains('hidden')) closePaywall(); else if (!authModal.classList.contains('hidden')) closeAuthModal(); else if (!requestModal.classList.contains('hidden')) closeRequestModal(); } });
 
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
