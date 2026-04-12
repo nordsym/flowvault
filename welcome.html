@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to FlowVault PRO | NordSym</title>
+    <meta name="description" content="You're now a FlowVault PRO member. Unlimited workflow downloads, priority updates, and full access to the vault.">
+    <meta name="robots" content="noindex, nofollow">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-cyan': '#00D4FF',
+                        'brand-purple': '#9370DB',
+                        'brand-orange': '#FF8C00',
+                        'surface': '#0a0b0d',
+                        'surface-2': '#111318',
+                        'surface-3': '#1a1d26',
+                        'border': '#1e2330',
+                    },
+                    fontFamily: {
+                        'display': ['Comfortaa', 'sans-serif'],
+                        'body': ['Inter', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.6s ease-out forwards',
+                        'slide-up': 'slideUp 0.5s ease-out forwards',
+                        'bounce-gentle': 'bounceGentle 2s ease-in-out infinite',
+                        'glow-pulse': 'glowPulse 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        slideUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+                        bounceGentle: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-8px)' } },
+                        glowPulse: { '0%, 100%': { boxShadow: '0 0 20px rgba(0, 212, 255, 0.2)' }, '50%': { boxShadow: '0 0 40px rgba(0, 212, 255, 0.5)' } },
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        body { background-color: #050608; color: #e8eaf0; font-family: 'Inter', sans-serif; }
+        .gradient-text { background: linear-gradient(135deg, #00D4FF, #9370DB); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .step-card { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .step-card.visible { opacity: 1; transform: translateY(0); }
+        .progress-bar { transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
+        .confetti-piece { position: fixed; width: 10px; height: 10px; animation: fall linear forwards; pointer-events: none; }
+        @keyframes fall { 0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; } 100% { transform: translateY(110vh) rotate(720deg); opacity: 0; } }
+        .check-circle { background: linear-gradient(135deg, #00D4FF20, #9370DB20); border: 1px solid #00D4FF40; }
+        .cta-glow { box-shadow: 0 0 30px rgba(0, 212, 255, 0.3); transition: box-shadow 0.3s ease; }
+        .cta-glow:hover { box-shadow: 0 0 50px rgba(0, 212, 255, 0.5); }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="border-b border-[#1e2330] bg-[#050608]/90 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
+            <a href="https://flowvault.se" class="flex items-center gap-2 text-[#00D4FF] font-display font-bold text-lg hover:opacity-80 transition-opacity">
+                <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
+                    <rect width="32" height="32" rx="8" fill="url(#logoGrad)"/>
+                    <path d="M8 12h16M8 16h12M8 20h8" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                    <defs><linearGradient id="logoGrad" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse"><stop stop-color="#00D4FF"/><stop offset="1" stop-color="#9370DB"/></linearGradient></defs>
+                </svg>
+                FlowVault
+            </a>
+            <span class="text-xs px-3 py-1 rounded-full bg-[#00D4FF15] border border-[#00D4FF40] text-[#00D4FF] font-medium">PRO Member</span>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-3xl mx-auto px-4 py-12 w-full">
+
+        <!-- Hero -->
+        <div class="text-center mb-12 animate-fade-in">
+            <div class="text-6xl mb-4 animate-bounce-gentle">🎉</div>
+            <h1 class="font-display text-4xl font-bold mb-3">
+                Welcome to <span class="gradient-text">FlowVault PRO</span>
+            </h1>
+            <p class="text-gray-400 text-lg max-w-md mx-auto">
+                You're in. Unlimited downloads, priority updates, and the full vault at your fingertips.
+            </p>
+        </div>
+
+        <!-- Progress tracker -->
+        <div class="bg-[#0a0b0d] border border-[#1e2330] rounded-2xl p-6 mb-8">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-sm font-medium text-gray-300">Onboarding progress</span>
+                <span id="progressLabel" class="text-sm text-[#00D4FF] font-medium">0 / 4 done</span>
+            </div>
+            <div class="w-full bg-[#1a1d26] rounded-full h-2">
+                <div id="progressBar" class="progress-bar bg-gradient-to-r from-[#00D4FF] to-[#9370DB] h-2 rounded-full" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Step cards -->
+        <div class="space-y-4" id="stepsContainer">
+
+            <!-- Step 1: Already done -->
+            <div class="step-card bg-[#0a0b0d] border border-[#1e2330] rounded-2xl p-6 flex items-start gap-4" id="step1">
+                <div class="check-circle w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg class="w-5 h-5 text-[#00D4FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                </div>
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1">
+                        <h3 class="font-semibold text-white">Payment confirmed</h3>
+                        <span class="text-xs px-2 py-0.5 rounded-full bg-[#00D4FF15] text-[#00D4FF]">Done ✓</span>
+                    </div>
+                    <p class="text-sm text-gray-400">Your PRO subscription is active. $29/month, cancel anytime.</p>
+                </div>
+            </div>
+
+            <!-- Step 2: Email / Account -->
+            <div class="step-card bg-[#0a0b0d] border border-[#1e2330] rounded-2xl p-6" id="step2">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-[#9370DB20] border border-[#9370DB40] flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg class="w-5 h-5 text-[#9370DB]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-white mb-1">Get your PRO access email</h3>
+                        <p class="text-sm text-gray-400 mb-4">A confirmation with your download token and PRO portal link is heading to your inbox. Check spam if it doesn't arrive within 5 minutes.</p>
+                        <div class="flex gap-2">
+                            <input type="email" id="emailInput" placeholder="Confirm your email"
+                                class="flex-1 bg-[#111318] border border-[#1e2330] rounded-lg px-3 py-2 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-[#00D4FF] transition-colors">
+                            <button onclick="confirmEmail()"
+                                class="px-4 py-2 bg-gradient-to-r from-[#00D4FF] to-[#9370DB] text-white text-sm font-medium rounded-lg hover:opacity-90 transition-opacity whitespace-nowrap">
+                                Send confirmation
+                            </button>
+                        </div>
+                        <p id="emailStatus" class="text-xs mt-2 hidden"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Download first workflow -->
+            <div class="step-card bg-[#0a0b0d] border border-[#1e2330] rounded-2xl p-6" id="step3">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-[#FF8C0020] border border-[#FF8C0040] flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg class="w-5 h-5 text-[#FF8C00]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-white mb-1">Download your first workflow</h3>
+                        <p class="text-sm text-gray-400 mb-4">As a PRO member, every workflow in the vault is yours — no limits. Here are some crowd favorites to start with.</p>
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 mb-4">
+                            <a href="https://flowvault.se" class="group p-3 bg-[#111318] border border-[#1e2330] rounded-lg hover:border-[#00D4FF40] transition-colors">
+                                <div class="text-[#00D4FF] text-xs font-medium mb-1">🤖 AI</div>
+                                <div class="text-xs text-gray-300 group-hover:text-white transition-colors">AI Content Pipeline</div>
+                            </a>
+                            <a href="https://flowvault.se" class="group p-3 bg-[#111318] border border-[#1e2330] rounded-lg hover:border-[#9370DB40] transition-colors">
+                                <div class="text-[#9370DB] text-xs font-medium mb-1">💼 CRM</div>
+                                <div class="text-xs text-gray-300 group-hover:text-white transition-colors">Lead Auto-Qualifier</div>
+                            </a>
+                            <a href="https://flowvault.se" class="group p-3 bg-[#111318] border border-[#1e2330] rounded-lg hover:border-[#FF8C0040] transition-colors">
+                                <div class="text-[#FF8C00] text-xs font-medium mb-1">⚡ Productivity</div>
+                                <div class="text-xs text-gray-300 group-hover:text-white transition-colors">Smart Task Router</div>
+                            </a>
+                        </div>
+                        <a href="https://flowvault.se" onclick="markStep(3)"
+                           class="inline-flex items-center gap-2 px-4 py-2 border border-[#1e2330] rounded-lg text-sm text-gray-300 hover:text-white hover:border-[#00D4FF40] transition-colors">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0l-7 7m7-7l-7-7"/>
+                            </svg>
+                            Browse all workflows
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: n8n setup tip -->
+            <div class="step-card bg-[#0a0b0d] border border-[#1e2330] rounded-2xl p-6" id="step4">
+                <div class="flex items-start gap-4">
+                    <div class="w-10 h-10 rounded-full bg-[#00D4FF20] border border-[#00D4FF40] flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg class="w-5 h-5 text-[#00D4FF]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                        </svg>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-semibold text-white mb-1">Import a workflow to n8n</h3>
+                        <p class="text-sm text-gray-400 mb-3">New to importing? It takes 30 seconds:</p>
+                        <ol class="text-sm text-gray-400 space-y-1 mb-4 list-none">
+                            <li class="flex items-start gap-2"><span class="text-[#00D4FF] font-bold mt-0.5">1.</span> Download the <code class="bg-[#1a1d26] px-1 rounded text-xs">.json</code> file from FlowVault</li>
+                            <li class="flex items-start gap-2"><span class="text-[#00D4FF] font-bold mt-0.5">2.</span> Open n8n → click <strong class="text-white">+ New workflow</strong></li>
+                            <li class="flex items-start gap-2"><span class="text-[#00D4FF] font-bold mt-0.5">3.</span> Click the <strong class="text-white">⋯ menu</strong> → <strong class="text-white">Import from file</strong></li>
+                            <li class="flex items-start gap-2"><span class="text-[#00D4FF] font-bold mt-0.5">4.</span> Add your credentials → activate!</li>
+                        </ol>
+                        <button onclick="markStep(4)"
+                            class="px-4 py-2 border border-[#1e2330] rounded-lg text-sm text-gray-300 hover:text-white hover:border-[#00D4FF40] transition-colors">
+                            Got it ✓
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- CTA: back to vault -->
+        <div class="mt-10 text-center">
+            <a href="https://flowvault.se"
+               class="cta-glow inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#00D4FF] to-[#9370DB] text-white font-semibold rounded-xl text-lg hover:opacity-90 transition-opacity">
+                <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                Go to the vault
+            </a>
+            <p class="text-xs text-gray-500 mt-3">Manage your subscription at <a href="https://billing.stripe.com/p/login/eVqdRU8vJbLR4Sa1YZ" class="text-[#00D4FF] hover:underline">billing portal</a></p>
+        </div>
+
+        <!-- Pro perks summary -->
+        <div class="mt-12 bg-gradient-to-br from-[#00D4FF08] to-[#9370DB08] border border-[#1e2330] rounded-2xl p-6">
+            <h2 class="font-display font-semibold text-white mb-4 text-center">Your PRO benefits</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div class="flex items-center gap-3">
+                    <span class="text-[#00D4FF] text-lg">∞</span>
+                    <span class="text-sm text-gray-300">Unlimited workflow downloads</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-[#9370DB] text-lg">⚡</span>
+                    <span class="text-sm text-gray-300">Priority access to new workflows</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-[#FF8C00] text-lg">🤖</span>
+                    <span class="text-sm text-gray-300">Full AI & Swedish integration suite</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-[#00D4FF] text-lg">🔒</span>
+                    <span class="text-sm text-gray-300">Credentials stripped — ready to import</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-[#9370DB] text-lg">📬</span>
+                    <span class="text-sm text-gray-300">Weekly new workflow digest</span>
+                </div>
+                <div class="flex items-center gap-3">
+                    <span class="text-[#FF8C00] text-lg">🇸🇪</span>
+                    <span class="text-sm text-gray-300">Fortnox, BankID & Swedish integrations</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-[#1e2330] py-6 mt-8">
+        <div class="max-w-3xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-gray-500">
+            <span>FlowVault by <a href="https://nordsym.com" class="hover:text-gray-300 transition-colors">NordSym AB</a></span>
+            <div class="flex gap-4">
+                <a href="mailto:hello@nordsym.com" class="hover:text-gray-300 transition-colors">Support</a>
+                <a href="https://billing.stripe.com/p/login/eVqdRU8vJbLR4Sa1YZ" class="hover:text-gray-300 transition-colors">Billing</a>
+                <a href="https://flowvault.se" class="hover:text-gray-300 transition-colors">Back to vault</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Progress tracking
+        const completedSteps = new Set([1]); // step 1 is always done
+
+        function updateProgress() {
+            const total = 4;
+            const done = completedSteps.size;
+            const pct = (done / total) * 100;
+            document.getElementById('progressBar').style.width = pct + '%';
+            document.getElementById('progressLabel').textContent = `${done} / ${total} done`;
+
+            if (done === total) {
+                setTimeout(launchConfetti, 300);
+            }
+        }
+
+        function markStep(stepNum) {
+            completedSteps.add(stepNum);
+            const card = document.getElementById(`step${stepNum}`);
+            card.classList.add('border-[#00D4FF20]');
+
+            // Add checkmark badge
+            const h3 = card.querySelector('h3');
+            if (h3 && !card.querySelector('.done-badge')) {
+                const badge = document.createElement('span');
+                badge.className = 'done-badge text-xs px-2 py-0.5 rounded-full bg-[#00D4FF15] text-[#00D4FF] ml-2';
+                badge.textContent = 'Done ✓';
+                h3.appendChild(badge);
+            }
+
+            updateProgress();
+        }
+
+        function confirmEmail() {
+            const email = document.getElementById('emailInput').value.trim();
+            const status = document.getElementById('emailStatus');
+
+            if (!email || !email.includes('@')) {
+                status.textContent = 'Please enter a valid email address.';
+                status.className = 'text-xs mt-2 text-red-400';
+                status.classList.remove('hidden');
+                return;
+            }
+
+            // Send via mailto as a fallback (can be hooked to n8n webhook later)
+            const subject = encodeURIComponent('FlowVault PRO - Email Confirmation Request');
+            const body = encodeURIComponent(`Email: ${email}\nSession: ${new URLSearchParams(window.location.search).get('session') || 'unknown'}`);
+
+            // Log to n8n webhook (fire and forget)
+            const sessionId = new URLSearchParams(window.location.search).get('session') || '';
+            fetch('https://nordsym.app.n8n.cloud/webhook/flowvault-onboarding', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, session_id: sessionId, action: 'email_confirm' })
+            }).catch(() => {}); // Silent fail — webhook may not exist yet
+
+            status.textContent = '✓ Noted! Check your inbox shortly.';
+            status.className = 'text-xs mt-2 text-[#00D4FF]';
+            status.classList.remove('hidden');
+
+            // Mark step 2 as done
+            markStep(2);
+        }
+
+        // Confetti burst
+        function launchConfetti() {
+            const colors = ['#00D4FF', '#9370DB', '#FF8C00', '#ffffff'];
+            for (let i = 0; i < 60; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + 'vw';
+                piece.style.top = '-10px';
+                piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                piece.style.width = (Math.random() * 8 + 6) + 'px';
+                piece.style.height = (Math.random() * 8 + 6) + 'px';
+                piece.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                piece.style.animationDelay = (Math.random() * 0.5) + 's';
+                document.body.appendChild(piece);
+                setTimeout(() => piece.remove(), 4500);
+            }
+        }
+
+        // Animate step cards in on load
+        function animateSteps() {
+            const cards = document.querySelectorAll('.step-card');
+            cards.forEach((card, i) => {
+                setTimeout(() => card.classList.add('visible'), 150 + i * 120);
+            });
+        }
+
+        // Initial confetti on page load to celebrate payment
+        window.addEventListener('load', () => {
+            animateSteps();
+            updateProgress();
+            setTimeout(launchConfetti, 800);
+        });
+    </script>
+</body>
+</html>

@@ -446,7 +446,7 @@
                                 <div class="mb-6">
                                     <h4 class="font-heading font-bold text-lg text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-purple-600">PRO</h4>
                                     <div class="flex items-baseline mt-2">
-                                        <span class="text-4xl font-bold text-slate-900 dark:text-white">299 kr</span>
+                                        <span class="text-4xl font-bold text-slate-900 dark:text-white">$29</span>
                                         <span class="text-sm font-medium text-slate-500 ml-1">/mo</span>
                                     </div>
                                     <div class="text-xs text-slate-400 font-medium mt-1">excl. VAT</div>
@@ -638,7 +638,7 @@
                 <div class="flex flex-col gap-3">
                     <!-- BUTTON UPDATED TO FUCHSIA -->
                     <button onclick="handleProUpgrade(event)" class="w-full py-4 rounded-xl bg-fuchsia-500 hover:bg-fuchsia-600 text-white font-bold text-lg text-center shadow-lg shadow-fuchsia-500/20 transition-all hover:scale-[1.02] flex justify-center items-center gap-2">
-                        <span>Get PRO — 299 kr/mo</span> <i data-lucide="credit-card" class="w-5 h-5"></i>
+                        <span>Get PRO — $29/mo</span> <i data-lucide="credit-card" class="w-5 h-5"></i>
                     </button>
                     <p class="text-center text-xs text-slate-400">No commitment. Cancel anytime.</p>
                 </div>
@@ -1776,9 +1776,11 @@
         }
 
         // --- STRIPE CHECKOUT ---
-        async function handleProUpgrade(e) {
+        const PRO_PAYMENT_LINK = 'https://buy.stripe.com/7sY4gBfEM4em7OQchqcMM0C';
+
+        function handleProUpgrade(e) {
             if (e) e.preventDefault();
-            
+
             if (!userState.isAuthenticated || !userState.email) {
                 closePaywall();
                 setTimeout(() => {
@@ -1788,81 +1790,10 @@
                 return;
             }
 
-            const btn = e ? e.currentTarget : document.querySelector('#paywall-modal button.bg-fuchsia-500');
-            const originalContent = btn.innerHTML;
-            btn.innerHTML = '<div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Väntar på Stripe...';
-            btn.disabled = true;
-
-            try {
-                let emailToUse = userState.email;
-
-                // DEV FEATURE: Hårdkodad fallback
-                if (userState.email.toLowerCase().includes('dev@') || userState.email.toLowerCase().includes('nordsym')) {
-                    emailToUse = `test.${Date.now()}@nordsym.com`;
-                    console.log("🧪 DEV MODE: Auto-genererad email:", emailToUse);
-                }
-
-                console.log("💳 Starting checkout for:", emailToUse); 
-                
-                const formData = new URLSearchParams();
-                formData.append('email', emailToUse);
-
-                console.log("Anropar Create Checkout:", API_ENDPOINTS.createCheckout);
-
-                const res = await fetch(API_ENDPOINTS.createCheckout, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: formData
-                });
-
-                if (res.ok) {
-                    const text = await res.text();
-                    console.log("🚀 Stripe Server Response:", text);
-                    
-                    let data;
-                    try {
-                        data = JSON.parse(text);
-                    } catch (e) {
-                        throw new Error("Ogiltigt JSON-svar från n8n.");
-                    }
-
-                    // ROBUST URL FINDER: Hanterar Array, Objekt med 'checkoutUrl' eller 'url'
-                    let targetUrl = null;
-                    
-                    if (Array.isArray(data) && data.length > 0 && data[0].url) {
-                        targetUrl = data[0].url; // Om n8n returnerar rå Stripe-array
-                    } else if (data.checkoutUrl) {
-                        targetUrl = data.checkoutUrl; // Om n8n returnerar { checkoutUrl: ... }
-                    } else if (data.url) {
-                        targetUrl = data.url; // Om n8n returnerar platt objekt
-                    }
-
-                    if (targetUrl) {
-                        console.log("✅ Opening Payment Link:", targetUrl);
-                        showToast("Opening payment in new tab...", false);
-                        
-                        // VIKTIGT: Använd window.open för att undvika sandbox-krasch/utloggning
-                        window.open(targetUrl, '_blank');
-                    } else {
-                        console.error("❌ Saknar URL i data:", data);
-                        throw new Error("Could not find payment link in response.");
-                    }
-                } else {
-                    const errText = await res.text();
-                    console.error("Server responded with:", res.status, errText);
-                    throw new Error(`Serverfel: ${res.status}`);
-                }
-            } catch (err) {
-                console.error("Stripe error details:", err);
-                if (err.message.includes('Failed to fetch')) {
-                    showToast("CORS-fel. n8n måste svara med 'Access-Control-Allow-Origin: *'", true);
-                } else {
-                    showToast("Kunde inte starta betalning: " + err.message, true);
-                }
-            } finally {
-                btn.innerHTML = originalContent;
-                btn.disabled = false;
-            }
+            showToast("Opening Stripe checkout...", false);
+            // Append prefilled_email so Stripe pre-fills the checkout form
+            const url = PRO_PAYMENT_LINK + '?prefilled_email=' + encodeURIComponent(userState.email);
+            window.open(url, '_blank');
         }
 
         // --- STRIPE REDIRECT LOGIC ---
