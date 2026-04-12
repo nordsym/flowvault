@@ -1,0 +1,485 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Book a Call - FlowVault | NordSym</title>
+  <meta name="description" content="Book a free 30-minute strategy call. We'll discuss your automation needs and show you how FlowVault can streamline your workflows.">
+  <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/GusHem/Logga-utan-text/refs/heads/main/Final%20logo%20no%20text.svg">
+  <link rel="canonical" href="https://flowvault.se/book">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/phosphor-icons@1.4.2/src/css/icons.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": "FlowVault Strategy Call",
+    "description": "Free 30-minute strategy call to review your automation needs and explore production-ready n8n workflows.",
+    "provider": { "@type": "Organization", "name": "NordSym AB", "url": "https://nordsym.com" },
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "SEK" },
+    "url": "https://flowvault.se/book"
+  }
+  </script>
+
+  <style>
+    /* ========== TOKENS (FlowVault design - NordSym base) ========== */
+    :root {
+      --bg: #050608;
+      --surface: rgba(20, 184, 166, 0.06);
+      --surface-solid: #0c1117;
+      --border: rgba(20, 184, 166, 0.15);
+      --border-strong: rgba(20, 184, 166, 0.25);
+      --text-primary: #F0F4F8;
+      --text-secondary: #CBD5E0;
+      --text-muted: rgba(203, 213, 224, 0.5);
+      --accent: #14B8A6;
+      --accent-rgb: 20, 184, 166;
+      --accent-secondary: #00BFFF;
+      --glass-bg: rgba(20, 184, 166, 0.06);
+      --glass-blur: blur(16px);
+    }
+    [data-theme="light"] {
+      --bg: #FFFFFF;
+      --surface: rgba(255, 255, 255, 0.9);
+      --surface-solid: #F9FAFB;
+      --border: #E5E7EB;
+      --border-strong: #D1D5DB;
+      --text-primary: #0A2540;
+      --text-secondary: #4B5563;
+      --text-muted: #9CA3AF;
+      --accent: #0D9488;
+      --accent-rgb: 13, 148, 136;
+      --glass-bg: rgba(255, 255, 255, 0.9);
+    }
+
+    /* ========== BASE ========== */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--text-primary);
+      background-color: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.4s, color 0.4s;
+      overflow-x: hidden;
+    }
+    h1, h2, h3 { font-family: 'Comfortaa', sans-serif; margin: 0; }
+
+    /* ========== STARFALL CANVAS ========== */
+    #starfall {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      z-index: 0; pointer-events: none;
+    }
+    [data-theme="light"] #starfall { opacity: 0; }
+
+    /* ========== GRID BG (light mode) ========== */
+    .grid-bg {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 0; opacity: 0;
+      background-size: 24px 24px;
+      background-image: linear-gradient(to right, rgba(13,148,136,0.06) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(13,148,136,0.06) 1px, transparent 1px);
+    }
+    [data-theme="light"] .grid-bg { opacity: 1; }
+
+    /* ========== HEADER ========== */
+    .book-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem;
+      border-bottom: 1px solid var(--border);
+      position: relative; z-index: 10;
+      background: rgba(5, 6, 8, 0.6);
+      backdrop-filter: blur(12px);
+    }
+    [data-theme="light"] .book-header {
+      background: rgba(255,255,255,0.8);
+    }
+    .book-logo {
+      display: flex; align-items: center; gap: 0.6rem;
+      text-decoration: none; color: var(--text-primary);
+    }
+    .book-logo img { height: 32px; width: auto; filter: drop-shadow(0 0 8px rgba(var(--accent-rgb), 0.4)); }
+    .book-logo span { font-family: 'Comfortaa', sans-serif; font-size: 1rem; font-weight: 700; }
+    .book-logo .product-tag {
+      font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600;
+      color: var(--accent); background: rgba(var(--accent-rgb), 0.12);
+      border: 1px solid rgba(var(--accent-rgb), 0.2);
+      padding: 0.15rem 0.5rem; border-radius: 9999px;
+      letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .header-actions { display: flex; align-items: center; gap: 1rem; }
+    .back-link {
+      font-size: 0.8rem; color: var(--text-muted); text-decoration: none;
+      display: flex; align-items: center; gap: 0.3rem; transition: color 0.2s;
+    }
+    .back-link:hover { color: var(--accent); }
+    .theme-btn {
+      width: 36px; height: 36px; border-radius: 50%; display: flex;
+      align-items: center; justify-content: center; cursor: pointer;
+      border: 1px solid var(--border-strong); background: var(--glass-bg);
+      color: var(--accent); font-size: 1rem; transition: transform 0.2s;
+    }
+    .theme-btn:hover { transform: scale(1.1); }
+
+    /* ========== MAIN ========== */
+    main {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+      padding: 2.5rem 1.5rem 3rem;
+      position: relative; z-index: 1;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.6rem; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.75rem;
+      background: rgba(var(--accent-rgb), 0.1);
+      border: 1px solid rgba(var(--accent-rgb), 0.2);
+      padding: 0.3rem 0.75rem; border-radius: 9999px;
+    }
+    .badge .pulse { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    .book-heading {
+      text-align: center; margin-bottom: 0.5rem;
+      font-size: 2.5rem; font-weight: 700; color: var(--accent);
+      line-height: 1.15; letter-spacing: -0.02em;
+    }
+    .book-subheading {
+      text-align: center; color: var(--text-secondary);
+      font-size: 0.95rem; margin-bottom: 2rem; max-width: 440px; line-height: 1.6;
+    }
+    .book-meta {
+      display: flex; align-items: center; justify-content: center;
+      gap: 1.25rem; margin-bottom: 2rem; flex-wrap: wrap;
+    }
+    .book-meta-item {
+      display: flex; align-items: center; gap: 0.35rem;
+      font-size: 0.8rem; color: var(--text-muted);
+    }
+    .book-meta-item i { color: var(--accent); font-size: 0.95rem; }
+
+    /* ========== GLASS CARD ========== */
+    .scheduler-card {
+      width: 100%; max-width: 440px;
+      background: var(--glass-bg);
+      border: 1px solid var(--border-strong);
+      border-radius: 1.25rem; padding: 2rem;
+      backdrop-filter: var(--glass-blur);
+      -webkit-backdrop-filter: var(--glass-blur);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      position: relative; z-index: 1;
+    }
+    [data-theme="light"] .scheduler-card {
+      box-shadow: 0 4px 24px rgba(10,37,64,0.08);
+    }
+
+    /* Calendar */
+    .month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; }
+    .month-nav h3 { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+    .month-nav-btn {
+      background: none; border: none; cursor: pointer;
+      padding: 0.4rem; color: var(--accent); font-size: 1.1rem;
+      transition: opacity 0.2s; display: flex; align-items: center;
+    }
+    .month-nav-btn:hover { opacity: 0.7; }
+    .day-labels { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 6px; }
+    .day-label { text-align: center; font-size: 0.6rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; }
+    .day-label.weekend { opacity: 0.35; }
+
+    .scheduler-day {
+      aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+      border-radius: 50%; cursor: pointer; transition: all 0.15s;
+      font-size: 0.85rem; color: var(--text-secondary); font-weight: 500;
+    }
+    .scheduler-day:hover:not(.disabled) {
+      background: rgba(var(--accent-rgb), 0.15); color: var(--accent);
+    }
+    .scheduler-day.selected {
+      background: var(--accent); color: #050608; font-weight: 700;
+      box-shadow: 0 0 16px rgba(var(--accent-rgb), 0.4);
+    }
+    [data-theme="light"] .scheduler-day.selected { color: #fff; }
+    .scheduler-day.disabled { opacity: 0.2; cursor: not-allowed; }
+    .scheduler-day.today { box-shadow: inset 0 0 0 1.5px var(--accent); }
+
+    /* Time slots */
+    .scheduler-time {
+      padding: 0.6rem; border: 1px solid var(--border);
+      border-radius: 0.5rem; cursor: pointer; transition: all 0.15s;
+      text-align: center; font-size: 0.85rem; color: var(--text-secondary); font-weight: 500;
+    }
+    .scheduler-time:hover { border-color: var(--accent); color: var(--accent); background: rgba(var(--accent-rgb), 0.06); }
+    .scheduler-time.selected { border-color: var(--accent); background: rgba(var(--accent-rgb), 0.12); color: var(--accent); box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.15); }
+
+    /* Form */
+    .form-input {
+      width: 100%; background: var(--surface-solid);
+      border: 1px solid var(--border);
+      border-radius: 0.5rem; padding: 0.7rem 0.9rem;
+      color: var(--text-primary); font-family: 'Inter', sans-serif;
+      font-size: 0.875rem; transition: border-color 0.2s, box-shadow 0.2s; outline: none;
+    }
+    .form-input::placeholder { color: var(--text-muted); }
+    .form-input:focus { border-color: var(--accent); box-shadow: 0 0 12px rgba(var(--accent-rgb), 0.15); }
+    [data-theme="light"] .form-input { background: #F9FAFB; }
+    textarea.form-input { resize: vertical; min-height: 72px; }
+
+    .btn-book {
+      width: 100%; padding: 0.85rem 1.5rem;
+      background: var(--accent); color: #050608;
+      border: none; border-radius: 0.6rem;
+      font-family: 'Comfortaa', sans-serif; font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; transition: all 0.2s; margin-top: 0.75rem;
+    }
+    [data-theme="light"] .btn-book { color: #fff; }
+    .btn-book:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(var(--accent-rgb), 0.4); }
+    .btn-book:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+
+    /* Utilities */
+    .text-accent { color: var(--accent); font-weight: 600; }
+    .small-btn {
+      background: none; border: none; cursor: pointer;
+      font-size: 0.75rem; color: var(--text-muted);
+      display: flex; align-items: center; gap: 0.25rem; transition: color 0.2s; padding: 0;
+    }
+    .small-btn:hover { color: var(--accent); }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
+    .hidden { display: none !important; }
+    .spinner { display: inline-block; width: 1rem; height: 1rem; border: 2px solid rgba(var(--accent-rgb), 0.2); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.6s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ========== FOOTER ========== */
+    .book-footer {
+      text-align: center; padding: 1.5rem 2rem;
+      border-top: 1px solid var(--border);
+      position: relative; z-index: 1;
+    }
+    .book-footer a, .book-footer span {
+      color: var(--text-muted); text-decoration: none; font-size: 0.65rem;
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.3em;
+    }
+    .book-footer a:hover { color: var(--accent); }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 480px) {
+      .book-heading { font-size: 1.75rem; }
+      .scheduler-card { padding: 1.5rem; }
+      .book-header { padding: 1rem 1.25rem; }
+      main { padding: 2rem 1rem 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- STARFALL BG (dark mode) -->
+  <canvas id="starfall"></canvas>
+  <!-- GRID BG (light mode) -->
+  <div class="grid-bg"></div>
+
+  <!-- HEADER -->
+  <header class="book-header">
+    <a href="/" class="book-logo">
+      <img src="https://raw.githubusercontent.com/GusHem/Logga-utan-text/refs/heads/main/Final%20logo%20no%20text.svg" alt="NordSym">
+      <span>FlowVault</span>
+      <span class="product-tag">NordSym</span>
+    </a>
+    <div class="header-actions">
+      <a href="/" class="back-link"><i class="ph-arrow-left"></i> flowvault.se</a>
+      <button class="theme-btn" id="themeToggle" aria-label="Toggle theme">
+        <i class="ph-bold ph-moon theme-icon"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main>
+    <div class="badge"><span class="pulse"></span> 30 MINUTES &middot; FREE</div>
+    <h1 class="book-heading">Book a Strategy Call</h1>
+    <p class="book-subheading">Let's talk about your automation needs. We'll explore how FlowVault's production-ready workflows can streamline your operations.</p>
+
+    <div class="book-meta">
+      <span class="book-meta-item"><i class="ph-clock"></i> 30 min</span>
+      <span class="book-meta-item"><i class="ph-video-camera"></i> Google Meet</span>
+      <span class="book-meta-item"><i class="ph-lock-simple"></i> No commitment</span>
+    </div>
+
+    <div class="scheduler-card">
+      <!-- CALENDAR -->
+      <div id="schedulerCalendar">
+        <div class="month-nav">
+          <button class="month-nav-btn" onclick="Scheduler.changeMonth(-1)" aria-label="Previous month"><i class="ph-caret-left"></i></button>
+          <h3 id="schedulerMonth"></h3>
+          <button class="month-nav-btn" onclick="Scheduler.changeMonth(1)" aria-label="Next month"><i class="ph-caret-right"></i></button>
+        </div>
+        <div class="day-labels">
+          <div class="day-label">Mo</div><div class="day-label">Tu</div><div class="day-label">We</div>
+          <div class="day-label">Th</div><div class="day-label">Fr</div>
+          <div class="day-label weekend">Sa</div><div class="day-label weekend">Su</div>
+        </div>
+        <div id="schedulerDays" style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:1rem;"></div>
+        <div id="schedulerTimes" class="hidden">
+          <hr class="divider" style="margin-top:0;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0.75rem;">
+            <span id="schedulerDateLabel" class="text-accent" style="font-size:0.85rem;"></span>
+            <button class="small-btn" onclick="Scheduler.resetDate()"><i class="ph-x"></i> Change</button>
+          </div>
+          <div id="schedulerTimeGrid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem;"></div>
+        </div>
+      </div>
+
+      <!-- FORM -->
+      <div id="schedulerForm" class="hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;">
+          <span id="schedulerSummary" style="font-size:0.85rem;"></span>
+          <button class="small-btn" onclick="Scheduler.backToCalendar()"><i class="ph-arrow-left"></i> Change time</button>
+        </div>
+        <form id="schedulerBookingForm" autocomplete="on">
+          <div style="margin-bottom:0.6rem;"><input class="form-input" type="text" name="name" required placeholder="Your name" autocomplete="name"></div>
+          <div style="margin-bottom:0.6rem;"><input class="form-input" type="email" name="email" required placeholder="Email address" autocomplete="email"></div>
+          <div style="margin-bottom:0.6rem;"><input class="form-input" type="text" name="company" placeholder="Company (optional)" autocomplete="organization"></div>
+          <div style="margin-bottom:0.6rem;"><textarea class="form-input" name="notes" placeholder="What workflows are you looking to automate? (optional)"></textarea></div>
+          <button class="btn-book" type="submit">Book meeting</button>
+        </form>
+      </div>
+
+      <!-- SUCCESS -->
+      <div id="schedulerSuccess" class="hidden" style="text-align:center;padding:2.5rem 1rem;">
+        <div style="width:56px;height:56px;border-radius:50%;background:rgba(var(--accent-rgb),0.12);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+          <i class="ph-check-circle" style="font-size:2rem;color:var(--accent);"></i>
+        </div>
+        <h3 style="font-size:1.15rem;color:var(--accent);margin-bottom:0.4rem;">You're booked!</h3>
+        <p id="successDetails" style="color:var(--text-muted);font-size:0.85rem;margin:0 0 0.75rem;"></p>
+        <p style="color:var(--text-muted);font-size:0.8rem;margin:0;">A calendar invitation has been sent to your email.</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="book-footer">
+    <a href="/" style="font-family:'Comfortaa',cursive;">FlowVault</a>
+    <span style="margin:0 0.5rem;opacity:0.3;">|</span>
+    <a href="https://nordsym.com">Powered by NordSym</a>
+  </footer>
+
+  <script>
+    /* ========== STARFALL ========== */
+    const canvas = document.getElementById('starfall');
+    const ctx = canvas.getContext('2d');
+    let width, height, stars = [], meteors = [];
+    function resize() { width = window.innerWidth; height = window.innerHeight; canvas.width = width; canvas.height = height; initStars(); }
+    function initStars() { stars = []; for (let i = 0; i < (width < 768 ? 80 : 200); i++) stars.push({ x: Math.random()*width, y: Math.random()*height, r: Math.random()*1.2, a: Math.random(), s: Math.random()*0.02 }); }
+    function drawStars() {
+      ctx.clearRect(0, 0, width, height);
+      stars.forEach(s => { s.a += s.s; ctx.fillStyle = `rgba(255,255,255,${Math.abs(Math.sin(s.a))*0.5})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill(); });
+      if (Math.random() < 0.004) meteors.push({ x: Math.random()*width, y: 0, s: Math.random()*8+4, l: Math.random()*80+40 });
+      meteors.forEach((m,i) => { m.x -= m.s; m.y += m.s; ctx.strokeStyle = `rgba(20,184,166,${1-m.y/height})`; ctx.beginPath(); ctx.moveTo(m.x,m.y); ctx.lineTo(m.x+m.l,m.y-m.l); ctx.stroke(); if (m.y > height) meteors.splice(i,1); });
+      requestAnimationFrame(drawStars);
+    }
+    resize(); window.addEventListener('resize', resize); drawStars();
+
+    /* ========== THEME ========== */
+    const themeBtn = document.getElementById('themeToggle');
+    const themeIcon = themeBtn.querySelector('.theme-icon');
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      themeIcon.className = 'ph-bold theme-icon ' + (theme === 'dark' ? 'ph-moon' : 'ph-sun');
+      localStorage.setItem('flowvault-theme', theme);
+    }
+    themeBtn.addEventListener('click', () => {
+      applyTheme(document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+    });
+    const stored = localStorage.getItem('flowvault-theme');
+    if (stored) applyTheme(stored);
+
+    /* ========== SCHEDULER ========== */
+    const Scheduler = {
+      currentDate: new Date(), selectedDate: null, selectedTime: null,
+      monthNames: ['January','February','March','April','May','June','July','August','September','October','November','December'],
+      availability: {
+        1:['09:00','10:00','11:00','14:00','15:00','16:00'],
+        2:['09:00','10:00','11:00','14:00','15:00','16:00'],
+        3:['09:00','10:00','11:00','14:00','15:00','16:00'],
+        4:['09:00','10:00','11:00','14:00','15:00','16:00'],
+        5:['09:00','10:00','14:00','15:00']
+      },
+      init() {
+        this.renderCalendar();
+        document.getElementById('schedulerBookingForm').addEventListener('submit', (e) => this.submit(e));
+      },
+      renderCalendar() {
+        const year = this.currentDate.getFullYear(), month = this.currentDate.getMonth();
+        document.getElementById('schedulerMonth').textContent = `${this.monthNames[month]} ${year}`;
+        const firstDay = new Date(year, month, 1).getDay();
+        const startOffset = firstDay === 0 ? 6 : firstDay - 1;
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        const grid = document.getElementById('schedulerDays'); grid.innerHTML = '';
+        const today = new Date(); today.setHours(0,0,0,0);
+        for (let i = 0; i < startOffset; i++) grid.appendChild(document.createElement('div'));
+        for (let d = 1; d <= daysInMonth; d++) {
+          const date = new Date(year, month, d), dow = date.getDay();
+          const isWeekend = dow === 0 || dow === 6, isPast = date < today, isToday = date.getTime() === today.getTime();
+          const el = document.createElement('div');
+          el.className = 'scheduler-day' + (isPast || isWeekend ? ' disabled' : '') + (isToday ? ' today' : '');
+          el.textContent = d;
+          if (!isPast && !isWeekend) el.onclick = () => this.selectDate(d, el);
+          grid.appendChild(el);
+        }
+      },
+      changeMonth(delta) { this.currentDate.setMonth(this.currentDate.getMonth() + delta); this.renderCalendar(); document.getElementById('schedulerTimes').classList.add('hidden'); },
+      selectDate(day, el) {
+        document.querySelectorAll('.scheduler-day').forEach(d => d.classList.remove('selected')); el.classList.add('selected');
+        this.selectedDate = new Date(this.currentDate.getFullYear(), this.currentDate.getMonth(), day);
+        const slots = this.availability[this.selectedDate.getDay()] || [];
+        document.getElementById('schedulerDateLabel').textContent = `${this.monthNames[this.currentDate.getMonth()]} ${day}`;
+        const grid = document.getElementById('schedulerTimeGrid'); grid.innerHTML = '';
+        slots.forEach(t => { const btn = document.createElement('div'); btn.className = 'scheduler-time'; btn.textContent = t; btn.onclick = () => this.selectTime(t, btn); grid.appendChild(btn); });
+        document.getElementById('schedulerTimes').classList.remove('hidden');
+      },
+      selectTime(time, el) {
+        document.querySelectorAll('.scheduler-time').forEach(t => t.classList.remove('selected')); el.classList.add('selected');
+        this.selectedTime = time;
+        const d = this.selectedDate;
+        document.getElementById('schedulerSummary').innerHTML = `<span class="text-accent">${this.monthNames[d.getMonth()]} ${d.getDate()}</span> at <span class="text-accent">${time}</span>`;
+        document.getElementById('schedulerCalendar').classList.add('hidden');
+        document.getElementById('schedulerForm').classList.remove('hidden');
+      },
+      resetDate() { this.selectedDate = null; this.selectedTime = null; document.getElementById('schedulerTimes').classList.add('hidden'); document.querySelectorAll('.scheduler-day').forEach(d => d.classList.remove('selected')); },
+      backToCalendar() { document.getElementById('schedulerForm').classList.add('hidden'); document.getElementById('schedulerCalendar').classList.remove('hidden'); },
+      async submit(e) {
+        e.preventDefault(); const form = e.target, btn = form.querySelector('button[type=submit]');
+        btn.disabled = true; btn.innerHTML = '<span class="spinner"></span>';
+        const d = this.selectedDate;
+        const dateStr = d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' });
+        try {
+          const res = await fetch('https://nordsym.app.n8n.cloud/webhook/aeo-booking', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              name: form.name.value, email: form.email.value,
+              company: form.company?.value || '', notes: form.notes?.value || '',
+              date: d.toLocaleDateString('sv-SE'), time: this.selectedTime,
+              meetingTitle: 'FlowVault Strategy Call',
+              hostName: 'Molle', hostEmail: 'molle@nordsym.com',
+              timestamp: new Date().toISOString(), source: 'flowvault.se/book'
+            })
+          });
+          if (!res.ok) throw new Error();
+          document.getElementById('successDetails').textContent = `${dateStr} at ${this.selectedTime}`;
+          document.getElementById('schedulerForm').classList.add('hidden');
+          document.getElementById('schedulerSuccess').classList.remove('hidden');
+        } catch {
+          btn.innerHTML = 'Something went wrong - try again';
+          btn.disabled = false;
+          setTimeout(() => { btn.innerHTML = 'Book meeting'; }, 3000);
+        }
+      }
+    };
+    document.addEventListener('DOMContentLoaded', () => Scheduler.init());
+  </script>
+</body>
+</html>
