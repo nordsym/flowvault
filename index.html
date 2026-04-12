@@ -918,7 +918,24 @@
             branch: 'main'            
         };
 
-        const UI_TEXT = { difficulties: { beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced" } };
+        const UI_TEXT = { difficulties: { beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced", enkel: "Beginner", medelsvår: "Intermediate", "komplex / svår": "Advanced", "Enkel": "Beginner", "Medelsvår": "Intermediate", "Komplex / Svår": "Advanced" } };
+
+        // Translate Swedish Airtable values to English before rendering
+        const DIFFICULTY_NORM = { "Enkel": "beginner", "Medelsvår": "intermediate", "Komplex / Svår": "advanced", "enkel": "beginner", "medelsvår": "intermediate", "komplex / svår": "advanced" };
+        const CATEGORY_NORM = { "Sälj & CRM": "sales", "Produktivitet": "productivity", "Specialiserad": "specialized", "Innehållskapande": "content", "Innehållskapande": "content", "Svensk Integration": "swedish", "AI Automation": "ai-automation", "Social Media": "social", "Claude Skills": "skills" };
+        const TAG_NORM = { "automatisering": "automation", "innehållsskapande": "content-creation", "analys": "analysis", "försäljning": "sales", "träning": "training", "finjustering": "fine-tuning", "schemaläggning": "scheduling", "fakturor": "invoices", "skrapning": "scraping", "röst": "voice", "rekrytering": "recruitment", "granskning": "review", "ärendehantering": "ticket-management", "presentation": "presentation", "sociala medier": "social-media", "teknisk": "technical", "utveckling": "development" };
+        function normalizeWorkflow(wf) {
+            if (wf._normalized) return wf;
+            if (wf.difficulty && DIFFICULTY_NORM[wf.difficulty]) wf.difficulty = DIFFICULTY_NORM[wf.difficulty];
+            if (Array.isArray(wf.category)) wf.category = wf.category.map(c => CATEGORY_NORM[c] || c);
+            else if (wf.category && CATEGORY_NORM[wf.category]) wf.category = CATEGORY_NORM[wf.category];
+            if (wf.tags) {
+                const normalized = normalizeTags(wf.tags).map(t => TAG_NORM[t] || t);
+                wf.tags = normalized;
+            }
+            wf._normalized = true;
+            return wf;
+        }
         const AI_CONFIG = { apiKey: 'PLACEHOLDER_API_KEY', model: 'claude-3-sonnet-20240229', endpoint: 'https://api.anthropic.com/v1/messages' };
         
         // --- API INTEGRATION ---
@@ -1978,7 +1995,7 @@
                         const uniqueSkills = hardcodedSkills.filter(s => !fetchedIds.has(s.id));
 
                         // Kombinera: Skills först, sedan resten från databasen
-                        WORKFLOWS = [...uniqueSkills, ...items];
+                        WORKFLOWS = [...uniqueSkills, ...items.map(normalizeWorkflow)];
                         
                         // DEBUG: Logga datan för det specifika flödet så vi ser vad category innehåller
                         const debugItem = items.find(i => i.title && i.title.toLowerCase().includes('fortnox'));
