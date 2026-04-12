@@ -28,17 +28,17 @@
     /* ========== TOKENS (FlowVault design - NordSym base) ========== */
     :root {
       --bg: #050608;
-      --surface: rgba(20, 184, 166, 0.06);
+      --surface: rgba(0, 191, 255, 0.06);
       --surface-solid: #0c1117;
-      --border: rgba(20, 184, 166, 0.15);
-      --border-strong: rgba(20, 184, 166, 0.25);
+      --border: rgba(0, 191, 255, 0.15);
+      --border-strong: rgba(0, 191, 255, 0.25);
       --text-primary: #F0F4F8;
       --text-secondary: #CBD5E0;
       --text-muted: rgba(203, 213, 224, 0.5);
-      --accent: #14B8A6;
-      --accent-rgb: 20, 184, 166;
+      --accent: #00BFFF;
+      --accent-rgb: 0, 191, 255;
       --accent-secondary: #00BFFF;
-      --glass-bg: rgba(20, 184, 166, 0.06);
+      --glass-bg: rgba(0, 191, 255, 0.06);
       --glass-blur: blur(16px);
     }
     [data-theme="light"] {
@@ -50,8 +50,8 @@
       --text-primary: #0A2540;
       --text-secondary: #4B5563;
       --text-muted: #9CA3AF;
-      --accent: #0D9488;
-      --accent-rgb: 13, 148, 136;
+      --accent: #0099CC;
+      --accent-rgb: 0, 153, 204;
       --glass-bg: rgba(255, 255, 255, 0.9);
     }
 
@@ -82,8 +82,8 @@
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none; z-index: 0; opacity: 0;
       background-size: 24px 24px;
-      background-image: linear-gradient(to right, rgba(13,148,136,0.06) 1px, transparent 1px),
-                        linear-gradient(to bottom, rgba(13,148,136,0.06) 1px, transparent 1px);
+      background-image: linear-gradient(to right, rgba(0,191,255,0.06) 1px, transparent 1px),
+                        linear-gradient(to bottom, rgba(0,191,255,0.06) 1px, transparent 1px);
     }
     [data-theme="light"] .grid-bg { opacity: 1; }
 
@@ -378,7 +378,7 @@
       ctx.clearRect(0, 0, width, height);
       stars.forEach(s => { s.a += s.s; ctx.fillStyle = `rgba(255,255,255,${Math.abs(Math.sin(s.a))*0.5})`; ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI*2); ctx.fill(); });
       if (Math.random() < 0.004) meteors.push({ x: Math.random()*width, y: 0, s: Math.random()*8+4, l: Math.random()*80+40 });
-      meteors.forEach((m,i) => { m.x -= m.s; m.y += m.s; ctx.strokeStyle = `rgba(20,184,166,${1-m.y/height})`; ctx.beginPath(); ctx.moveTo(m.x,m.y); ctx.lineTo(m.x+m.l,m.y-m.l); ctx.stroke(); if (m.y > height) meteors.splice(i,1); });
+      meteors.forEach((m,i) => { m.x -= m.s; m.y += m.s; ctx.strokeStyle = `rgba(0,191,255,${1-m.y/height})`; ctx.beginPath(); ctx.moveTo(m.x,m.y); ctx.lineTo(m.x+m.l,m.y-m.l); ctx.stroke(); if (m.y > height) meteors.splice(i,1); });
       requestAnimationFrame(drawStars);
     }
     resize(); window.addEventListener('resize', resize); drawStars();
