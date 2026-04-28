@@ -1,6 +1,6 @@
 # FlowVault
 
-n8n workflow library powering [flowvault.se](https://flowvault.se) - NordSym's curated marketplace för produktionsklara automationer.
+n8n workflow library powering [flowvault.se](https://flowvault.se) - NordSym's curated library for reusable automations, now evolving into a reliability layer with the FlowVault Audit MCP wedge.
 
 ## 📦 What's Here
 
@@ -9,11 +9,11 @@ n8n workflow library powering [flowvault.se](https://flowvault.se) - NordSym's c
 - 📊 Metadata-enriched (complexity, nodes used, use case)
 - 🎯 Categorized for quick discovery
 
-**Note:** These raw workflow files are available here for direct import. For searchable marketplace, metadata, and PRO features → [flowvault.se](https://flowvault.se)
+**Note:** These raw workflow files are available here for direct import. For the reusable library, metadata, and reliability tooling → [flowvault.se](https://flowvault.se)
 
 ## 🔥 Live Product
 
-**FlowVault.se** - n8n marketplace
+**FlowVault.se** - n8n workflow library
 - **Free tier:** Browse & download workflows via UI
 - **PRO (299 SEK/mån):** Priority support, custom templates, early access
 - **Current MRR:** ~100 SEK (1 PRO user, 5 FREE trials)
@@ -21,7 +21,7 @@ n8n workflow library powering [flowvault.se](https://flowvault.se) - NordSym's c
 ## 🏗️ Architecture
 
 Workflow repository powers:
-1. [flowvault.se](https://flowvault.se) marketplace frontend
+1. [flowvault.se](https://flowvault.se) library frontend
 2. n8n MCP search tools (`search_templates`, `get_template`)
 3. Internal NordSym automation library
 
@@ -41,7 +41,7 @@ git clone https://github.com/nordsym/flowvault.git
 # Copy any .json file → Import in n8n UI
 ```
 
-**Want metadata, search, and categorization?** → Use [flowvault.se](https://flowvault.se) instead.
+**Want metadata, search, categorization, and the reliability layer?** → Use [flowvault.se](https://flowvault.se) instead.
 
 ## 🛠️ Tech Stack
 
@@ -59,13 +59,13 @@ git clone https://github.com/nordsym/flowvault.git
 
 ## 🎯 Purpose
 
-Lead generation engine for NordSym custom automation. Users discover workflows → need custom implementation → contact NordSym for 60-120k SEK projects.
+Lead generation engine for NordSym custom automation and the emerging FlowVault reliability layer. Users discover workflows, reuse what fits, then contact NordSym when they need the next step.
 
 ## 🔗 Links
 
 - **Live site:** https://flowvault.se
 - **NordSym:** https://nordsym.com
-- **Support:** info@nordsym.se
+- **Support:** support@nordsym.com
 
 ---
 

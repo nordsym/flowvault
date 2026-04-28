@@ -1,12 +1,12 @@
-# FlowVault - Library for n8n workflows
+# FlowVault - n8n workflow library and reliability layer
 
 ## What is FlowVault?
-Production-ready n8n workflow marketplace. Skip starting from scratch - get verified automations built by professionals.
+A library of reusable n8n workflows, plus the reliability layer that will grow around the FlowVault Audit MCP wedge. Skip starting from scratch and reuse systems that are built to ship.
 
 ## Key Features
 - Curated n8n workflows
-- Swedish API integrations (Fortnox, etc.)
-- Advanced AI swarms
+- Reliability layer for workflow quality
+- Audit MCP wedge for workflow JSON checks
 - Filter by platform, level, popularity
 - 3 free downloads/month
 - Pro plan for unlimited downloads
