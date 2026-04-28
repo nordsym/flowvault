@@ -1,5 +1,15 @@
 {
   "rewrites": [
     { "source": "/book", "destination": "/book.html" }
+  ],
+  "headers": [
+    {
+      "source": "/flowvault-audit.mcpb",
+      "headers": [
+        { "key": "Content-Type", "value": "application/octet-stream" },
+        { "key": "Content-Disposition", "value": "attachment; filename=flowvault-audit.mcpb" },
+        { "key": "Cache-Control", "value": "public, max-age=300" }
+      ]
+    }
   ]
 }
