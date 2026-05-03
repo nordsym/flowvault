@@ -1,0 +1,1021 @@
+{
+  "name": "\u4f4e\u7c89\u7206\u6b3e\u89c6\u9891\u590d\u523b\u5de5\u4f5c\u6d41 open",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        16
+      ],
+      "id": "450eea4a-c03f-4811-ac28-838b848d3550",
+      "name": "When clicking \u2018Execute workflow\u2019"
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "24c629a6-152d-8020-99c1-da383799f143",
+          "mode": "list",
+          "cachedResultName": "\u6296\u97f3\u4f4e\u7c89\u7206\u6b3e\u89c6\u9891",
+          "cachedResultUrl": "https://www.notion.so/24c629a6152d802099c1da383799f143"
+        },
+        "simple": false,
+        "filterType": "manual",
+        "filters": {
+          "conditions": [
+            {
+              "key": "\u8f6c\u5f55|rich_text",
+              "condition": "is_empty"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        -192,
+        16
+      ],
+      "id": "e60918b4-eb8e-4304-ab1f-2d40caca71e8",
+      "name": "Get many database pages",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "url": " https://www.mxnzp.com/api/douyin/video",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $('Loop Over Items').item.json.base64_url }}"
+            },
+            {
+              "name": "app_id",
+              "value": "\u586b\u5199\u5e73\u53f0\u7684APP_ID"
+            },
+            {
+              "name": "app_secret",
+              "value": "\u586b\u5199\u5e73\u53f0\u7684APP_SECRET"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        16
+      ],
+      "id": "a7a25a08-bc42-4773-ba07-cb11bf2b1938",
+      "name": "\u83b7\u53d6\u65e0\u6c34\u5370\u89c6\u9891",
+      "notesInFlow": true,
+      "retryOnFail": true,
+      "notes": "\u4e0b\u8f7d\u6296\u97f3\u65e0\u6c34\u5370\u89c6\u9891"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.data.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1168,
+        128
+      ],
+      "id": "5a0f1461-3982-4315-bf59-3d64d4d97952",
+      "name": "\u4e0b\u8f7d\u89c6\u9891",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=./n8ndata/{{ $('Loop Over Items').item.json.properties.ID.rich_text[0].text.content }}/\u539f\u89c6\u9891.mp4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        128
+      ],
+      "id": "a330814a-02a1-4ed1-8d0c-311349f840f6",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=./n8ndata/{{ $('Loop Over Items').item.json.properties.ID.rich_text[0].text.content }}/\u539f\u5c01\u9762.jpg",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        -80
+      ],
+      "id": "c6fe029b-96ab-4db5-a192-fdca3cb8bc4d",
+      "name": "Read/Write Files from Disk1"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.data.cover }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1184,
+        -80
+      ],
+      "id": "ce106c8c-b0cc-4b65-a33e-ac29a9dd3482",
+      "name": "\u4e0b\u8f7d\u5c01\u9762",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "fileSelector": "=./n8ndata/{{ $('Loop Over Items').item.json.properties.ID.rich_text[0].text.content }}/\u539f\u97f3\u9891.mp3",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -416,
+        384
+      ],
+      "id": "6203deb4-3c80-403c-9da4-0164a7cc7623",
+      "name": "Read/Write Files from Disk2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        48,
+        608
+      ],
+      "id": "9a819b24-13db-4eb8-ba04-087c3f50e83d",
+      "name": "DeepSeek Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "update",
+        "pageId": {
+          "__rl": true,
+          "value": "={{ $('Loop Over Items').item.json.id }}",
+          "mode": "id"
+        },
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "\u8f6c\u5f55|rich_text",
+              "textContent": "\u5df2\u8f6c\u5f55"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        576,
+        384
+      ],
+      "id": "7edcae7c-e040-44bc-a231-08efade57364",
+      "name": "Update a database page",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "block",
+        "blockId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "blockUi": {
+          "blockValues": [
+            {
+              "type": "heading_3",
+              "textContent": "\u539f\u6587\u6848"
+            },
+            {
+              "textContent": "={{ $('\u97f3\u9891\u8f6c\u5f55').item.json.text }}"
+            },
+            {
+              "type": "heading_3",
+              "textContent": "\u7ffb\u62cd\u6587\u6848"
+            },
+            {
+              "textContent": "={{ $('\u7ffb\u62cd\u6587\u6848\u751f\u6210').item.json.output.copywriting }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.notion",
+      "typeVersion": 2.2,
+      "position": [
+        864,
+        384
+      ],
+      "id": "47105c6e-0ec5-4dc7-98e9-b751b68ef896",
+      "name": "Append a block",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "maxItems": 2
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        256,
+        16
+      ],
+      "id": "617f1b09-29eb-4c87-9e76-cf99286cf1f1",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=./n8ndata/{{ $('Loop Over Items').item.json.properties.ID.rich_text[0].text.content }}/\u7ffb\u62cd\u6587\u6848.txt",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        384
+      ],
+      "id": "ad48cd3e-018f-4ae2-8931-3bc183032582",
+      "name": "Read/Write Files from Disk3"
+    },
+    {
+      "parameters": {
+        "jsCode": "// \u83b7\u53d6\u6240\u6709\u8f93\u5165\u6570\u636e\nconst items = $input.all();\n\n// \u5904\u7406\u6bcf\u4e2aitem\uff0c\u5c06URL\u8f6c\u6362\u4e3abase64\nconst processedItems = items.map((item, index) => {\n  // \u83b7\u53d6\u539f\u59cbURL\n  const originalUrl = item.json.properties[\"\u7f51\u5740\"].url;\n  \n  // \u5c06URL\u8f6c\u6362\u4e3abase64\u7f16\u7801\n  const base64Url = Buffer.from(originalUrl, 'utf8').toString('base64');\n  \n  return {\n    json: {\n      ...item.json, // \u4fdd\u7559\u539f\u6709\u6570\u636e\n      base64_url: base64Url, // \u6dfb\u52a0base64\u7f16\u7801\u7684URL\n      original_url: originalUrl // \u53ef\u9009\uff1a\u4fdd\u7559\u539f\u59cbURL\u4f5c\u4e3a\u53c2\u8003\n    }\n  };\n});\n\n// \u8fd4\u56de\u5904\u7406\u540e\u7684\u6570\u636e\nreturn processedItems;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        32,
+        16
+      ],
+      "id": "4da69047-e9e9-4113-be4c-a03991f07f7c",
+      "name": "\u8f6cBase64"
+    },
+    {
+      "parameters": {
+        "command": "=mkdir -p \"./n8ndata/{{ $json.properties.ID.rich_text[0].text.content }}\""
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        736,
+        16
+      ],
+      "id": "53595448-40d0-45e6-a9b5-1fe456ea9a8f",
+      "name": "\u521b\u5efa\u672c\u5730\u6587\u4ef6\u5939"
+    },
+    {
+      "parameters": {
+        "command": "=[ ! -f \"./n8ndata/{{ $('Loop Over Items').item.json.properties.ID.rich_text[0].text.content }}/\u539f\u97f3\u9891.mp3\" ] && ffmpeg -i \"./n8ndata/{{ $('Limit').item.json.properties.ID.rich_text[0].text.content }}/\u539f\u89c6\u9891.mp4\" -q:a 0 -map a \"./n8ndata/{{ $('Loop Over Items').item.json.properties.ID.rich_text[0].text.content }}/\u539f\u97f3\u9891.mp3\" || echo \"\u539f\u97f3\u9891.mp3 \u5df2\u5b58\u5728\uff0c\u8df3\u8fc7\""
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        384
+      ],
+      "id": "f8fa37da-a8f0-4424-b04d-47307e92ad1a",
+      "name": "\u89c6\u9891\u8f6c\u97f3\u9891"
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -176,
+        384
+      ],
+      "id": "29ea28b6-66fe-4bba-89a7-86b3f901f5f6",
+      "name": "\u97f3\u9891\u8f6c\u5f55",
+      "retryOnFail": true,
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\u539f\u6587\u6848\uff1a{{ $json.text }}",
+        "hasOutputParser": true,
+        "needsFallback": true,
+        "options": {
+          "systemMessage": "=\u4f60\u662f\u4e00\u540d\u8d44\u6df1\u77ed\u89c6\u9891\u7206\u6b3e\u6587\u6848\u521b\u4f5c\u8005\uff0c\u8bf7\u6839\u636e\u7528\u6237\u63d0\u4f9b\u7684\u539f\u6587\u6848\u8fdb\u884c\u6539\u5199\u548c\u6da6\u8272\uff0c\u8981\u6c42\u5982\u4e0b\uff1a\n\n1. \u4fdd\u7559\u539f\u6587\u6848\u81ea\u5e26\u7684\u7206\u6b3e\u903b\u8f91\u548c\u7ed3\u6784\uff08\u5982\u5f00\u5934\u94a9\u5b50\u3001\u8bbe\u95ee\u3001\u6848\u4f8b\u3001\u75db\u70b9\u5171\u9e23\u3001\u89e3\u51b3\u65b9\u6848\u3001\u5bf9\u6bd4\u3001\u573a\u666f\u4ee3\u5165\u3001\u884c\u52a8\u53f7\u53ec\u7b49\uff09\uff0c\u4fdd\u6301\u5185\u5bb9\u8282\u594f\u548c\u4f20\u64ad\u529b\uff0c\u4e0d\u8981\u56fa\u5b9a\u6b7b\u677f\u7684\u7ed3\u6784\uff0c\u4f46\u8981\u7ef4\u6301\u201c\u7206\u70b9\u903b\u8f91\u201d\u3002\n2. \u5220\u9664\u6240\u6709\u8eab\u4efd\u4fe1\u606f\u6216\u89d2\u8272\u8bbe\u5b9a\uff08\u4f8b\u5982\u201c\u6211\u662f\u8001\u738b\u201d\uff09\uff0c\u4e0d\u80fd\u51fa\u73b0\u4efb\u4f55\u53ef\u80fd\u66b4\u9732\u539f\u4f5c\u8005\u7684\u63cf\u8ff0\u3002\n3. \u5728\u4fdd\u6301\u6838\u5fc3\u4fe1\u606f\u4e0d\u53d8\u7684\u524d\u63d0\u4e0b\uff0c\u4f7f\u7528\u66f4\u6709\u51b2\u51fb\u529b\u3001\u66f4\u53e3\u8bed\u5316\u3001\u66f4\u7b80\u6d01\u7684\u8868\u8fbe\uff0c\u9002\u5408\u77ed\u89c6\u9891\u53e3\u64ad\u548c\u5b57\u5e55\u3002\n4. \u53e5\u5b50\u5c3d\u91cf\u7b80\u77ed\u6709\u529b\uff0c\u907f\u514d\u5e9f\u8bdd\uff0c\u589e\u5f3a\u4ee3\u5165\u611f\u548c\u611f\u67d3\u529b\u3002\n5. \u6587\u6848\u5185\u4f7f\u7528\u7b80\u5355\u6807\u70b9\u7b26\u53f7\u5982\u9017\u53f7\uff0c\u53e5\u53f7\u505a\u5206\u5272\uff1b\u4f46\u4e0d\u4f7f\u7528\u7279\u6b8a\u7b26\u53f7\uff0c\u5982\u8868\u60c5\u7b26\u53f7\u3001\u5927\u62ec\u53f7\u3001\u5c0f\u62ec\u53f7\u3001\u6362\u884c\u7b26\u7b49\u3002\n6. \u540c\u65f6\u751f\u6210\u4e00\u7ec4\u548c\u6587\u6848\u5185\u5bb9\u6709\u5173\u7cfb\u7684\u82f1\u6587keywords\uff0c\u4ee5\u4fbf\u6211\u7528\u4e8e\u641c\u7d22\u7d20\u6750\u3002"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        128,
+        384
+      ],
+      "id": "1e69d55b-c9ab-469f-8cbf-c497e819f24b",
+      "name": "\u7ffb\u62cd\u6587\u6848\u751f\u6210"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://openspeech.bytedance.com/api/v1/tts",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer;\u706b\u5c71\u5f15\u64ce\u5e94\u7528\u5bc6\u94a5"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"app\": {\n        \"appid\": \"\u706b\u5c71\u5f15\u64ce\u5e94\u7528appid\",\n        \"token\": \"12345\",\n        \"cluster\": \"volcano_tts\"\n    },\n    \"user\": {\n        \"uid\": \"uid123\"\n    },\n    \"audio\": {\n        \"voice_type\": \"{{ $('\u97f3\u8272\u9009\u62e9').item.json[\"\u4eae\u55d3\u840c\u4ed4\"] }}\",\n        \"encoding\": \"mp3\",\n        \"speed_ratio\": 1.0\n    },\n    \"request\": {\n        \"reqid\": \"{{ $json.UUID }}\",\n        \"text\": \"{{ $('\u7ffb\u62cd\u6587\u6848\u751f\u6210').item.json.output.copywriting }}\",\n        \"operation\": \"query\"\n    }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -416,
+        800
+      ],
+      "id": "1dd7e971-f84a-49ed-b9e1-aa83ce018f10",
+      "name": "HTTP Request1",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "action": "generate",
+        "dataPropertyName": "UUID"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [
+        -640,
+        800
+      ],
+      "id": "5529faf6-27f0-4038-a5bc-2604e389272c",
+      "name": "Crypto1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// \u83b7\u53d6\u8f93\u5165\u7684 base64 \u5b57\u7b26\u4e32\nlet base64AudioData = $input.first().json.data;\n\n// \u79fb\u9664\u53ef\u80fd\u7684 base64 \u524d\u7f00\nbase64AudioData = base64AudioData.replace(/^data:audio\\/[^;]+;base64,/, '');\nbase64AudioData = base64AudioData.replace(/[\\r\\n\\s]/g, '');\n\n// \u8f6c\u6362\u4e3a Buffer\nconst audioBuffer = Buffer.from(base64AudioData, 'base64');\n\n// \u8fd4\u56de n8n \u6807\u51c6 item\nreturn [\n  {\n    json: {\n      message: 'Audio decoded successfully',\n      size: audioBuffer.length\n    },\n    binary: {\n      audio: {\n        // \u6ce8\u610f\u8fd9\u91cc\u8981\u8f6c\u56de base64\n        data: audioBuffer.toString('base64'),  \n        mimeType: 'audio/mpeg',  // \u66f4\u901a\u7528\u7684 MIME\uff08\u63a8\u8350\u7528 audio/mpeg \u800c\u4e0d\u662f audio/mp3\uff09\n        fileName: 'decoded_audio.mp3'\n      }\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -192,
+        800
+      ],
+      "id": "9c2e764e-b014-4523-9eda-63e46a1d0ebb",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=./n8ndata/{{ $('Loop Over Items').item.json.properties.ID.rich_text[0].text.content }}/\u7ffb\u62cd\u97f3\u9891.mp3",
+        "dataPropertyName": "audio",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        32,
+        800
+      ],
+      "id": "3f040b0a-0a59-4ec5-8a88-d6fe96bdd4aa",
+      "name": "Read/Write Files from Disk4"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"copywriting\": \"\u7ffb\u62cd\u6587\u6848\",\n\t\"keywords\": [\"\u5173\u952e\u8bcd\", \"\u5173\u952e\u8bcd\", \"\u5173\u952e\u8bcd\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        320,
+        608
+      ],
+      "id": "9afd3ea4-0b30-4a71-9959-e0bb95174dba",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "url": "https://api.pexels.com/videos/search",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "={{ $('\u7ffb\u62cd\u6587\u6848\u751f\u6210').item.json.output.keywords[Math.floor(Math.random() * $('\u7ffb\u62cd\u6587\u6848\u751f\u6210').item.json.output.keywords.length)] }}"
+            },
+            {
+              "name": "per_page",
+              "value": "5"
+            },
+            {
+              "name": "orientation",
+              "value": "portrait"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "pexels\u5e73\u53f0\u5bc6\u94a5"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        304,
+        800
+      ],
+      "id": "35ce0cbb-f7d9-4c7d-b18e-ddc5fd06c2e5",
+      "name": "HTTP Request",
+      "retryOnFail": true,
+      "notesInFlow": true,
+      "notes": "\u6839\u636e\u5173\u952e\u8bcd\u83b7\u53d6\u7d20\u6750"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "=./n8ndata/{{ $('Loop Over Items').item.json.properties.ID.rich_text[0].text.content }}/\u7ffb\u62cd\u7d20\u6750{{$itemIndex}}.mp4",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        800
+      ],
+      "id": "f308b8ab-ac8e-4859-8391-93cd582936f1",
+      "name": "Read/Write Files from Disk5"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "64c79c5f-b02d-4bba-943b-5b542951178c",
+              "name": "\u61d2\u97f3\u7ef5\u5b9d",
+              "value": "zh_male_lanxiaoyang_mars_bigtts",
+              "type": "string"
+            },
+            {
+              "id": "496d1f75-fa81-4e08-b311-ff1f99fdfa8d",
+              "name": "\u4eae\u55d3\u840c\u4ed4",
+              "value": "zh_male_dongmanhaimian_mars_bigtts",
+              "type": "string"
+            },
+            {
+              "id": "52914278-d4a1-478e-a55f-57c937543c01",
+              "name": "\u718a\u4e8c",
+              "value": "zh_male_xionger_mars_bigtts",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -416,
+        16
+      ],
+      "id": "7e73d7fe-09b6-4a31-ad9f-d1efe66104b6",
+      "name": "\u97f3\u8272\u9009\u62e9",
+      "notesInFlow": true,
+      "notes": "\u53ef\u4ee5\u6839\u636e\u5206\u7c7b\u548c\u6587\u6848\uff0c\u81ea\u5b9a\u4e49\u4e0d\u540c\u7684\u97f3\u8272\uff0c\u89c6\u9891\u6548\u679c\u591a\u5143\u5316"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        496,
+        16
+      ],
+      "id": "b76a3209-bd26-46ba-924b-455fb3496257",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "jsCode": "// \u83b7\u53d6\u8f93\u5165\u6570\u636e\nconst transcribeText = $('\u97f3\u9891\u8f6c\u5f55').item.json.text || '';\nconst aiOutput = $('\u7ffb\u62cd\u6587\u6848\u751f\u6210').first().json.output.copywriting || '';\n\n// \u7ec4\u5408\u6587\u672c\u5185\u5bb9\nconst combinedContent = `\u539f\u6587\u6848\uff1a\n${transcribeText}\n\n\u7ffb\u62cd\u6587\u6848\uff1a\n${aiOutput}`;\n\n// \u751f\u6210\u6587\u4ef6\u540d\uff08\u5e26\u65f6\u95f4\u6233\uff09\nconst timestamp = new Date().toISOString().slice(0, 19).replace(/[:-]/g, '');\nconst fileName = `combined_text_${timestamp}.txt`;\n\n// \u8f6c\u6362\u4e3abase64\u683c\u5f0f\nconst base64Content = Buffer.from(combinedContent, 'utf8').toString('base64');\n\nreturn [\n  {\n    json: {\n      fileName: fileName,\n      fileSize: combinedContent.length\n    },\n    binary: {\n      data: {\n        data: base64Content,\n        mimeType: 'text/plain',\n        fileName: fileName,\n        fileExtension: 'txt'\n      }\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1168,
+        384
+      ],
+      "id": "a442b6a5-0315-42cb-9263-dfbff4058788",
+      "name": "\u751f\u6210\u6587\u6848\u6587\u4ef6"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ae930b84-e03c-4c1f-bbf2-cd694bc06f27",
+              "leftValue": "={{ $json.total_results }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        800
+      ],
+      "id": "40f9f4e5-12ee-4459-9a72-ed67b27ab6cb",
+      "name": "\u5224\u65ad\u7d20\u6750"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1152,
+        800
+      ],
+      "id": "bfc17336-e059-43e6-a65b-01eff3ff8da2",
+      "name": "\u4e0b\u8f7d\u7d20\u6750",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "return $json.videos\n  .filter(v => v.video_files.length >= 4)   // \u5148\u8fc7\u6ee4\u6389\u4e0d\u8db3 4 \u4e2a\u7684\n  .map(v => {\n    return {\n      json: {\n        link: v.video_files[3].link\n      }\n    };\n  });\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        864,
+        800
+      ],
+      "id": "b3f84bbe-eace-4552-91a4-825be45efc62",
+      "name": "\u683c\u5f0f\u5316\u7d20\u6750URL"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-5-chat-latest",
+          "mode": "list",
+          "cachedResultName": "gpt-5-chat-latest"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        176,
+        608
+      ],
+      "id": "f7dc36ef-2a5b-4549-b539-8e70d965edbd",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking \u2018Execute workflow\u2019": {
+      "main": [
+        [
+          {
+            "node": "\u97f3\u8272\u9009\u62e9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many database pages": {
+      "main": [
+        [
+          {
+            "node": "\u8f6cBase64",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u83b7\u53d6\u65e0\u6c34\u5370\u89c6\u9891": {
+      "main": [
+        [
+          {
+            "node": "\u4e0b\u8f7d\u89c6\u9891",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "\u4e0b\u8f7d\u5c01\u9762",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u4e0b\u8f7d\u89c6\u9891": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u4e0b\u8f7d\u5c01\u9762": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "\u89c6\u9891\u8f6c\u97f3\u9891",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk2": {
+      "main": [
+        [
+          {
+            "node": "\u97f3\u9891\u8f6c\u5f55",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "\u7ffb\u62cd\u6587\u6848\u751f\u6210",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a database page": {
+      "main": [
+        [
+          {
+            "node": "Append a block",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append a block": {
+      "main": [
+        [
+          {
+            "node": "\u751f\u6210\u6587\u6848\u6587\u4ef6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u8f6cBase64": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u521b\u5efa\u672c\u5730\u6587\u4ef6\u5939": {
+      "main": [
+        [
+          {
+            "node": "\u83b7\u53d6\u65e0\u6c34\u5370\u89c6\u9891",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u89c6\u9891\u8f6c\u97f3\u9891": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u97f3\u9891\u8f6c\u5f55": {
+      "main": [
+        [
+          {
+            "node": "\u7ffb\u62cd\u6587\u6848\u751f\u6210",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u7ffb\u62cd\u6587\u6848\u751f\u6210": {
+      "main": [
+        [
+          {
+            "node": "Update a database page",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk3": {
+      "main": [
+        [
+          {
+            "node": "Crypto1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crypto1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "\u7ffb\u62cd\u6587\u6848\u751f\u6210",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk4": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "\u5224\u65ad\u7d20\u6750",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u97f3\u8272\u9009\u62e9": {
+      "main": [
+        [
+          {
+            "node": "Get many database pages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "\u521b\u5efa\u672c\u5730\u6587\u4ef6\u5939",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk5": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u751f\u6210\u6587\u6848\u6587\u4ef6": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u5224\u65ad\u7d20\u6750": {
+      "main": [
+        [
+          {
+            "node": "\u683c\u5f0f\u5316\u7d20\u6750URL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u4e0b\u8f7d\u7d20\u6750": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u683c\u5f0f\u5316\u7d20\u6750URL": {
+      "main": [
+        [
+          {
+            "node": "\u4e0b\u8f7d\u7d20\u6750",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "\u7ffb\u62cd\u6587\u6848\u751f\u6210",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "7c8d50cd-f648-4b0f-803a-1c827e84d8ac",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "667f8e49cea6f05a4f2d4764a2ef083b44c681d7bcf3709cc71f85be90eeca2e"
+  },
+  "id": "UYrwLdyALiJfXosW",
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}

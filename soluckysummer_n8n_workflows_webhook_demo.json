@@ -1,0 +1,124 @@
+{
+  "name": "webhook test",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "c1dda9ee-8759-421d-8ec3-33b3e3c601c0",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -48,
+        -16
+      ],
+      "id": "36cc3ab0-5f09-4fb2-9c54-3c9d0d9506a8",
+      "name": "Webhook",
+      "webhookId": "c1dda9ee-8759-421d-8ec3-33b3e3c601c0"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e56a6bb2-56a5-4228-9ff4-725a8bc929f3",
+              "name": "webhook_value",
+              "value": "={{ $json.body.test }}",
+              "type": "string"
+            },
+            {
+              "id": "aabe8a81-6a94-4588-86b5-f82947cc09df",
+              "name": "text",
+              "value": "\u8fd4\u56de\u503c\u5728\u8fd9\u91cc",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        -16
+      ],
+      "id": "b337861e-6b88-466e-8a03-ed4ac994e7a3",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"reponse\": \"{{ $json.text }}\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        480,
+        -16
+      ],
+      "id": "deb90910-482c-41df-94ee-a36aea5151f9",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "f33c2687-17d5-4f71-8f54-85cc54e866e1",
+  "meta": {
+    "instanceId": "b98b98135dab39d60742eab16a2a66a05dec7028bfdb9b31aea7dce5ef9e0c67"
+  },
+  "id": "BMTHLkqciquwQJlZ",
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}

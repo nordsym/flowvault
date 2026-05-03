@@ -1,0 +1,179 @@
+{
+  "meta": {
+    "instanceId": "54d8e296590faa0bb0e9d6290ad6ee2f19b78aa7b248ecb45c5f7c5ff622d210",
+    "templateCredsSetupCompleted": true
+  },
+  "nodes": [
+    {
+      "id": "f51fc817-6fe6-47aa-9fb2-a74614417162",
+      "name": "On form submission",
+      "type": "n8n-nodes-base.formTrigger",
+      "position": [
+        -660,
+        -180
+      ],
+      "webhookId": "e441bdd8-6557-4b93-9d3a-8530db0d6b92",
+      "parameters": {},
+      "typeVersion": 2.2
+    },
+    {
+      "id": "63d44194-73e7-43f5-9553-4ece56b67619",
+      "name": "Get Order By Increment ID",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        -440,
+        -180
+      ],
+      "parameters": {},
+      "typeVersion": 4.2
+    },
+    {
+      "id": "eae95104-f7ab-410e-a150-6fba641bc6aa",
+      "name": "Checks If Order Exist",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        -220,
+        -180
+      ],
+      "parameters": {},
+      "typeVersion": 2.2
+    },
+    {
+      "id": "79745ed9-731d-404b-a487-25bd2a3afcca",
+      "name": "Code",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        0,
+        -180
+      ],
+      "parameters": {},
+      "typeVersion": 2
+    },
+    {
+      "id": "9b7ab232-4046-4acc-bbb0-3f001e05590b",
+      "name": "Update Guest Order Email",
+      "type": "n8n-nodes-base.mySql",
+      "position": [
+        220,
+        -180
+      ],
+      "parameters": {},
+      "typeVersion": 2.4
+    },
+    {
+      "id": "0fff6518-a075-4deb-8d77-5c31b8d83917",
+      "name": "resend order confirmation",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        660,
+        -180
+      ],
+      "parameters": {},
+      "typeVersion": 4.2
+    },
+    {
+      "id": "c228566c-7f60-4524-b626-e3d825cfc21c",
+      "name": "Checks for Resend",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        440,
+        -180
+      ],
+      "parameters": {},
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Update Guest Order Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checks for Resend": {
+      "main": [
+        [
+          {
+            "node": "resend order confirmation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Get Order By Increment ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Checks If Order Exist": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Guest Order Email": {
+      "main": [
+        [
+          {
+            "node": "Checks for Resend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Order By Increment ID": {
+      "main": [
+        [
+          {
+            "node": "Checks If Order Exist",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}
