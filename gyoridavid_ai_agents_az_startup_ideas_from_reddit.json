@@ -1,0 +1,813 @@
+{
+  "name": "Episode 15: Startup ideas for YC RFS",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        520,
+        640
+      ],
+      "id": "875c9036-40db-42a9-a5de-9a63e04afd97",
+      "name": "When clicking \u2018Execute workflow\u2019"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-2025-04-14",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-2025-04-14"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1520,
+        1700
+      ],
+      "id": "ba227b86-fd5a-4bbf-9272-1bd421f5d54e",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "b737649d-c34b-4fb5-a008-96bcfc93d9ce",
+              "name": "request_for_startups",
+              "value": "=# Full-stack AI Companies:\nTraditional AI startups often build tools and sell them to businesses. A more disruptive approach is to launch companies that directly compete against industry incumbents using AI. For example, instead of selling AI to law firms, create a new AI-powered law firm. This \"full-stack\" model could be applied to any field with slow-moving players.\n\n# More Design Founders:\nDesigners should become founders, especially as no-code tools make product building more accessible. Good design will become a greater competitive advantage. Designers possess skills like user empathy and aesthetic judgment, which are vital for startup success\u2014as seen in companies like Airbnb and Stripe. YC wants to fund teams with strong design at their core.\n\n# Voice AI:\nDespite advances in business tech, voice interactions (phone calls) haven\u2019t changed in decades. New voice models and conversational AI are now realistic enough to be indistinguishable from humans. With over a trillion business calls annually, AI voice bots are poised to revolutionize this area.\n\n# AI for Scientific Advancement:\nMost scientific software in fields like chemistry and operations research is out-of-date. AI, especially at test time, enables solving complex problems in drug discovery, chemical processes, and more. YC is interested in startups leveraging AI to modernize scientific applications and physical production processes.\n\n# AI Personal Assistant:\nCurrent productivity tools help track tasks but don\u2019t complete them. LLMs now enable assistants that can deeply understand personal work routines and take on tasks like managing communications, scheduling, and recurring work, much like a human chief of staff.\n\n# Healthcare AI:\nU.S. healthcare spends over $1 trillion on administrative costs due to inefficiencies and lack of interoperability. Recent LLMs now enable automation of data extraction, entry, and administrative tasks. YC seeks startups tackling these issues to improve healthcare efficiency.\n\n# AI Personal Tutor for Everyone:\nThe dream of truly personalized, computer-based education is now possible with AI. New models can explain complex concepts step-by-step and use multimodal tools (animations, 3D objects, voice). A high-quality, AI-enabled tutor could be personalized for every learner and subject, radically improving education.\n\n# Software Tools to Make Robots:\nRobotics is close to a major breakthrough (\"ChatGPT moment\"). As AI improves robot perception and judgment, there's strong potential in industrial and farming applications. YC wants to fund teams building tools that make it easier for others to create functional robots.\n\n# The Future of Education:\nEducation is massive and hard to disrupt, with over a billion learners globally. AI\u2014especially LLMs\u2014can potentially personalize learning, improve access, and automate drudge work for students and teachers. The long-term transformation of education is inevitable.\n\n# AI Residential Security:\nHome security is a $20B/year industry dominated by outdated legacy firms. Commercial security uses AI for facial recognition, behavior detection, and virtual guards. There is a huge opportunity to use AI to provide genuinely safer homes, far beyond current home security offerings.\n\n# Internal Agent Builder:\nEvery employee will soon be able to create AI agents to automate their repetitive work\u2014not just developers. YC seeks infrastructure startups enabling workers to build, permission, and securely connect these agents to all work tools, freeing humans for higher-value tasks.\n\n# AI Research Labs:\nYC wants to fund new AI research labs, not just quick-to-market startups. OpenAI began as YC Research, and the model of independent, long-term AI research efforts has led to huge breakthroughs. There is still significant opportunity for new labs to tackle unsolved AI problems.\n\n# AI Voice Assistants for Email:\nVoice-enabled assistants (Vapi, Retell, ChatGPT Voice Mode) are now effective enough to triage inboxes by voice during time like a morning commute. Email is an especially promising domain for a universal voice assistant due to its centrality in daily life.\n\n# AI for Personal Finance:\nMost people make irrational financial decisions due to poor or biased advice, or expensive advisors. LLMs offer a new opportunity to provide personalized, unbiased, API-connected finance, investment, and tax advice to everyone for little to no cost.",
+              "type": "string"
+            },
+            {
+              "id": "7efb5516-5020-4607-b797-0b742e546912",
+              "name": "technology_definitions",
+              "value": "=# AI Agents\nAI agents are software systems that use artificial intelligence to autonomously perform tasks and achieve goals on behalf of a user or another system. They can reason, plan, and act with varying degrees of independence, often employing multiple tools and models to complete tasks. \n\nKey Characteristics:\n\nAutonomy:\nAI agents can operate with minimal or no direct human intervention, making decisions and taking actions based on their programming and learned behavior. \nGoal-Oriented:\nThey are designed to pursue specific objectives, whether that's answering customer inquiries, automating tasks, or making data-driven decisions. \n\nReasoning and Planning:\nAI agents can analyze situations, create plans, and adapt their actions to achieve their goals. \n\nAction Execution:\nThey can interact with the environment, utilizing various tools and systems to carry out tasks. \n\nLearning and Adaptation:\nMany AI agents can learn from their interactions and improve their performance over time, becoming more efficient and effective at their tasks. \n\nHow they work:\n\n1. Perception and Data Collection:\nAI agents gather information from various sources, such as user input, data streams, and sensor data. \n2. Decision Making:\nBased on the gathered information and pre-defined rules or learned patterns, the agent decides on the best course of action. \n3. Action Execution:\nThe agent carries out the chosen action, which could involve interacting with a software system, sending a message, or manipulating physical objects. \n4. Learning and Adaptation:\n\nThrough feedback and experience, the agent refines its decision-making process and adapts its behavior to improve future performance. \n\nExamples of AI Agents:\n\nChatbots and Virtual Assistants:\nAI agents can power conversational interfaces that answer questions, provide support, and complete tasks. \n\nRobotics:\nAI agents can control robots to perform physical tasks in various environments, from manufacturing to exploration. \n\nAutonomous Vehicles:\nAI agents can make decisions and control vehicles, enabling self-driving capabilities. \n\nCode Generation:\nAI agents can assist developers by generating code, debugging, and refactoring. \n\nFraud Detection:\nAI agents can analyze transaction data and identify suspicious patterns, helping prevent fraud. \n\nSupply Chain Optimization:\nAI agents can optimize logistics, inventory management, and other aspects of the supply chain. \n\nHealthcare:\nAI agents can assist with diagnosis, treatment planning, and patient monitoring\n\n# RAG\n\nIn the context of large language models (LLMs), Retrieval-Augmented Generation (RAG) is a technique that enhances the accuracy and relevance of AI-generated text by combining the strengths of information retrieval and generative AI. RAG works by first retrieving relevant information from external data sources and then using that information to inform and improve the generation of responses. \nHere's a more detailed breakdown:\n\n1. Retrieval:\nRAG systems use search algorithms to query external data sources like databases, knowledge bases, or the web. \nThis step aims to find the most relevant information related to the user's query. \nFor example, if a user asks about a specific company policy, the RAG system will search for documents related to that policy within the company's knowledge base. \n2. Augmentation (or Generation): \nThe retrieved information is then integrated into the LLM.\nThe LLM uses this external knowledge to generate more accurate, up-to-date, and contextually relevant responses.\nThis approach allows LLMs to provide answers that are not limited to their pre-trained knowledge and can incorporate specific information from various sources.\n\nBenefits of RAG:\n\nReduced Hallucinations:\nRAG can significantly reduce the instances of LLMs generating inaccurate or fabricated information (hallucinations) by grounding their responses in real data. \n\nIncreased Accuracy:\nBy using real-time information, RAG systems can provide more accurate and reliable answers. \n\nImproved Relevance:\nRAG enables LLMs to provide responses tailored to specific contexts and user needs. \n\nCost-Effectiveness:\nRAG offers a more cost-effective way to update LLMs with new information compared to retraining them on the entire dataset. \n\nIn essence, RAG transforms LLMs from static knowledge repositories into dynamic information processors capable of accessing and synthesizing knowledge from diverse sources to generate more informed and relevant outputs.\n\n# LLM\n\nLarge Language Models (LLMs) are advanced artificial intelligence systems designed to understand, generate, and manipulate human language. They are trained on massive amounts of text data and utilize deep learning techniques, particularly the Transformer architecture, to process and generate human-like text. LLMs are capable of performing various natural language processing tasks, including text generation, translation, question answering, and more. \n\nHere's a more detailed explanation:\nKey Features:\nMassive Data Training:\nLLMs are trained on enormous datasets of text and code, allowing them to learn intricate patterns and relationships within language.\nDeep Learning Architecture:\nThey commonly use the Transformer architecture, which excels at handling sequential data and capturing contextual information.\nNatural Language Understanding and Generation:\nLLMs can understand the nuances of human language, including context, sentiment, and intent, and generate coherent and contextually relevant text.\nVersatile Applications:\nLLMs are used in a wide range of applications, including chatbots, content creation, language translation, code generation, and more. \nHow LLMs Work:\n1. Training:\nLLMs are trained on vast amounts of data, learning to predict the next word in a sequence or to perform other language-related tasks.\n2. Contextual Understanding:\nThrough the training process, LLMs develop a deep understanding of language, including syntax, semantics, and context.\n3. Input Processing:\nWhen a user provides input, the LLM processes the text, breaking it down into smaller units (tokens) and analyzing their relationships.\n4. Output Generation:\nBased on the input and its learned knowledge, the LLM generates a response or output, which can be text, code, or other forms of data. \nExamples of LLMs:\nGPT series (Generative Pre-trained Transformer):\nDeveloped by OpenAI, these models are known for their ability to generate human-quality text.\nBERT (Bidirectional Encoder Representations from Transformers):\nDeveloped by Google, BERT is used for understanding the context of text and is often used in search and other NLP tasks. \nWhat are Large Language Models (LLMs)? | phData\nIn essence, LLMs are powerful AI systems that are revolutionizing how we interact with technology and process information, enabling more natural and intuitive ways to communicate and access knowledge.\n\n# Multi-agent system\n\nA multi-agent system (MAS) is a system composed of multiple interacting intelligent agents that collaborate to achieve common or conflicting goals. These agents can be software programs or robots, and they operate within a shared environment, making decisions and taking actions to fulfill their objectives. MAS allows for complex problem-solving by distributing tasks among specialized agents, enabling them to perform actions that a single agent might struggle with. \n\nHere's a more detailed breakdown:\nKey Components:\nAgents:\nAutonomous entities with specific roles and functionalities, capable of perceiving their environment, making decisions, and taking actions.\nEnvironment:\nThe shared space where agents interact and operate, which can be physical or virtual.\nCommunication:\nA mechanism for agents to exchange information and coordinate their actions.\nControl Structure:\nA mechanism to manage the interactions and decision-making processes among agents. \nHow it Works:\n1. Task Decomposition:\nA complex problem is broken down into smaller, manageable sub-tasks. \n2. Agent Specialization:\nDifferent agents are assigned specific roles based on their expertise and capabilities. \n3. Collaboration and Coordination:\nAgents communicate and coordinate their actions to achieve the overall goal. \n4. Emergent Behavior:\nThe interactions between agents can lead to unexpected or emergent behavior, which can be beneficial or require careful management. \nBenefits of Multi-Agent Systems:\nIncreased Efficiency and Scalability:\nMAS can handle complex tasks more efficiently by distributing the workload among specialized agents. \nImproved Robustness and Adaptability:\nIf one agent fails, the system can still function by redistributing tasks among the remaining agents. \nComplex Problem Solving:\nMAS can tackle problems that are too difficult for a single agent to solve. \nFlexibility and Reusability:\nIndividual agents can be reused in different MAS configurations. \nExamples:\nRobotics: Multi-robot systems for manufacturing, exploration, or disaster response. \nAutonomous Vehicles: Coordinating multiple self-driving cars in a traffic network. \nE-commerce: Optimizing online shopping experiences with personalized recommendations and customer service. \nSmart Grids: Managing electricity distribution and integrating renewable energy sources. \nHealthcare: Coordinating patient care, optimizing hospital resources, and assisting with medical diagnoses. \n\n# Multi-modal LLMs\n\nMultimodal large language models (MLLMs) are AI models that can understand and generate content across multiple data types, or \"modalities,\" such as text, images, audio, and video. Unlike traditional language models that primarily handle text, MLLMs integrate information from various sources to create a richer, more comprehensive understanding of the world. \n\nHere's a more detailed explanation:\nKey Concepts:\nModalities:\nMLLMs can process and generate different types of data, including:\nText: Traditional language input and output. \nImages: Visual information, such as pictures and videos. \nAudio: Sound, including speech and music. \nOther modalities: Sensor data, robot state information, and more. \nMultimodal Fusion:\nMLLMs use techniques to combine information from different modalities. This might involve:\nEarly Fusion: Combining features from different modalities at the beginning of processing. \nLate Fusion: Processing modalities separately and then combining the results. \nHybrid Fusion: Combining elements of both early and late fusion. \nCross-modal Interactions:\nMLLMs can perform tasks that involve multiple modalities, such as:\nImage captioning: Generating text descriptions of images. \nVisual Question Answering (VQA): Answering questions based on images. \nText-to-image generation: Creating images from text descriptions. \nSpeech-to-text and text-to-speech: Converting audio to text and vice versa. \nHow they work:\nMLLMs typically have components for each modality (e.g., a vision model for images, an audio model for sound, and a language model for text). These components process the input data and extract features. These features are then combined using multimodal fusion techniques to create a unified representation that the model uses for understanding and generating outputs. \nExamples of MLLMs:\nMicrosoft's Kosmos-1: An example of a vision-language model that can process images and text.\nDeepMind's Flamingo: Another vision-language model known for its ability to understand and generate text descriptions of images.\nGoogle's PaLM-E: A model that can handle information about a robot's state and surroundings in addition to text and images.\nOpen-source models like LLaVA: Provide access to multimodal capabilities for research and development. \nBenefits of MLLMs:\nRicher Contextual Understanding:\nBy combining information from multiple modalities, MLLMs can achieve a deeper understanding of the world than text-only models. \nNew Applications:\nMLLMs unlock new possibilities for AI applications in areas like content creation, personalized recommendations, human-machine interaction, and more. \nImproved Human-Computer Interaction:\nMLLMs can enable more intuitive and natural interactions with AI, as they can understand and respond to a wider range of inputs.\n\n# AI Voice Agents\n\nAI voice agents are software systems that use artificial intelligence to understand, interpret, and respond to human speech, enabling natural, conversational interactions. They leverage technologies like natural language processing (NLP) and machine learning to answer questions, provide information, and perform actions, much like a human assistant or customer service representative. \n\nHere's a more detailed explanation:\nNatural Language Understanding:\nAI voice agents utilize NLP to decipher the meaning and intent behind spoken words, even with variations in pronunciation, accents, and sentence structure. \nSpeech Recognition:\nThey accurately convert spoken words into text using speech recognition technology, which is crucial for understanding what the user is saying. \nMachine Learning:\nThese agents learn from interactions, improving their ability to understand and respond to user queries over time. \nEnd-to-End Capabilities:\nModern AI voice agents handle the entire interaction process, from receiving input to providing a relevant response, often in near real-time. \nApplications:\nAI voice agents are used in various applications, including:\nCustomer service: Handling routine inquiries, providing support, and resolving issues. \nSmart home control: Interacting with devices like smart speakers and controlling home automation. \nPersonal assistants: Managing schedules, setting reminders, and providing information. \nBusiness automation: Automating tasks like appointment scheduling, data entry, and call routing. \nKey Differences from Older IVR Systems:\nAI voice agents go beyond simple menu navigation (like \"Press 1 for sales\") by engaging in more complex, conversational interactions, remembering context, and responding to interruptions. \nFuture Potential:\nThey are evolving to become more autonomous, capable of handling complex tasks and even making decisions on behalf of the user.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1080,
+        640
+      ],
+      "id": "87a4dd77-682e-42ec-961a-3913b9497c76",
+      "name": "Setup"
+    },
+    {
+      "parameters": {
+        "resource": "spreadsheet",
+        "title": "New startup ideas",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        800,
+        640
+      ],
+      "id": "d21cf000-1d79-42d8-9655-a2cc613f02d7",
+      "name": "Create Google Sheets",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=<Instructions>\nYour task is to extract any pain points or frustrations that could be resolved with custom software solutions, AI, ML, or automation from the given reddit post.\n\nIdentify whether the case study explicitly mentions any pain points or frustrations related to manual processes or repetitive tasks that could be addressed efficiently with custom software, AI, ML, or automation.\n\nThink out loud while extracting the pain points.\n</Instructions>\n\n<RedditPost>\n{{ $json.title }}\n\n{{ $json.selftext }}\n</RedditPost>",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        740,
+        980
+      ],
+      "id": "624d3df6-e176-4ca4-84d7-bfe7b936d017",
+      "name": "Find pain points"
+    },
+    {
+      "parameters": {
+        "text": "={{ $json.output.includes('<think>') ? $json.output.split('</think>')?.[1] : $json.output }}\n",
+        "schemaType": "fromJson",
+        "jsonSchemaExample": "{\n\t\"pain_points\": [\"\"]\n}",
+        "options": {
+          "systemPromptTemplate": "You are an expert extraction algorithm.\nOnly extract relevant information from the text.\nIf you do not know the value of an attribute asked to extract, you may omit the attribute's value.\n\nYour job is to extract the pain points from the provided text.\t"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.1,
+      "position": [
+        1080,
+        980
+      ],
+      "id": "02d73bde-6c40-4bbc-8630-ccd6ab993484",
+      "name": "Extract pain points"
+    },
+    {
+      "parameters": {
+        "text": "=<Task>\nYour job is to assess, whether the following startup idea falls into the categories that are listed under the request for startup categories below.\n</Task>\n\n<Instructions>\n\nFollow these instructions while thinking out loud:\n1. Read through all the request for startups categories\n2. Read through the startup idea\n3. See if the startup idea fits (strongly) into any of the categories. We don't allow ambiguity.\n4. Assign the rigth category to the startup idea - if it won't fit any, just add `n/a`.\n</Instructions>\n\n<StartupIdea>\n# Pain point\n\n{{ $json.output.pain_points_summary }}\n\n# Startup idea:\n\n{{ $json.output.startup_idea }}\n</StartupIdea>\n\n<RequestForStartups>\n{{ $('Setup').item.json.request_for_startups }}\n</RequestForStartups>",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "reasoning",
+              "description": "explain why the startup idea falls into that category",
+              "required": true
+            },
+            {
+              "name": "category",
+              "description": "the request for startups category",
+              "required": true
+            },
+            {
+              "name": "has_category",
+              "type": "boolean",
+              "description": "does the startup idea fit the request for startups categories",
+              "required": true
+            },
+            {
+              "name": "industry",
+              "description": "the industry of the startup idea",
+              "required": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.1,
+      "position": [
+        1940,
+        980
+      ],
+      "id": "4f69ef6c-403e-4809-b099-2e6121e5e229",
+      "name": "Extract category"
+    },
+    {
+      "parameters": {
+        "text": "=<Task>\nCreate a startup idea that solves the listed pain points.\n</Task>\n\n<Instructions>\n\nFollow these instructions while thinking out loud:\n1. Read through all the pain points\n2. Come up with an idea, that's using today's hot new technologies, like AI, ML, AI Agents (agentic AI), LLMs and multi-modal LLMs, RAG, AI Voice Agents and multi ai agents. Find the definitions of these technologies below.\n3. You don't have to use all the technologies for an idea - one is enough, but use as much as needed to solve the problem in the best possible way\n</Instructions>\n\n<Context>\n{{ $('Setup').item.json.technology_definitions }}\n</Context>\n\n<PainPoints>\n{{ $json.output.pain_points.map(item => `\\t<PainPoint>${item}</PainPoint>`).join('\\n') }}\n</PainPoints>",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "pain_points_summary",
+              "description": "the summary of the pain points",
+              "required": true
+            },
+            {
+              "name": "reasoning",
+              "description": "why the startup idea solves the given pain points",
+              "required": true
+            },
+            {
+              "name": "startup_idea",
+              "description": "the startup idea that solves the pain points",
+              "required": true
+            }
+          ]
+        },
+        "options": {
+          "systemPromptTemplate": "You are an expert startup product manager who comes up with the best startup ideas for customer pain points."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1.1,
+      "position": [
+        1640,
+        980
+      ],
+      "id": "dc7efdb1-4490-489f-bc07-444c87d344e4",
+      "name": "Create a startup idea"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "79e47cb0-8c95-4e48-b603-5b2065d01798",
+              "name": "RFS Category",
+              "value": "={{ $json.output.category }}",
+              "type": "string"
+            },
+            {
+              "id": "527f1c7b-2ad3-4ff0-92d4-20334334f0f9",
+              "name": "Industry",
+              "value": "={{ $json.output.industry }}",
+              "type": "string"
+            },
+            {
+              "id": "76bee27e-5361-4f51-b98d-dce4029690ed",
+              "name": "Pain points",
+              "value": "={{ $('Create a startup idea').item.json.output.pain_points_summary }}",
+              "type": "string"
+            },
+            {
+              "id": "98ccaed8-6ab7-4f87-99d5-bd0fab4d799a",
+              "name": "Startup idea",
+              "value": "={{ $('Create a startup idea').item.json.output.startup_idea }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2500,
+        980
+      ],
+      "id": "2b12af06-98c4-4e22-8e64-c373df2ed93f",
+      "name": "Setup fields for Google Sheets"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "={{ $('Create Google Sheets').item.json.spreadsheetId }}",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "0",
+          "mode": "id"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "RFS Category",
+              "displayName": "RFS Category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Industry",
+              "displayName": "Industry",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Pain points",
+              "displayName": "Pain points",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Startup idea",
+              "displayName": "Startup idea",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.6,
+      "position": [
+        2700,
+        1000
+      ],
+      "id": "6c43f7df-3a3c-47f2-8e4f-5616e21289a2",
+      "name": "Save row to Sheets",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        500,
+        980
+      ],
+      "id": "66e45d40-70a8-4e3c-99e4-d4b3af22187b",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ea611ac8-9e7e-425d-aa5b-0487380b425d",
+              "leftValue": "={{ $json.output.pain_points }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "array",
+                "operation": "lengthGt",
+                "rightType": "number"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1400,
+        980
+      ],
+      "id": "abd20894-86a6-4d4d-bd6c-7715a49cbb69",
+      "name": "Has pain points?"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "bd56a0e2-3b7c-4cd9-a77e-9f7895b7a70b",
+              "leftValue": "={{ $json.output.has_category }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2260,
+        980
+      ],
+      "id": "b6d23d58-d136-402b-bd21-bb011271283b",
+      "name": "RFS compatible?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3da9b8a9-f36a-4987-8941-945dd743e46b",
+              "name": "Sheet URL",
+              "value": "=https://docs.google.com/spreadsheets/d/{{ $('Create Google Sheets').item.json.spreadsheetId }}/edit",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        720,
+        1320
+      ],
+      "id": "1c10c505-915d-4466-ac60-0ea4be5a3164",
+      "name": "Setup Google Sheet URL"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOllama",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        1360
+      ],
+      "id": "d295316f-1fdd-4084-86dc-c0c89559d2e5",
+      "name": "Ollama Chat Model",
+      "credentials": {},
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        1360
+      ],
+      "id": "fbe5ae0b-d535-4c01-b3a2-87149af77c83",
+      "name": "DeepSeek Chat Model",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        1360
+      ],
+      "id": "a128c1ec-21c0-4a2f-94ee-06ab24a9efbd",
+      "name": "OpenRouter Chat Model",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        1700
+      ],
+      "id": "07008c40-f307-44cb-b012-0a428ade13d4",
+      "name": "Google Gemini Chat Model",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        1520
+      ],
+      "id": "f1c5c76b-34cd-4b81-9d03-1732c1bc296b",
+      "name": "Azure OpenAI Chat Model",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatXAiGrok",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        1520
+      ],
+      "id": "c8356d95-5dd4-4260-9539-1d7541f7349f",
+      "name": "xAI Grok Chat Model",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "claude-sonnet-4-20250514",
+          "cachedResultName": "Claude 4 Sonnet"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "typeVersion": 1.3,
+      "position": [
+        1360,
+        1520
+      ],
+      "id": "20b15101-7331-4a99-b548-66bf928f6c57",
+      "name": "Anthropic Chat Model",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatXAiGrok",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        1520
+      ],
+      "id": "f7475c50-c5d0-4073-ac9e-c06db19415f3",
+      "name": "xAI Grok Chat Model1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        1700
+      ],
+      "id": "fc275a8c-4ea3-4fd4-a6f8-9f9814f53276",
+      "name": "Groq Chat Model",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAwsBedrock",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        1360
+      ],
+      "id": "133feaa9-04c4-487d-9fdb-59b2db831105",
+      "name": "AWS Bedrock Chat Model",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        1200,
+        1700
+      ],
+      "id": "48a5e626-7ce3-4575-b2b8-63315739d77e",
+      "name": "Mistral Cloud Chat Model",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "subreddit": "smallbusiness",
+        "limit": 5,
+        "filters": {
+          "category": "top"
+        }
+      },
+      "type": "n8n-nodes-base.reddit",
+      "typeVersion": 1,
+      "position": [
+        1380,
+        640
+      ],
+      "id": "ef5c4b42-7e58-4a67-9ca9-074df43557df",
+      "name": "Reddit",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking \u2018Execute workflow\u2019": {
+      "main": [
+        [
+          {
+            "node": "Create Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Find pain points",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Extract pain points",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Extract category",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Create a startup idea",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Setup": {
+      "main": [
+        [
+          {
+            "node": "Reddit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Setup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find pain points": {
+      "main": [
+        [
+          {
+            "node": "Extract pain points",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract pain points": {
+      "main": [
+        [
+          {
+            "node": "Has pain points?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract category": {
+      "main": [
+        [
+          {
+            "node": "RFS compatible?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a startup idea": {
+      "main": [
+        [
+          {
+            "node": "Extract category",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Setup fields for Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Save row to Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Setup Google Sheet URL",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Find pain points",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save row to Sheets": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Has pain points?": {
+      "main": [
+        [
+          {
+            "node": "Create a startup idea",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RFS compatible?": {
+      "main": [
+        [
+          {
+            "node": "Setup fields for Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Reddit": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "991719c2-1545-4d61-9fd6-8cb926c4900c",
+  "meta": {
+    "instanceId": "636db6b6ab21a21c6458e2137f340e33dc3e49f5a1c560c8d1e2372c227cf40e"
+  },
+  "id": "vRKyEOR9iC6tOmL9",
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}

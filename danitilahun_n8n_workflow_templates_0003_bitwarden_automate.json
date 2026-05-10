@@ -1,0 +1,125 @@
+{
+  "nodes": [
+    {
+      "name": "Bitwarden",
+      "type": "n8n-nodes-base.bitwarden",
+      "position": [
+        470,
+        320
+      ],
+      "parameters": {
+        "name": "documentation",
+        "resource": "group",
+        "operation": "create",
+        "additionalFields": {}
+      },
+      "credentials": {},
+      "typeVersion": 1
+    },
+    {
+      "name": "Bitwarden1",
+      "type": "n8n-nodes-base.bitwarden",
+      "position": [
+        670,
+        320
+      ],
+      "parameters": {
+        "resource": "member",
+        "operation": "getAll",
+        "returnAll": true
+      },
+      "credentials": {},
+      "typeVersion": 1
+    },
+    {
+      "name": "Bitwarden2",
+      "type": "n8n-nodes-base.bitwarden",
+      "position": [
+        870,
+        320
+      ],
+      "parameters": {
+        "groupId": "={{$node[\"Bitwarden\"].json[\"id\"]}}",
+        "resource": "group",
+        "memberIds": "={{$json[\"id\"]}}",
+        "operation": "updateMembers"
+      },
+      "credentials": {},
+      "typeVersion": 1
+    },
+    {
+      "name": "Bitwarden3",
+      "type": "n8n-nodes-base.bitwarden",
+      "position": [
+        1070,
+        320
+      ],
+      "parameters": {
+        "groupId": "={{$node[\"Bitwarden\"].json[\"id\"]}}",
+        "resource": "group",
+        "operation": "getMembers"
+      },
+      "credentials": {},
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "connections": {
+    "Bitwarden": {
+      "main": [
+        [
+          {
+            "node": "Bitwarden1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bitwarden1": {
+      "main": [
+        [
+          {
+            "node": "Bitwarden2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bitwarden2": {
+      "main": [
+        [
+          {
+            "node": "Bitwarden3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}

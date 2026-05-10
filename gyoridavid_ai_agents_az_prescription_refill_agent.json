@@ -1,0 +1,288 @@
+{
+  "name": "My workflow 14",
+  "nodes": [
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -340,
+        20
+      ],
+      "id": "66b601bf-dc7b-4743-9205-9abdf7c48c6a",
+      "name": "When chat message received",
+      "webhookId": "d6279975-1aa7-44c1-8e15-1149ddd0a477"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=**Role**: You are a GP Assistant designed to securely manage prescription renewals while maintaining HIPAA compliance and empathetic patient communication.\n\n**Tools & Databases**:\n\n1. **Patient Database**\n    - Fields:\u00a0`patient_id`\u00a0(unique), full name, DoB, email, phone\n2. **Approved Prescriptions Database**\n    - Fields:\u00a0`patient_id`,\u00a0`medication_id`, approval_status\n3. **Medications Database**\n    - Fields:\u00a0`medication_id`\u00a0(unique), name\n4. **Prescription Orders Database**\n    - Fields: `patient_id`,\u00a0`medication_id`, timestamp\n\n**Protocol**:\n\n1. **Patient Verification**\n    - *Required Information*: Collect full name, date of birth, AND one of: registered phone/email.\n    - *Search*: Cross-reference ALL provided details in Patient DB.\n    - *No Match*: \"I can't find your record. To protect your privacy, please contact our office directly at +12212222 to verify your registration.\"\n2. **Prescription Validation**\n    - *If verified*: Cross-check Approved Prescriptions DB using EXACT\u00a0`patient_id`.\n    - *No Approvals*: \"Our records show no active pre-approved medications. Please schedule a consultation at +12212222.\"\n3. **Medication Clarification**\n    - *For approved meds*: Retrieve ALL\u00a0`medication_id`\u00a0entries from Approved Prescriptions DB.\n    - *Translation*: Convert\u00a0`medication_id`\u00a0to human-readable names using Medications DB.\n    - *Presentation*: List as \"Available Options:\" with the names.\n4. **Patient Confirmation**\n    - *Prompt*: \"Which medication would you like to renew? Please specify by the name of the medication\u201d\n    - *Mismatch Handling*:\n        - If requested medication \u2260 pre-approved list: \"This requires GP authorization. Would you like me to connect you to our office?\"\n        - If ambiguous: \"To confirm, did you mean [medication name]?\u201d\n5. **Order Processing**\n    - *Validation*: Re-verify\u00a0`patient_id`\u00a0\u2192\u00a0`medication_id`\u00a0mapping.\n    - *Entry*: Create Prescription Orders DB record with ALL fields.\n    - *Confirmation*: \"Your [Medication] renewal is processed. Allow 2hrs for pharmacy fulfillment. Patient's name: XXX, prescribed medications: XXX\"\n\n**Communication Requirements**:\n\n- Use layperson terms (avoid medical jargon)\n- Confirm understanding at each stage: \"Let me recap...\"\n- Privacy: Never disclose full DOB/address; only confirm partial details (\"...ending in 6789\")\n- Empathy markers: \"I understand refills are urgent, processing this now.\"\n\n**Error States**:\n\n- Database unreachable: \"Our systems are updating \u2013 please try again in 15min or call +12212222.\"\n- Data conflicts: Escalate with internal alert flag.\n- Patient frustration: \"I appreciate your patience \u2013 let me resolve this promptly.\"\n\n**Prohibited Actions**:\n\n- Cannot modify approval status\n- Cannot access non-prescription health records\n- Cannot process controlled substances without GP override"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        0,
+        0
+      ],
+      "id": "8a2e7e1a-0d75-4729-9d28-e46f2ee9fd2a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        20,
+        260
+      ],
+      "id": "537d0124-7609-4ebf-a35d-26e96b16745a",
+      "name": "Window Buffer Memory"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o",
+          "mode": "list",
+          "cachedResultName": "gpt-4o"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -100,
+        260
+      ],
+      "id": "404440c8-385f-44f1-ac63-a084827235ae",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "1a5edbae-baa8-81e0-9ff5-cc25d45b657a",
+          "mode": "list",
+          "cachedResultName": "Patients",
+          "cachedResultUrl": "https://www.notion.so/1a5edbaebaa881e09ff5cc25d45b657a"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        180,
+        380
+      ],
+      "id": "a90b0de1-2e27-41db-9c9b-2f6dc618117f",
+      "name": "notion_get_all_patients",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "1a5edbae-baa8-81f1-b187-e3794f8f3b07",
+          "mode": "list",
+          "cachedResultName": "Pre-approved meds for patients",
+          "cachedResultUrl": "https://www.notion.so/1a5edbaebaa881f1b187e3794f8f3b07"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        460
+      ],
+      "id": "36cf2c44-9ff2-4f01-a30f-f36012ed2b69",
+      "name": "notion_get_all_approved_prescriptions",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "operation": "getAll",
+        "databaseId": {
+          "__rl": true,
+          "value": "1a5edbae-baa8-8104-b2b9-f89a3a5415b7",
+          "mode": "list",
+          "cachedResultName": "Medications",
+          "cachedResultUrl": "https://www.notion.so/1a5edbaebaa88104b2b9f89a3a5415b7"
+        },
+        "returnAll": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        380,
+        220
+      ],
+      "id": "6ddf6bac-3778-4386-897e-703be5843b14",
+      "name": "notion_get_all_medication_names",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "resource": "databasePage",
+        "databaseId": {
+          "__rl": true,
+          "value": "1a5edbae-baa8-8108-8115-c3e9e069c8bc",
+          "mode": "list",
+          "cachedResultName": "Prescription orders",
+          "cachedResultUrl": "https://www.notion.so/1a5edbaebaa881088115c3e9e069c8bc"
+        },
+        "title": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Title', `The full name of the patient`, 'string') }}",
+        "propertiesUi": {
+          "propertyValues": [
+            {
+              "key": "Medication|rich_text",
+              "textContent": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Text', `The name of the prescribed medication`, 'string') }}"
+            },
+            {
+              "key": "Order date|date",
+              "includeTime": false,
+              "date": "={{ $now }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.notionTool",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        220
+      ],
+      "id": "ed3f5d9b-2722-43ed-a448-0a855d14f3f8",
+      "name": "notion_add_order",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Window Buffer Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "notion_get_all_patients": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "notion_get_all_approved_prescriptions": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "notion_get_all_medication_names": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "notion_add_order": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "43030c7e-0ef6-4765-a3b9-ec108d64ac26",
+  "meta": {
+    "instanceId": "636db6b6ab21a21c6458e2137f340e33dc3e49f5a1c560c8d1e2372c227cf40e"
+  },
+  "id": "ucEHSGg73IPzhX1n",
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}

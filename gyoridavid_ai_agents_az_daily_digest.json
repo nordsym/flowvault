@@ -1,0 +1,1075 @@
+{
+  "name": "My workflow 14",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 1-5"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -760,
+        880
+      ],
+      "id": "546206f6-8979-47c4-b757-f2d15ea6b5e2",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://feeds.businessinsider.com/custom/all",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -220,
+        480
+      ],
+      "id": "89afa486-1373-446a-9ad9-1e2c07440594",
+      "name": "business insider"
+    },
+    {
+      "parameters": {
+        "url": "http://rss.cnn.com/rss/money_topstories.rss",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        -220,
+        320
+      ],
+      "id": "672b094a-8e74-4c3b-8d31-80cfeaf8a776",
+      "name": "cnn"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        0,
+        400
+      ],
+      "id": "e94d4829-f060-4627-9542-1bbe2c327ff5",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "fe0167d3-2e87-4b6b-a7b7-3993cafce60e",
+              "name": "title",
+              "value": "={{ $json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "cd5318c7-c8b8-45a0-b0a1-00afecdc819c",
+              "name": "contentSnippet",
+              "value": "={{ $json.contentSnippet }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        220,
+        400
+      ],
+      "id": "8123245c-c8d3-4582-b09c-973a5033a0e9",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "news",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        440,
+        400
+      ],
+      "id": "ba254ac3-59cd-4eaa-a9c4-2f6170e6b5eb",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Create a summary of the biggest news stories in the last 24 hours.\nMake sure to categorize the news by topics, and list the title and the summary under each category.\n\n<news>\n{{ JSON.stringify($json.news) }}\n</news> \n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        660,
+        400
+      ],
+      "id": "844ffb78-1293-46d4-9bf7-331862aa326d",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        580,
+        620
+      ],
+      "id": "85aaeebd-2359-4a8a-bc30-ae8115deb389",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f1472042-3f7a-4fe3-b4f3-4cb377e5ceb8",
+              "name": "news",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1020,
+        400
+      ],
+      "id": "505f25d0-b63b-4526-835c-9df9db98b6fd",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        1960,
+        860
+      ],
+      "id": "ecb7cd9f-4cf7-44eb-ab51-a46b22898a3e",
+      "name": "Merge1"
+    },
+    {
+      "parameters": {
+        "operation": "5DayForecast",
+        "format": "imperial",
+        "cityName": "los angeles,us"
+      },
+      "type": "n8n-nodes-base.openWeatherMap",
+      "typeVersion": 1,
+      "position": [
+        -220,
+        1180
+      ],
+      "id": "1b1b6e34-f0ac-4af2-9d9c-4763cedb9295",
+      "name": "OpenWeatherMap",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "list",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        20,
+        1180
+      ],
+      "id": "04b6ba60-6ee0-445d-99fa-6203c2357c20",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ca2a4f67-c574-47a8-9aeb-3a586140943f",
+              "leftValue": "={{ $now.plus(1, \"days\").toSeconds() > $json.dt }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        1180
+      ],
+      "id": "41074405-36a2-4f5a-92cf-ba96645b82ec",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "weather_forecast",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        460,
+        1180
+      ],
+      "id": "13ffe9ad-c9bc-4682-a12d-e74e91cc108b",
+      "name": "Aggregate1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Summarize the weather forecast for the next 24 hours using the provided forecast data. \nAdd clothing suggestions for a middle aged female who typically wears casual clothing.\nPlease note if she needs to carry an umbrella.\nThe summary should be an overview for the day, don't provide hourly breakdown on the weather changes.\n\n<WeatherForecast>\n{{ JSON.stringify($json.weather_forecast) }}\n</WeatherForecast>"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        680,
+        1180
+      ],
+      "id": "fc02621c-bd2f-4724-b50c-a4bf321e771c",
+      "name": "Basic LLM Chain1"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        640,
+        1360
+      ],
+      "id": "9c90e4ff-688c-418a-92b2-500c9e84b34b",
+      "name": "OpenAI Chat Model1",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0dfe8ddb-2165-43d1-9114-4abffc3ecfbc",
+              "name": "weather_forecast",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1040,
+        1180
+      ],
+      "id": "2b89fe5d-8f0f-4e49-a532-c0b72d455c9a",
+      "name": "Edit Fields2"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "simple": false,
+        "filters": {
+          "labelIds": [
+            "CATEGORY_PERSONAL"
+          ],
+          "readStatus": "unread",
+          "receivedAfter": "={{ $now.minus(1, \"day\") }}"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        -140,
+        1880
+      ],
+      "id": "fe170333-dd9d-4992-b417-681b8e8a3443",
+      "name": "Gmail",
+      "webhookId": "c485b21f-207d-4efb-9e85-566ff2e3de15",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c5d24917-c196-4979-b118-40bedcf0511a",
+              "name": "email",
+              "value": "={{ $json.text }}",
+              "type": "string"
+            },
+            {
+              "id": "f99c070e-5e12-4b9f-8a46-84cad215c4d5",
+              "name": "from",
+              "value": "={{ $json.from.value }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        80,
+        1880
+      ],
+      "id": "174d3816-15b3-4c5b-8429-e654451690fb",
+      "name": "Edit Fields3"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "emails",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        300,
+        1880
+      ],
+      "id": "74d2edad-8d4a-4f7d-acf7-b46523ea8a6c",
+      "name": "Aggregate2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Extract all the emails that were sent by humans and aren't newsletters or system updates or calendar updates and summarize the emails in one sentence for a digest and add who (name + email) sent the email.\n\n<emails>\n{{ $json.emails.map(item => `\\n<email>\\n<from>\\n${JSON.stringify(item.from)}\\n</from>\\n<body>\\n${item.email}\\n</body>\\n</email>\\n`).join('') }}\n</emails>\n",
+        "hasOutputParser": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        520,
+        1880
+      ],
+      "id": "ad4cd02d-d2a4-4c94-9d93-c8d1025d2506",
+      "name": "Basic LLM Chain2"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        480,
+        2100
+      ],
+      "id": "0188e119-c4ed-4395-a8f8-cfda2d596aaa",
+      "name": "OpenAI Chat Model2",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n\t\"emails\": [\"email 1\", \"email 2\"]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        660,
+        2100
+      ],
+      "id": "dfc30db5-301f-448a-bc20-d80a35cc208d",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8b795abf-c0d7-42f9-aa3d-f5a4ed47dda1",
+              "name": "emails",
+              "value": "={{ JSON.stringify($json.output.emails) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        880,
+        1880
+      ],
+      "id": "0e1043d0-71ad-43e7-a1fb-dca55bbac2f4",
+      "name": "Edit Fields4"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "2rum2room2@gmail.com",
+          "mode": "list",
+          "cachedResultName": "2rum2room2@gmail.com"
+        },
+        "timeMax": "={{ $now.plus({ days: 1 }) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleCalendar",
+      "typeVersion": 1.3,
+      "position": [
+        -180,
+        2640
+      ],
+      "id": "c316f6f7-f205-4759-b27f-358262f71720",
+      "name": "Google Calendar"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c2ed0b62-fb10-4d36-a53e-b448f385b93f",
+              "name": "summary",
+              "value": "={{ $json.summary }}",
+              "type": "string"
+            },
+            {
+              "id": "a224249f-f845-43a2-b50c-805212713481",
+              "name": "startDate",
+              "value": "={{ $json.start.dateTime }}",
+              "type": "string"
+            },
+            {
+              "id": "60793d7b-ba96-4114-9682-b722d7402f7a",
+              "name": "timezone",
+              "value": "={{ $json.start.timeZone }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        40,
+        2640
+      ],
+      "id": "967aa856-fef4-454c-bbfa-5ebc8d138258",
+      "name": "Edit Fields5"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "calendar_events",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        260,
+        2640
+      ],
+      "id": "008d06e6-fe16-42ba-997d-9df9d209293f",
+      "name": "Aggregate3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "768d5214-4d37-4b8f-9cbb-e34305e68381",
+              "name": "calendar_events",
+              "value": "={{ JSON.stringify($json.calendar_events) }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        2640
+      ],
+      "id": "f7eb428c-c645-492f-b681-e965139a725f",
+      "name": "Edit Fields6"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "news"
+            },
+            {
+              "fieldToAggregate": "weather_forecast"
+            },
+            {
+              "fieldToAggregate": "emails"
+            },
+            {
+              "fieldToAggregate": "calendar_events"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        2180,
+        880
+      ],
+      "id": "cae01c8b-d668-4224-a927-ac280773eebd",
+      "name": "Aggregate4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "68158149-a655-4cba-857d-e1b289bd750f",
+              "name": "news",
+              "value": "={{ $json.news[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "c3d828f7-f9a5-47b4-9e0f-03eea9e4b7bb",
+              "name": "weather_forecast",
+              "value": "={{ $json.weather_forecast[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "531afbd6-339e-4408-bfc4-7c2daca1a751",
+              "name": "emails",
+              "value": "={{ $json.emails[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "05bb70c2-ec0a-4b38-a08c-6d5c3bd44d06",
+              "name": "calendar_events",
+              "value": "={{ $json.calendar_events[0] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        2400,
+        880
+      ],
+      "id": "befcca45-1026-48be-abce-776d0bebcac5",
+      "name": "Edit Fields7"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\nCreate a daily digest from the data below.\nUse a personal, light-hearted tone (2nd person). \nUse the `send_daily_digest` tool to send the digest.\n\nThe elements of to include (from the source data)\n1. Weather forecast\n2. News\n3. Emails\n4. Calendar events\n\n<DataSource>\n<News>\n{{ $json.news }}\n</News>\n<WeatherForecast>\n{{ $json.weather_forecast }}\n</WeatherForecast>\n<Emails>\n{{ $json.emails }}\n</Emails>\n<CalendarEvents>\n{{ $json.calendar_events }}\n</CalendarEvents>\n</DataSource>\n\nMake sure to format the email as raw text with proper new lines, separating everything.\nDo not use any markdown - as it will be read on mobile. Don't use any bold, other styling.\n\nExample formating:\n\nHi there,\n\nToday's weather\n- forecast\n- clothing recommendations\n\nUnread emails\n- email 1\n- email 2\n\nToday's events\n- event 1\n- event 2\n\nLatest news\n\nCategory 1\n- news item 1\n\nCategory 2\n- news item 1\n\nHave a great day, Miri!",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        3080,
+        880
+      ],
+      "id": "a5034448-272b-4321-b78d-7f0fb4744fde",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        3000,
+        1120
+      ],
+      "id": "148eef7a-a645-4967-a72b-887b68835afb",
+      "name": "OpenAI Chat Model3",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sendTo": "2rum2room2@gmail.com",
+        "subject": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Subject', ``, 'string') }}",
+        "emailType": "text",
+        "message": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Message', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        3240,
+        1100
+      ],
+      "id": "eb93a9ae-996b-43f2-a62c-7faf6350144e",
+      "name": "send_digest",
+      "webhookId": "162a213b-823b-4420-8c95-05e882822299",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "cnn",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "business insider",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "OpenWeatherMap",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Google Calendar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cnn": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "business insider": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenWeatherMap": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Aggregate1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain1": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields3": {
+      "main": [
+        [
+          {
+            "node": "Aggregate2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate2": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain2",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain2": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Calendar": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields5": {
+      "main": [
+        [
+          {
+            "node": "Aggregate3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate3": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields2": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Edit Fields4": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Edit Fields6": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "Aggregate4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate4": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields7": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "send_digest": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4110066c-8073-4e4d-a127-96077cb46794",
+  "meta": {
+    "instanceId": "636db6b6ab21a21c6458e2137f340e33dc3e49f5a1c560c8d1e2372c227cf40e"
+  },
+  "id": "ucEHSGg73IPzhX1n",
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}

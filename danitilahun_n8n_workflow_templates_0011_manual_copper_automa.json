@@ -1,0 +1,137 @@
+{
+  "nodes": [
+    {
+      "name": "On clicking 'execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        250,
+        320
+      ],
+      "parameters": {},
+      "typeVersion": 1
+    },
+    {
+      "name": "Copper",
+      "type": "n8n-nodes-base.copper",
+      "position": [
+        450,
+        320
+      ],
+      "parameters": {
+        "name": "Harshil",
+        "resource": "person",
+        "additionalFields": {
+          "emails": {
+            "emailFields": [
+              {
+                "email": "harshil@n8n.io",
+                "category": "work"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {},
+      "typeVersion": 1
+    },
+    {
+      "name": "Copper1",
+      "type": "n8n-nodes-base.copper",
+      "position": [
+        650,
+        320
+      ],
+      "parameters": {
+        "personId": "={{$json[\"id\"]}}",
+        "resource": "person",
+        "operation": "update",
+        "updateFields": {
+          "phone_numbers": {
+            "phoneFields": [
+              {
+                "number": "1234567890",
+                "category": "work"
+              }
+            ]
+          }
+        }
+      },
+      "credentials": {},
+      "typeVersion": 1
+    },
+    {
+      "name": "Copper2",
+      "type": "n8n-nodes-base.copper",
+      "position": [
+        850,
+        320
+      ],
+      "parameters": {
+        "personId": "={{$json[\"id\"]}}",
+        "resource": "person",
+        "operation": "get"
+      },
+      "credentials": {},
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "connections": {
+    "Copper": {
+      "main": [
+        [
+          {
+            "node": "Copper1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Copper1": {
+      "main": [
+        [
+          {
+            "node": "Copper2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On clicking 'execute'": {
+      "main": [
+        [
+          {
+            "node": "Copper",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}

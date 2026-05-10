@@ -1,0 +1,139 @@
+{
+  "name": "API Integration - External Service Bridge",
+  "active": true,
+  "meta": {
+    "instanceId": "dream-server"
+  },
+  "nodes": [
+    {
+      "id": "webhook-external-api",
+      "name": "Webhook",
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "external-api",
+        "options": {
+          "headerAuth": {
+            "name": "X-Webhook-Auth",
+            "value": "={{ $env.WEBHOOK_AUTH_TOKEN }}"
+          }
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "position": [
+        250,
+        300
+      ],
+      "webhookId": "external-api-webhook"
+    },
+    {
+      "id": "http-external-api",
+      "name": "HTTP Request",
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $env.EXTERNAL_API_URL || 'https://api.example.com/data' }}",
+        "options": {
+          "continueOnFail": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        450,
+        300
+      ]
+    },
+    {
+      "id": "code-transform",
+      "name": "Transform",
+      "parameters": {
+        "jsCode": "return items.map(item => ({\n  json: {\n    source: 'external-api',\n    timestamp: new Date().toISOString(),\n    data: item.json\n  }\n}));"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        650,
+        300
+      ]
+    },
+    {
+      "id": "http-internal-ingest",
+      "name": "HTTP Request 2",
+      "parameters": {
+        "url": "={{ $env.INTERNAL_API_URL || 'http://host.docker.internal:8080' }}/ingest",
+        "method": "POST",
+        "options": {
+          "continueOnFail": true
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        850,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Transform",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transform": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}
