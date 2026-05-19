@@ -356,11 +356,50 @@
             });
         }
 
+        // Sync PRO status to localStorage and fire payment_success once
+        async function syncProStatus() {
+            const sessionId = new URLSearchParams(window.location.search).get('session') || '';
+
+            // Fire payment_success webhook once per session (guarded by sessionStorage)
+            const firedKey = 'fv_payment_fired_' + sessionId;
+            if (sessionId && !sessionStorage.getItem(firedKey)) {
+                sessionStorage.setItem(firedKey, '1');
+                fetch('https://nordsym.app.n8n.cloud/webhook/flowvault-onboarding', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ session_id: sessionId, action: 'payment_success' })
+                }).catch(() => {});
+            }
+
+            // Refresh tier in localStorage so index.html sees PRO immediately
+            try {
+                const stored = JSON.parse(localStorage.getItem('flowvault_user_state') || '{}');
+                const email = stored.email;
+                if (!email) return;
+
+                const formData = new URLSearchParams();
+                formData.append('email', email);
+                const res = await fetch('https://nordsym.app.n8n.cloud/webhook/flowvault-get-user', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: formData
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.tier === 'pro') {
+                        stored.tier = 'pro';
+                        localStorage.setItem('flowvault_user_state', JSON.stringify(stored));
+                    }
+                }
+            } catch (_) {}
+        }
+
         // Initial confetti on page load to celebrate payment
         window.addEventListener('load', () => {
             animateSteps();
             updateProgress();
             setTimeout(launchConfetti, 800);
+            syncProStatus();
         });
     </script>
 </body>

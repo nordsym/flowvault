@@ -1982,7 +1982,7 @@
                         // Visuell feedback på uppgraderingen
                         const dlCounter = document.getElementById('download-counter');
                         if(dlCounter) {
-                            dlCounter.innerHTML = '<span class="text-xs font-bold text-fuchsia-500 bg-fuchsia-100 dark:bg-fuchsia-900/30 px-2 py-1 rounded border border-fuchsia-200 dark:border-fuchsia-700 animate-bounce">PRO AKTIVERAT</span>';
+                            dlCounter.innerHTML = '<span class="text-xs font-bold text-fuchsia-500 bg-fuchsia-100 dark:bg-fuchsia-900/30 px-2 py-1 rounded border border-fuchsia-200 dark:border-fuchsia-700 animate-bounce">PRO ACTIVATED</span>';
                         }
                         return; // Sluta polla
                     }
@@ -2725,7 +2725,7 @@
 
             const baseUrl = `https://raw.githubusercontent.com/${GITHUB_CONFIG.user}/${GITHUB_CONFIG.repo}/${GITHUB_CONFIG.branch}`;
 
-            btn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Förbereder...';
+            btn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Preparing...';
             btn.disabled = true;
 
             try {
