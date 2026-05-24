@@ -1,0 +1,500 @@
+{
+  "name": "Gemini 3: recreate videos with veo3.1",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "acc5846c-f85a-49d8-9e31-00a77714332f",
+              "name": "VEO_VERTEX_URL",
+              "value": "=https://{{ $json.API_ENDPOINT }}/v1/projects/{{ $json.PROJECT_ID }}/locations/{{ $json.LOCATION_ID }}/publishers/google/models/{{ $json.MODEL_ID }}:predictLongRunning",
+              "type": "string"
+            },
+            {
+              "id": "5ad350ac-4659-40ba-ab65-7840e0eccd25",
+              "name": "VIDEO_ID",
+              "value": "={{ $('On form submission').item.json['Youtube video URL'].split('/').pop() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        64,
+        704
+      ],
+      "id": "6470be7c-5892-4805-938a-d02f92e3e025",
+      "name": "Setup workflow"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "5de4dcc5-afd1-49ab-aa0e-c2c6ecf247e1",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              },
+              "leftValue": "={{ $json.done }}",
+              "rightValue": ""
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "a7011412-0a5a-4ad4-9a27-a0ea60816909",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        1600,
+        704
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "operation": "toBinary",
+        "sourceProperty": "response.videos[0].bytesBase64Encoded",
+        "options": {}
+      },
+      "id": "9acf01b0-1363-412b-9003-39fcb32f1b26",
+      "name": "Convert to File",
+      "type": "n8n-nodes-base.convertToFile",
+      "position": [
+        2112,
+        688
+      ],
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1792,
+        832
+      ],
+      "id": "ec8278fb-fd78-4b8a-b789-44a52dee39cc",
+      "name": "Wait before polling again",
+      "webhookId": "24f2c6e1-08b0-4e44-99af-dbc507f97be7"
+    },
+    {
+      "parameters": {
+        "formTitle": "Clone shorts with Gemini 3 pro and Veo 3.1",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Youtube video URL",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Any change request to the video",
+              "fieldType": "textarea"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.3,
+      "position": [
+        -560,
+        704
+      ],
+      "id": "c04638e9-eb4c-4390-878f-7ff3363b3f9c",
+      "name": "On form submission",
+      "webhookId": "31830116-16b0-40b2-ba3e-38894f45b801"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6e9fbe2d-6636-4df2-8054-811f855d376d",
+              "name": "PROJECT_ID",
+              "value": "<<inser your project id>>",
+              "type": "string"
+            },
+            {
+              "id": "1e65c4b0-c7c0-4876-a710-0b720931e3f6",
+              "name": "LOCATION_ID",
+              "value": "us-central1",
+              "type": "string"
+            },
+            {
+              "id": "0bef756a-6e2a-434f-9f42-ff4a74a1de64",
+              "name": "API_ENDPOINT",
+              "value": "us-central1-aiplatform.googleapis.com",
+              "type": "string"
+            },
+            {
+              "id": "30431164-1a3f-4194-92aa-5c966bd87e54",
+              "name": "MODEL_ID",
+              "value": "veo-3.1-generate-preview",
+              "type": "string"
+            },
+            {
+              "id": "ba2463e8-1673-43be-b7b2-0d43420c1ef3",
+              "name": "BASE_PROMPT",
+              "value": "=OBJECTIVE: Analyze the provided video and generate a frame-accurate reconstruction prompt for AI video models (Veo, Sora, etc.). Apply all change requests to every aspect of the manifest including dialogue, props, actions, and sounds. Output only the technical manifest\u2014no preamble.\n\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\nPART 1: GLOBAL SPECIFICATIONS\n\nCAPTURE MEDIUM:\nIdentify sensor/film: [specific camera model or film stock]\nResolution: [e.g., 4K, 1080p]\nNative characteristics: [grain structure, noise pattern, sharpness profile]\n\nCOLOR & OPTICS:\n- Color grading: [specific adjustments\u2014contrast ratios, lift/gamma/gain values, LUT characteristics]\n- White balance: [Kelvin temperature]\n- Lens profile: [manufacturer, focal length, aperture characteristics, optical aberrations, bokeh shape]\n\nPHYSICS ENGINE:\nDefine simulation fidelity for: lighting propagation, fluid dynamics, cloth/hair behavior, particle interactions, motion blur characteristics\n\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\nPART 2: OPENING FRAME COMPOSITION\n\nCRITICAL: This defines the exact starting state that the AI must generate.\n\nSPATIAL LAYOUT:\n[Describe camera's viewing axis and what architectural elements are visible]\n[e.g., \"Camera faces directly toward the front door. No side walls or railings are visible in frame. Only the door, doormat, and subject are present.\"]\n\nFRAME BOUNDARIES:\n- Left edge: [what's visible/cut off]\n- Right edge: [what's visible/cut off]\n- Top edge: [what's visible/cut off]\n- Bottom edge: [what's visible/cut off]\n\nSUBJECT PLACEMENT:\n[Exact position within frame using rule-of-thirds grid or percentage coordinates]\n\nBACKGROUND DEPTH:\n[What layers are visible behind the subject, in order from near to far]\n\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\nPART 3: SHOT-BY-SHOT BREAKDOWN\n\nFor each shot, provide:\n\n[SHOT N] | START: X.Xs | END: X.Xs\nAUDIO: [sound effects] + [spoken dialogue if present]\nNOTE: Ensure audio references match any modified props/actions from change requests\n\nCAMERA:\n- Frame: [shot size + composition]\n- Angle: [camera position relative to subject]  \n- Motion: [precise movement with timing, acceleration curves, stabilization type]\n- Focal length: [mm equivalent]\n- Focus: [subject in focus + DoF depth + any rack focus with exact timing]\n\nSUBJECT(S):\n[Forensic description: age, ethnicity, build, hair, skin texture, clothing materials/fit/condition, distinguishing features]\n\nACTION TIMELINE:\n0.0s: [initial state]\nX.Xs: [precise action with body mechanics]\nX.Xs: [micro-expressions, gesture endpoints]\n[Continue with 0.1s-0.5s precision]\n\nLIGHTING SCHEMATIC:\nKey: [position, intensity, color temp, diffusion]\nFill: [position, intensity, color temp]\nRim/Back: [position, intensity, color temp]\nAmbient: [quality, color, falloff]\n\nENVIRONMENT:\n[Visible elements with spatial positioning, textures, imperfections, atmospheric effects, background depth layers]\n\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\n\nCONSTRAINTS:\n- Use quantifiable metrics (degrees, seconds, Kelvin, f-stops, percentages)\n- Specify timing to 0.1s precision for critical moments\n- Describe colors with references (not just \"warm\" but \"2700K tungsten\")\n- Note all visible imperfections (scratches, wrinkles, asymmetries)\n- Document light-material interactions\n- CRITICAL: When change requests modify props/instruments/objects, update ALL references including dialogue, sound effects, and action descriptions\n- Define the opening frame composition with architectural precision to prevent unwanted elements appearing in frame\n\nOutput the manifest only. No commentary.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -240,
+        704
+      ],
+      "id": "9a8f7044-3d48-4dc5-8fce-4d6982fa062c",
+      "name": "Configure me"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "e31e1d0b-1ed1-4388-a021-1a184c1dcafe",
+              "name": "prompt",
+              "value": "=<Instructions>\n{{ $('Configure me').item.json.BASE_PROMPT }}\n</Instructions>\n\n<Context>\nVideo title: {{ $json.items[0].snippet.title }}\nVideo description: {{ $json.items[0].snippet.description }}\nVideo tags: {{ $json.items[0].snippet.tags.join(', ') }}\n</Context>\n\n{{ $('On form submission').item.json['Any change request to the video'] ? `\n<ChangeRequests>\n${$('On form submission').item.json['Any change request to the video']}\n</ChangeRequests>\n` : '' }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        464,
+        704
+      ],
+      "id": "10c99838-45ad-4c58-a824-e6a572eb6baa",
+      "name": "Create prompt"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "eccbeb92-af90-4244-8e23-2cd3e2616a07",
+              "name": "result",
+              "value": "={{ $json.candidates[0].content.parts[0].text }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        880,
+        704
+      ],
+      "id": "00f26208-57e6-4c18-88fd-9b022700a919",
+      "name": "Set the video prompt"
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/youtube/v3/videos",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpQueryAuth",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "part",
+              "value": "snippet"
+            },
+            {
+              "name": "id",
+              "value": "={{ $json.VIDEO_ID }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        256,
+        704
+      ],
+      "id": "a4386b0b-78f6-45b0-ac6c-76bbbef29b05",
+      "name": "\u26a0\ufe0f Get video data",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-preview:generateContent",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  \"contents\": [\n    {\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"fileData\": {\n            \"fileUri\": `https://www.youtube.com/watch?v=${$('Setup workflow').item.json.VIDEO_ID}`,\n            \"mimeType\": \"video/mp4\"\n          }\n        },\n        {\n          \"text\": $json.prompt\n        }\n      ]\n    }\n  ],\n  \"generationConfig\": {\n    \"temperature\": 0.4,\n    \"topP\": 0.95,\n    \"maxOutputTokens\": 8192\n  }\n}, null, 2) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        688,
+        704
+      ],
+      "id": "e9527c80-9dab-4134-aa98-802e489565d6",
+      "name": "\u26a0\ufe0f Create video prompt",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Setup workflow').item.json.VEO_VERTEX_URL }}",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n    endpoint: `projects/${$('Configure me').item.json.PROJECT_ID}/locations/${$('Configure me').item.json.LOCATION_ID}/publishers/google/models/${$('Configure me').item.json.MODEL_ID}`,\n    instances: [\n        {\n            prompt: $json.result\n        }\n    ],\n    parameters: {\n        aspectRatio: '9:16',\n        sampleCount: 1,\n        // negativePrompt: \"\",\n        // enhancePrompt: true,\n        // compressionQuality: \"optimized\",\n        durationSeconds: 8,\n        personGeneration: \"allow_all\",\n        addWatermark: true,\n        includeRaiReason: true,\n        generateAudio: true,\n        resolution: '1080p',\n    }\n}, null, 2) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1216,
+        704
+      ],
+      "id": "c81546dd-d459-4b18-8f91-7dcff00cff05",
+      "name": "\u26a0\ufe0f Start generating the video",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://{{ $('Configure me').item.json.API_ENDPOINT }}/v1/projects/{{ $('Configure me').item.json.PROJECT_ID }}/locations/{{ $('Configure me').item.json.LOCATION_ID }}/publishers/google/models/{{ $('Configure me').item.json.MODEL_ID }}:fetchPredictOperation",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googleOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  \"operationName\": $('\u26a0\ufe0f Start generating the video').first().json.name\n}, null, 2) }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1424,
+        704
+      ],
+      "id": "cfdbc07d-922e-4fbc-8cea-ea04aff9dcb8",
+      "name": "\u26a0\ufe0f Get the status of the generation",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Setup workflow": {
+      "main": [
+        [
+          {
+            "node": "\u26a0\ufe0f Get video data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait before polling again",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait before polling again": {
+      "main": [
+        [
+          {
+            "node": "\u26a0\ufe0f Get the status of the generation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Configure me",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configure me": {
+      "main": [
+        [
+          {
+            "node": "Setup workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create prompt": {
+      "main": [
+        [
+          {
+            "node": "\u26a0\ufe0f Create video prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set the video prompt": {
+      "main": [
+        [
+          {
+            "node": "\u26a0\ufe0f Start generating the video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u26a0\ufe0f Get video data": {
+      "main": [
+        [
+          {
+            "node": "Create prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u26a0\ufe0f Create video prompt": {
+      "main": [
+        [
+          {
+            "node": "Set the video prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u26a0\ufe0f Start generating the video": {
+      "main": [
+        [
+          {
+            "node": "\u26a0\ufe0f Get the status of the generation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "\u26a0\ufe0f Get the status of the generation": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8cb38d31-de44-48af-b2d6-b2a7eb3ecde9",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "636db6b6ab21a21c6458e2137f340e33dc3e49f5a1c560c8d1e2372c227cf40e"
+  },
+  "id": "xwXmHi3GGaopO6gg",
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}

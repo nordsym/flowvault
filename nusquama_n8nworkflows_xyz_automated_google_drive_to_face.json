@@ -1,0 +1,186 @@
+{
+  "id": "nkYXWToCsTu0oQCu",
+  "meta": {
+    "instanceId": "57c71fe69aec521b7d0bd3751d2e0aaa08f8884418e122571610a23c9eb8a65c",
+    "templateCredsSetupCompleted": true
+  },
+  "name": "drive_fb_ads",
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "39f9d135-0594-483d-bb62-c3e7bd355ba6",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        0,
+        0
+      ],
+      "parameters": {},
+      "typeVersion": 1
+    },
+    {
+      "id": "4439237c-49fb-4864-ba9e-09341136f326",
+      "name": "List Drive Videos",
+      "type": "n8n-nodes-base.googleDrive",
+      "position": [
+        200,
+        0
+      ],
+      "parameters": {
+        "name": "video1.pdf",
+        "options": {}
+      },
+      "credentials": {},
+      "typeVersion": 2
+    },
+    {
+      "id": "1214fa7b-8768-46c8-bd44-e35e58ae7bc4",
+      "name": "Download Video",
+      "type": "n8n-nodes-base.googleDrive",
+      "position": [
+        400,
+        0
+      ],
+      "parameters": {
+        "fileId": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "options": {},
+        "operation": "download"
+      },
+      "credentials": {},
+      "typeVersion": 2
+    },
+    {
+      "id": "5a08b369-b001-4c7d-a839-1f035c04fed2",
+      "name": "Upload Video to FB",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        600,
+        0
+      ],
+      "parameters": {
+        "url": "https://graph-video.facebook.com/v19.0/{{ $json.ad_account_id }}/advideos",
+        "options": {},
+        "authentication": "headerAuth"
+      },
+      "typeVersion": 3
+    },
+    {
+      "id": "b00251d7-db53-44d0-8c9b-6c461208e51a",
+      "name": "Create Ad Creative",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        800,
+        0
+      ],
+      "parameters": {
+        "url": "https://graph.facebook.com/v19.0/{{ $json.ad_account_id }}/adcreatives",
+        "options": {},
+        "authentication": "headerAuth"
+      },
+      "typeVersion": 3
+    },
+    {
+      "id": "5fbd0846-cda3-49fa-8b0b-f5fda2198ce2",
+      "name": "Extract Video ID",
+      "type": "n8n-nodes-base.function",
+      "position": [
+        720,
+        180
+      ],
+      "parameters": {
+        "functionCode": "return items.map(item => ({ json: {\n  video_id: item.json.id,\n  ad_account_id: 'act_YOUR_AD_ACCOUNT_ID',\n  page_id: 'YOUR_PAGE_ID'\n} }));"
+      },
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "active": false,
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c70b52c1-6804-4fbc-b924-7ed1c2a4126d",
+  "connections": {
+    "Download Video": {
+      "main": [
+        [
+          {
+            "node": "Upload Video to FB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "List Drive Videos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Video ID": {
+      "main": [
+        [
+          {
+            "node": "Create Ad Creative",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "List Drive Videos": {
+      "main": [
+        [
+          {
+            "node": "Download Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Video to FB": {
+      "main": [
+        [
+          {
+            "node": "Extract Video ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

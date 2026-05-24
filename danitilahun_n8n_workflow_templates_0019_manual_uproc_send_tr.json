@@ -1,0 +1,123 @@
+{
+  "id": "103",
+  "name": "verify email",
+  "nodes": [
+    {
+      "name": "On clicking 'execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        440,
+        510
+      ],
+      "parameters": {},
+      "typeVersion": 1
+    },
+    {
+      "name": "Create Email Item",
+      "type": "n8n-nodes-base.functionItem",
+      "position": [
+        640,
+        510
+      ],
+      "parameters": {
+        "functionCode": "item.email = \"mcolomer@gmail.com\";\nreturn item;"
+      },
+      "typeVersion": 1
+    },
+    {
+      "name": "Check Email Exists",
+      "type": "n8n-nodes-base.uproc",
+      "position": [
+        850,
+        510
+      ],
+      "parameters": {
+        "tool": "checkEmailExists",
+        "email": "={{$node[\"Create Email Item\"].json[\"email\"]}}",
+        "additionalOptions": {}
+      },
+      "credentials": {},
+      "typeVersion": 1
+    },
+    {
+      "name": "Email Exists?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        1050,
+        510
+      ],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$node[\"Check Email Exists\"].json[\"message\"][\"response\"]}}",
+              "value2": "deliverable"
+            }
+          ]
+        }
+      },
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "active": false,
+  "settings": {},
+  "connections": {
+    "Create Email Item": {
+      "main": [
+        [
+          {
+            "node": "Check Email Exists",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Email Exists": {
+      "main": [
+        [
+          {
+            "node": "Email Exists?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On clicking 'execute'": {
+      "main": [
+        [
+          {
+            "node": "Create Email Item",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}

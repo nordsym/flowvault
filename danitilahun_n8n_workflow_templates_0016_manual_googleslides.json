@@ -1,0 +1,96 @@
+{
+  "nodes": [
+    {
+      "name": "On clicking 'execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        270,
+        280
+      ],
+      "parameters": {},
+      "typeVersion": 1
+    },
+    {
+      "name": "Google Slides",
+      "type": "n8n-nodes-base.googleSlides",
+      "position": [
+        470,
+        280
+      ],
+      "parameters": {
+        "operation": "getSlides",
+        "returnAll": true,
+        "authentication": "oAuth2",
+        "presentationId": "11myCBTn3IT-Iww01WMz43L7HUmQdL6cCR6NCtpsZer0"
+      },
+      "credentials": {},
+      "typeVersion": 1
+    },
+    {
+      "name": "Google Slides1",
+      "type": "n8n-nodes-base.googleSlides",
+      "position": [
+        670,
+        280
+      ],
+      "parameters": {
+        "download": true,
+        "resource": "page",
+        "operation": "getThumbnail",
+        "pageObjectId": "={{$json[\"objectId\"]}}",
+        "authentication": "oAuth2",
+        "presentationId": "={{$node[\"Google Slides\"].parameter[\"presentationId\"]}}"
+      },
+      "credentials": {},
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "connections": {
+    "Google Slides": {
+      "main": [
+        [
+          {
+            "node": "Google Slides1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On clicking 'execute'": {
+      "main": [
+        [
+          {
+            "node": "Google Slides",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}
