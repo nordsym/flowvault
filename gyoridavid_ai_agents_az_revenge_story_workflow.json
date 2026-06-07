@@ -1,0 +1,1629 @@
+{
+  "name": "My workflow 14",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        8380,
+        7700
+      ],
+      "id": "7a6b6406-29aa-4aa6-a486-ebb467c4833b",
+      "name": "When clicking \u2018Test workflow\u2019"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "data.children",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        8960,
+        6340
+      ],
+      "id": "fd0c9c49-15ab-4602-836c-6b6fa28b6308",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "model": "qwen3:32b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmOllama",
+      "typeVersion": 1,
+      "position": [
+        11600,
+        5760
+      ],
+      "id": "003da475-5443-4a25-9cef-bf9f1bf8e754",
+      "name": "Ollama Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        9520,
+        6340
+      ],
+      "id": "62b2c25f-79e5-4246-956b-50f0562e718a",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9daf2cb4-cbd3-433e-bb54-69036c29ccd8",
+              "leftValue": "={{ $json.data.is_video }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "false",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        9220,
+        6340
+      ],
+      "id": "817dfe35-f80e-4ea3-bf40-bc7557ca2092",
+      "name": "Filter"
+    },
+    {
+      "parameters": {
+        "tableId": "revenge_stories",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "reddit_id",
+              "fieldValue": "={{ $('Set fields').item.json.reddit_id }}"
+            },
+            {
+              "fieldId": "title",
+              "fieldValue": "={{ $('Set fields').item.json.title }}"
+            },
+            {
+              "fieldId": "content",
+              "fieldValue": "={{ $('Set fields').item.json.content }}"
+            },
+            {
+              "fieldId": "permalink",
+              "fieldValue": "={{ $('Set fields').item.json.permalink }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "skipped"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        11500,
+        6660
+      ],
+      "id": "00f4f523-68a7-4268-acaf-5c0e213aaac3",
+      "name": "Skip post",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "tableId": "revenge_stories",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "reddit_id",
+              "fieldValue": "={{ $('Set fields').item.json.reddit_id }}"
+            },
+            {
+              "fieldId": "title",
+              "fieldValue": "={{ $('Set fields').item.json.title }}"
+            },
+            {
+              "fieldId": "content",
+              "fieldValue": "={{ $('Set fields').item.json.content }}"
+            },
+            {
+              "fieldId": "permalink",
+              "fieldValue": "={{ $('Set fields').item.json.permalink }}"
+            },
+            {
+              "fieldId": "status",
+              "fieldValue": "queued"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        11180,
+        6660
+      ],
+      "id": "94179383-8eb3-4dda-bde8-5e77e9ac2757",
+      "name": "Save post",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $('Set fields').item.json.title }}\n\n{{ $('Set fields').item.json.content }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "story"
+            },
+            {
+              "category": "ask_for_advice"
+            },
+            {
+              "category": "ranting"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1,
+      "position": [
+        10700,
+        6360
+      ],
+      "id": "17e97449-0128-4499-bef9-7c2c13c850ab",
+      "name": "Is it a story?"
+    },
+    {
+      "parameters": {
+        "url": "https://www.reddit.com/r/revengestories/top.json?t=month&limit=100",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        8640,
+        6340
+      ],
+      "id": "ddffab62-bf62-48b8-a88e-1c3e38e9f070",
+      "name": "Get stories from Reddit"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2c779eb8-420e-431f-9d77-fea1ecd728c4",
+              "name": "content",
+              "value": "={{ $json.data.selftext }}",
+              "type": "string"
+            },
+            {
+              "id": "103089b2-22c8-4d90-8aba-2e9bb8989b8f",
+              "name": "title",
+              "value": "={{ $json.data.title }}",
+              "type": "string"
+            },
+            {
+              "id": "4d57755f-aa41-49fe-8d12-f309cdacdab8",
+              "name": "permalink",
+              "value": "={{ $json.data.permalink }}",
+              "type": "string"
+            },
+            {
+              "id": "9f2b8c7f-aa30-455f-a6d6-df7937213603",
+              "name": "reddit_id",
+              "value": "={{ $json.data.id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        9980,
+        6340
+      ],
+      "id": "6b53487d-e687-48b1-8f42-4c159cd0d682",
+      "name": "Set fields"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "revenge_stories",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "reddit_id",
+              "keyValue": "={{ $json.reddit_id }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        10240,
+        6340
+      ],
+      "id": "bdfa83cd-ef43-4fdb-9bfa-5173a13cbeb9",
+      "name": "Look up the id of the post",
+      "alwaysOutputData": true,
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6d9626e6-2605-4b45-8550-cf1c972e681f",
+              "leftValue": "={{ $json.keys().length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        10460,
+        6340
+      ],
+      "id": "b416bd7a-6732-4156-b1a3-4e5a3f9aa04a",
+      "name": "Already exists?"
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "revenge_stories",
+        "limit": 1,
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "status",
+              "condition": "eq",
+              "keyValue": "queued"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        9540,
+        7700
+      ],
+      "id": "a1782523-18d5-43e1-8113-a12931e65a49",
+      "name": "Get the next story to process",
+      "alwaysOutputData": true,
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        9080,
+        8680
+      ],
+      "id": "32ff01a5-a297-4a2a-aaa2-81f4566d0e55",
+      "name": "Wait",
+      "webhookId": "f7cb7ba8-fae0-41f1-8ee6-6313c48d04c4"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Setup the download url').item.json.download_url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        10880,
+        8360
+      ],
+      "id": "92af8bed-8975-4896-9d23-40d826121070",
+      "name": "Download the video",
+      "alwaysOutputData": false,
+      "retryOnFail": false,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $('Cleanup title').item.json.title }}",
+        "regionCode": "HU",
+        "categoryId": "24",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        11340,
+        8360
+      ],
+      "id": "255717bd-5df0-4eae-a539-0dc130f6ec27",
+      "name": "Share on YouTube",
+      "credentials": {},
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Configuration for story writing').item.json.server_url }}/api/videos/{{ $('Start creating the video').item.json.video_id }}/status",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        9300,
+        8680
+      ],
+      "id": "01b61fb3-4183-41c9-b659-a75286b32ae6",
+      "name": "Check video status",
+      "alwaysOutputData": false,
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Configuration for story writing').item.json.server_url }}/api/videos",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "text",
+              "value": "={{ $('Cleanup text').item.json.text }}"
+            },
+            {
+              "name": "person_image_url",
+              "value": "={{ $('Create character').item.json.output.sex === \"male\" ? $('Configuration for story writing').item.json.person_male_image_url : $('Configuration for story writing').item.json.person_female_image_url }}"
+            },
+            {
+              "name": "person_name",
+              "value": "={{ $('Create character').item.json.output.name }}"
+            },
+            {
+              "name": "bg_video_url",
+              "value": "={{ $('Configuration for story writing').item.json.bg_video_url }}"
+            },
+            {
+              "name": "voice",
+              "value": "={{ $('Set the final voice').item.json.voice }}"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        8640,
+        8680
+      ],
+      "id": "beb9bc68-32a4-4b32-86e7-da4e1d3d7e5c",
+      "name": "Start creating the video"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "failed",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "6ff9c638-d9b5-41d1-977e-0b1521476d1a"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "failed"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "a656c56d-40e2-4a42-ac1b-5bd09654f9af",
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "processing",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "processing"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "45b9a8da-0a03-4ae0-86f2-a631264e1d55",
+                    "leftValue": "={{ $json.status }}",
+                    "rightValue": "completed",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "completed"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        9560,
+        8680
+      ],
+      "id": "cbd57f89-92d4-491d-8bd6-d3ffd9015022",
+      "name": "Switch"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        10120,
+        8380
+      ],
+      "id": "53691a2c-4886-4c2a-a8cb-b1bcfb0b54c9",
+      "name": "No Operation, do nothing"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "761be6c7-4a57-4c29-b24b-0e7769515baf",
+              "name": "text",
+              "value": "={{ $json.text.replace(/\\n/g, '').replace(/ {2,}/g, ' ').replace(/\\*/g, '').trim() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        10760,
+        7700
+      ],
+      "id": "1fd07757-b547-4fb7-820b-a4f68fefee8a",
+      "name": "Cleanup text"
+    },
+    {
+      "parameters": {
+        "text": "=<sex>{{ $('Setup sex of the main character').item.json.sex }}</sex>\n<reddit_revenge_story>\n<title>{{ $('Get the next story to process').item.json.title }}</title>\n<content>\n{{ $('Get the next story to process').item.json.content }}\n</content>\n</reddit_revenge_story>",
+        "attributes": {
+          "attributes": [
+            {
+              "name": "name",
+              "description": "the name of the main character",
+              "required": true
+            },
+            {
+              "name": "age",
+              "type": "number",
+              "description": "the age of the main character",
+              "required": true
+            },
+            {
+              "name": "location",
+              "description": "the location of the main character",
+              "required": true
+            },
+            {
+              "name": "sex",
+              "description": "the sex of the main character",
+              "required": true
+            }
+          ]
+        },
+        "options": {
+          "systemPromptTemplate": "=You are an expert writer.\nCreate a new, fictionalized character and the back story based on the reddit story.\nDon't use any name or location from the story, create a new ones.\nUse the provided sex for the character.\n\nThe final story wil be written in {{ $('Setup language').item.json.language }} ({{ $('Configuration for story writing').item.json.lang_code }}) language, so make sure the location and the name are authentic for the language."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.informationExtractor",
+      "typeVersion": 1,
+      "position": [
+        10060,
+        7700
+      ],
+      "id": "c59d07db-83b1-4348-ac15-dcf7ec857966",
+      "name": "Create character"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "revenge_stories",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "reddit_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Get the next story to process').item.json.reddit_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "created"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        10360,
+        8700
+      ],
+      "id": "c886d36b-3312-4366-8b5b-7afc80000a1b",
+      "name": "Set status to created",
+      "credentials": {},
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "revenge_stories",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "reddit_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Get the next story to process').item.json.reddit_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "uploaded"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        11640,
+        8700
+      ],
+      "id": "ea2c645d-7b04-448b-a8b6-06d019289181",
+      "name": "Set status to uploaded",
+      "credentials": {},
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "tableId": "revenge_stories",
+        "matchType": "allFilters",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "reddit_id",
+              "condition": "eq",
+              "keyValue": "={{ $('Get the next story to process').item.json.reddit_id }}"
+            }
+          ]
+        },
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "status",
+              "fieldValue": "failed"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        9900,
+        8380
+      ],
+      "id": "90c28278-dfac-486d-9d03-799dbd5e84bd",
+      "name": "Set status to failed",
+      "credentials": {}
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        10100,
+        7380
+      ],
+      "id": "afbdd426-fe3b-46c0-a82c-0c80e2bc1d48",
+      "name": "No unprocessed stories in the database"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Configuration for story writing').item.json.server_url }}/api/languages",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "content",
+              "value": "hello world"
+            }
+          ]
+        },
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        11880,
+        7860
+      ],
+      "id": "8c0cd612-9ffb-4e47-ac15-36c99a2b1893",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "64863f3c-916c-4799-a01a-f057ea9bd619",
+              "name": "sex",
+              "value": "={{ $('Configuration for story writing').item.json.sex || $('Configuration for story writing').item.json.lang_code === 'fr' ? 'female' : ['male', 'female'].randomItem() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        9260,
+        7700
+      ],
+      "id": "4166645d-9883-4492-8a93-9035f9d0e7c1",
+      "name": "Setup sex of the main character"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "48869e0b-b79b-4ff9-8777-ca0b66a4199b",
+              "name": "bg_video_url",
+              "value": "={{ [\"\"].randomItem() }}",
+              "type": "string"
+            },
+            {
+              "id": "f50ea6b3-78cc-448a-8bc2-551c3d9fc10c",
+              "name": "person_female_image_url",
+              "value": "={{ [\"\"].randomItem() }}",
+              "type": "string"
+            },
+            {
+              "id": "424ad55a-479a-4e96-bd79-20b88e5e44ab",
+              "name": "person_male_image_url",
+              "value": "={{ [\"\"].randomItem() }}",
+              "type": "string"
+            },
+            {
+              "id": "efa00bce-d84c-450a-ae7e-41cbf4ffdda8",
+              "name": "server_url",
+              "value": "YOUR_SERVER_URL",
+              "type": "string"
+            },
+            {
+              "id": "5b5a9281-1de3-429e-aaf3-8da03a38b979",
+              "name": "lang_code",
+              "value": "en-us",
+              "type": "string"
+            },
+            {
+              "id": "e37a6d43-b329-488b-ac91-98a4bba0b1cb",
+              "name": "voice",
+              "value": "",
+              "type": "string"
+            },
+            {
+              "id": "63752d0d-90a8-400a-9162-07dff0f3490d",
+              "name": "sex",
+              "value": "",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        8640,
+        7700
+      ],
+      "id": "17ed5f75-e96e-4bfe-bb43-5681cd828a7e",
+      "name": "Configuration for story writing"
+    },
+    {
+      "parameters": {
+        "jsCode": "const languages = {\n  \"en-us\": \"english\",\n  \"en-gb\": \"english\",\n  \"zh\": \"simplified chinese\",\n  \"es\": \"spanish\",\n  \"fr\": \"french\",\n  \"it\": \"italian\",\n  \"pt\": \"brazilian portugese\",\n  \"hi\": \"hindi\"\n}\n\nconst language = languages[$('Configuration for story writing').item.json.lang_code];\n\nreturn {\n  language\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        8980,
+        7700
+      ],
+      "id": "7a584890-9db5-48bd-a1ed-da9054502f90",
+      "name": "Setup language"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "d156f819-15ca-4510-bfa9-8ebb0b8db611",
+              "name": "voice",
+              "value": "={{ $json.voice }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        12380,
+        7860
+      ],
+      "id": "9d32ed10-d523-4361-88da-422f7ab9887f",
+      "name": "Set the final voice"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ec9bcc50-398a-48b3-a32b-bf847868b9b3",
+              "leftValue": "={{ $('Configuration for story writing').item.json.voice }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        11500,
+        7700
+      ],
+      "id": "43b3c92e-4495-4044-a357-2e34707c055b",
+      "name": "Is there a pre-selected voice to use?"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4160cb90-6045-4ebd-ac07-24c6240d87d9",
+              "name": "voice",
+              "value": "={{ $('Configuration for story writing').item.json.voice }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        11960,
+        7580
+      ],
+      "id": "b6d1aa01-c785-4b13-9820-6f7d0b82e0bd",
+      "name": "Keep the original voice value"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "ae921e13-ea42-4f6c-b997-f9e502f190fb",
+              "name": "voice",
+              "value": "={{ \n\n$json[$('Configuration for story writing').item.json.lang_code].map(item => ({ voice: item, sex: item.split('_')[0][1]})).filter(item => item.sex === ($('Create character').item.json.output.sex === 'female' ? 'f' : 'm')).randomItem().voice\n\n}}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        12060,
+        7860
+      ],
+      "id": "c465d6f0-022c-4ebe-a08e-7daaec94d25e",
+      "name": "Set a random voice"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "29f1f743-befd-4901-b645-da092ae64021",
+              "leftValue": "={{ $json.keys().length }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        9800,
+        7700
+      ],
+      "id": "0e1f4b0e-23b0-445e-90cd-04ce42b6b929",
+      "name": "Is there a story to process?"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=I'm creating a revenge story video from revenge stories shared on Reddit. Your task is take the input, enhance it and create an engaging, fictionalized revenge story from it.\n\n<instructions>\n1. Use the plot structure below to create the story\n2. Use the provided character name, age, sex and location. Make sure to customize the story so it fits the sex of the character.\n3. The story should be told in first person\n4. Make the reading level 8th grade\n5. Don't use acronyms, use the long version of every turn. The text will be used turned into speech with TTS.\n6. Don't create paragraphs, don't format the text, use clear and continous text\n7. The story should be very long\n8. Write the story in {{ $('Setup language').item.json.language }} ({{ $('Configuration for story writing').item.json.lang_code }}) language. Make sure it sounds authentic.\n\nPlot structure\n\n- **Act 1: The character is in a situation with a problem.**\n    - Introduce the character, their world, and their place in it. What is interesting or intriguing about this character and their life? Describe any distinctive qualities, and create empathy with them.\n    - Something happens to shake the character\u2019s world, or they find themselves in a new situation, creating a threat or opportunity. What problem does the character have to solve? How is the character unsatisfied with how things currently are? Who has appeared as their nemesis?\n- **Act 2: They try to solve the problem, but fail, making it worse.**\n    - Character begins to make efforts to solve their problem. They face a series of hurdles or conflicts, each of increasing difficulty and stakes. Some they win, some they lose. The original problem begins to grow bigger and more serious.\n    - In order for the high of the climax to have the greatest effect, take the character as low as they can go. Despite all the progress they\u2019ve made against external and internal obstacles, something should happen which makes them certain that all may be lost.\n- **Act 3: They make a final attempt to solve the problem, which may succeed or fail. The consequence is not always as expected.**\n    - Bring to a climax. The character makes a final, last ditch effort to solve their problem. They must dig deep to find that last bit of strength and courage, and risk everything they have to make one final attempt. May involve a confrontation between the character and their nemesis.\n    - Depending on the type of story being written, this effort can solve the problem or destroy everything. The consequences of their choice must be poetic. In vast majority of cases, the character is rewarded for their action or decision and be fulfilled.\n    - Bring to a resolution. Show the character\u2019s new normal, how they may have changed, and tie up any loose ends. As close to the end as possible, there could be an unexpected twist to leave a parting thrill.\n</instructions>\n\n<character>\n<name>{{ $json.output.name }}</name>\n<age>{{ $json.output.age }}</age>\n<location>{{ $json.output.location }}</location>\n<sex>{{ $json.output.sex }}</sex>\n</character>\n\n<reddit_revenge_story>\n<title>{{ $('Get the next story to process').item.json.title }}</title>\n<content>\n{{ $('Get the next story to process').item.json.content }}\n</content>\n</reddit_revenge_story>",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are an expert creative writer. You write revenge stories for a living."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        10400,
+        7700
+      ],
+      "id": "114ef577-58c9-416e-9d09-c59c1bcd88c2",
+      "name": "Write the story"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "00a93563-0016-45c5-a651-22b3e529c51c",
+              "name": "download_url",
+              "value": "={{ $('Configuration for story writing').item.json.server_url }}/api/videos/{{ $('Start creating the video').item.json.video_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        10100,
+        8700
+      ],
+      "id": "278fba11-a0dd-4e42-80a9-c8e1ec94e226",
+      "name": "Setup the download url"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        11120,
+        5580
+      ],
+      "id": "e18bffde-322f-4fde-843d-6a90abb67e97",
+      "name": "OpenRouter Chat Model"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        11280,
+        5760
+      ],
+      "id": "92edfcd9-ef9b-4085-acf1-f11133374073",
+      "name": "Google Gemini Chat Model"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        10940,
+        5580
+      ],
+      "id": "5f7c8e6b-89f0-434a-ab32-6b501e205dd4",
+      "name": "OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
+      "typeVersion": 1,
+      "position": [
+        10940,
+        5760
+      ],
+      "id": "714bda1d-5218-4b5c-a71f-dab412e0b909",
+      "name": "Azure OpenAI Chat Model"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatXAiGrok",
+      "typeVersion": 1,
+      "position": [
+        11120,
+        5760
+      ],
+      "id": "32e1b025-ca81-4e5e-9e9d-a036a507ec6b",
+      "name": "xAI Grok Chat Model"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=<Instructions>\nCreate an attention-grabbing title, that is consise and descriptive for the following story in {{ $('Setup language').item.json.language }} ({{ $('Configuration for story writing').item.json.lang_code }}) language. The title should be maximum 100 characters.\n</Instructions>\n\n<Story>\n{{ $json.text }}\n</Story>"
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        10940,
+        7700
+      ],
+      "id": "08ad632c-106d-4a8a-af39-ba3250f1fd9c",
+      "name": "Create title"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5528f120-1fb8-4ef0-9357-f206ee8c4afe",
+              "name": "title",
+              "value": "={{ $json.text.replace(/\\n/g, '').replace(/ {2,}/g, ' ').replace(/\\*/g, '').trim() }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        11300,
+        7700
+      ],
+      "id": "d4ff9399-1f72-4982-918d-d7a738334935",
+      "name": "Cleanup title"
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking \u2018Test workflow\u2019": {
+      "main": [
+        [
+          {
+            "node": "Configuration for story writing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "Filter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ollama Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Is it a story?",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Write the story",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Create character",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Create title",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Set fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Skip post": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save post": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is it a story?": {
+      "main": [
+        [
+          {
+            "node": "Save post",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Skip post",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Skip post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get stories from Reddit": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set fields": {
+      "main": [
+        [
+          {
+            "node": "Look up the id of the post",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Look up the id of the post": {
+      "main": [
+        [
+          {
+            "node": "Already exists?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Already exists?": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Is it a story?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get the next story to process": {
+      "main": [
+        [
+          {
+            "node": "Is there a story to process?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Check video status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download the video": {
+      "main": [
+        [
+          {
+            "node": "Share on YouTube",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check video status": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start creating the video": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Set status to failed",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Setup the download url",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleanup text": {
+      "main": [
+        [
+          {
+            "node": "Create title",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create character": {
+      "main": [
+        [
+          {
+            "node": "Write the story",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Share on YouTube": {
+      "main": [
+        [
+          {
+            "node": "Set status to uploaded",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set status to created": {
+      "main": [
+        [
+          {
+            "node": "Download the video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set status to failed": {
+      "main": [
+        [
+          {
+            "node": "No Operation, do nothing",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Set a random voice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Setup sex of the main character": {
+      "main": [
+        [
+          {
+            "node": "Get the next story to process",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Configuration for story writing": {
+      "main": [
+        [
+          {
+            "node": "Setup language",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Setup language": {
+      "main": [
+        [
+          {
+            "node": "Setup sex of the main character",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set the final voice": {
+      "main": [
+        [
+          {
+            "node": "Start creating the video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is there a pre-selected voice to use?": {
+      "main": [
+        [
+          {
+            "node": "Keep the original voice value",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Keep the original voice value": {
+      "main": [
+        [
+          {
+            "node": "Set the final voice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set a random voice": {
+      "main": [
+        [
+          {
+            "node": "Set the final voice",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is there a story to process?": {
+      "main": [
+        [
+          {
+            "node": "Create character",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "No unprocessed stories in the database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write the story": {
+      "main": [
+        [
+          {
+            "node": "Cleanup text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Setup the download url": {
+      "main": [
+        [
+          {
+            "node": "Set status to created",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create title": {
+      "main": [
+        [
+          {
+            "node": "Cleanup title",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleanup title": {
+      "main": [
+        [
+          {
+            "node": "Is there a pre-selected voice to use?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "501701f7-79bd-46ba-bd6b-1e7b399b0711",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "636db6b6ab21a21c6458e2137f340e33dc3e49f5a1c560c8d1e2372c227cf40e"
+  },
+  "id": "ucEHSGg73IPzhX1n",
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}

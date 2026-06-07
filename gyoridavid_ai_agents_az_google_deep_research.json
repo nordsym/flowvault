@@ -1,0 +1,814 @@
+{
+  "name": "My workflow 14",
+  "nodes": [
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "5c28393f-6e8b-425b-babb-22eac9ad7238",
+              "name": "GOOGLE_API_KEY",
+              "value": "YOUR_GOOGLE_API_KEY_COMES_HERE",
+              "type": "string"
+            },
+            {
+              "id": "7f935132-6cb7-43a4-ae87-77336bd2cf82",
+              "name": "GOOGLE_CUSTOM_SEARCH",
+              "value": "YOUR_CUSTOM_SEARCH_ID_COMES_HERE",
+              "type": "string"
+            },
+            {
+              "id": "a848bf0c-0a5f-4acc-9412-aebd93c84380",
+              "name": "top_results",
+              "value": "={{ $json.top_results ?? 3 }}",
+              "type": "number"
+            },
+            {
+              "id": "c52bbef3-c0a6-4017-a403-abaaee216895",
+              "name": "context",
+              "value": "={{ $json.context }}",
+              "type": "string"
+            },
+            {
+              "id": "ae883a9e-7207-48ef-ad1f-9c86076e0308",
+              "name": "num_search_terms",
+              "value": "={{ $json.num_search_terms ?? 2 }}",
+              "type": "number"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        60,
+        400
+      ],
+      "id": "77d185cd-6840-4178-b99d-ecbc681809dc",
+      "name": "configuration"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"search_terms\": {\n            \"type\": \"array\",\n            \"description\": \"the google search terms\",\n            \"items\": {\n                \"type\": \"string\"\n            }\n        }\n    },\n    \"required\": [\n        \"search_terms\"\n    ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        600,
+        700
+      ],
+      "id": "ce9663e3-b2fd-4a7f-a155-582882fc44f1",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1900,
+        900
+      ],
+      "id": "d0d79be5-6a89-498d-91b4-ef33d5546d8f",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output.search_terms",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        740,
+        400
+      ],
+      "id": "03b39df2-67d3-428c-913e-6d7ccc7a6bda",
+      "name": "Split Out"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "items",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        1180,
+        400
+      ],
+      "id": "15cb99a2-74f2-4c16-8032-e3cbbe1c4856",
+      "name": "Split Out1"
+    },
+    {
+      "parameters": {
+        "operation": "extractHtmlContent",
+        "extractionValues": {
+          "values": [
+            {
+              "key": "data",
+              "cssSelector": "body",
+              "returnValue": "html"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.html",
+      "typeVersion": 1.2,
+      "position": [
+        2060,
+        400
+      ],
+      "id": "2a2020a9-974d-4adc-b1d3-07f0e4cb6978",
+      "name": "HTML"
+    },
+    {
+      "parameters": {
+        "html": "={{ $json.data }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.markdown",
+      "typeVersion": 1,
+      "position": [
+        2280,
+        400
+      ],
+      "id": "035220d2-2759-46b3-ab8d-66f7005d2ff1",
+      "name": "Markdown"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"summary\": {\n            \"type\": \"string\",\n            \"description\": \"the summary of the content\"\n        }\n    },\n    \"required\": [\n        \"summary\"\n    ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        3000,
+        760
+      ],
+      "id": "a90ed520-7f70-445c-916a-4a30a46623ae",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n    \"type\": \"object\",\n    \"properties\": {\n        \"relevant_to_context\": {\n            \"type\": \"boolean\",\n            \"description\": \"whether the researched content is relevant to the context\"\n        }\n    },\n    \"required\": [\n        \"relevant_to_article\"\n    ]\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.2,
+      "position": [
+        3420,
+        740
+      ],
+      "id": "d31c2a54-1b14-4d25-a3f0-21146531245d",
+      "name": "Structured Output Parser2"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "research_results",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        4100,
+        400
+      ],
+      "id": "255cd796-6d0f-4197-a4fa-60c85689bbc8",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "top_results",
+              "type": "number"
+            },
+            {
+              "name": "context"
+            },
+            {
+              "name": "num_search_terms",
+              "type": "number"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -260,
+        400
+      ],
+      "id": "642a7a80-84c0-47b3-b8d9-1e751d3152bc",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=<Context>\n{{ $json.context }}\n</Context>\n\n<Instructions>\nI want to run a research on Google on the context above. \nHelp me to come up with search terms I can use.\nI need exactly {{ $json.num_search_terms }} search term(s) - no more no less. \nMake sure to be creative, and give me different ones so I can get diverse search results.\n</Instructions>",
+        "hasOutputParser": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        380,
+        400
+      ],
+      "id": "06920cd4-00a0-494a-abad-71af227500de",
+      "name": "create search terms"
+    },
+    {
+      "parameters": {
+        "url": "https://www.googleapis.com/customsearch/v1",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "key",
+              "value": "={{ $('configuration').item.json.GOOGLE_API_KEY }}"
+            },
+            {
+              "name": "cx",
+              "value": "={{ $('configuration').item.json.GOOGLE_CUSTOM_SEARCH }}"
+            },
+            {
+              "name": "q",
+              "value": "={{ $json['output.search_terms'] }}"
+            },
+            {
+              "name": "num",
+              "value": "={{ $('configuration').item.json.top_results }}"
+            },
+            {
+              "name": "siteSearch",
+              "value": "reddit.com"
+            },
+            {
+              "name": "siteSearchFilter",
+              "value": "e"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        400
+      ],
+      "id": "3dd1ea7f-8c0d-41f9-a91c-0e9f2026b09b",
+      "name": "search on Google",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "c18ff56b-39fa-477c-a48d-bc65ad0a510d",
+              "leftValue": "={{ $json.mime }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1400,
+        400
+      ],
+      "id": "dc0c6d15-b885-430d-a0f6-0f2e7bbd9ca8",
+      "name": "remove documents"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.link }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "user-agent",
+              "value": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1620,
+        400
+      ],
+      "id": "b50aa2c5-8fb9-4b37-a8e6-80b00db43922",
+      "name": "get the content of the link",
+      "retryOnFail": false,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "99cf6ac1-d77b-491c-86dc-44555032f5b0",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "object",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "e6dd1301-acb8-4dc4-83d0-4d5b1a7f2036",
+              "leftValue": "={{ $json.data }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        1840,
+        400
+      ],
+      "id": "22999b1a-9b5e-47ad-9ca9-5f7050bcc3ad",
+      "name": "filter out the errors"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e70a34f7-b723-47fe-a62f-1a318c483959",
+              "leftValue": "={{ $json.data }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        2500,
+        400
+      ],
+      "id": "35ded490-70d5-49d4-9b10-9d58498c0489",
+      "name": "filter empty results"
+    },
+    {
+      "parameters": {
+        "jsCode": "for (const item of $input.all()) {\n  item.json.data = item.json.data.replace(/!\\[[^\\]]+\\]\\([^\\)]+\\)/g, \"\") // remove images\n  item.json.data = item.json.data.replace(/\\[.*?\\]\\(.*?\\)/g, \"\") // remove links\n  item.json.data = item.json.data.replace(/\\n{2,}/g, \"\") // remove extra new line characters\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2720,
+        400
+      ],
+      "id": "e34ff673-58c4-4420-966e-2b5cca101ce7",
+      "name": "cleanup the markdown"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=I've collected research content using Google search.\n\nRead the research content, and analyze whether it is relevant to the context below.\nMake sure it's also useful, and contains relevant information for my context.\n\n<Context>\n{{ $('configuration').item.json.context }}\n</Context>\n\n<ResearchContentSummary>\n{{ $json.output.summary }}\n</ResearchContentSummary>",
+        "hasOutputParser": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        3300,
+        400
+      ],
+      "id": "d703961f-4dce-4a9b-85e0-1e716a790663",
+      "name": "is it relevant?",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Please summarize the following content for me. Make sure to capture all the information in a concise format. Don't miss anything important.\nIgnore generic website elements like cookie policies, etc.\n\n<Content>\n{{ $json.data }}\n</Content>",
+        "hasOutputParser": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.5,
+      "position": [
+        2940,
+        400
+      ],
+      "id": "0ff51b30-b172-476e-8798-d7421d8b5b58",
+      "name": "summarize",
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "a72e5161-9b19-45fb-bb4f-5ae28d3da266",
+              "leftValue": "={{ $json.output.relevant_to_context }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        3660,
+        400
+      ],
+      "id": "4e21d3c2-c059-48e2-ad58-9eeef5e43b9d",
+      "name": "filter irrelevant"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "53e16d12-8a90-4cf8-85e2-6aa2ef2ae3af",
+              "name": "summary",
+              "value": "={{ $('summarize').item.json.output.summary }}",
+              "type": "string"
+            },
+            {
+              "id": "1ca9f5a5-0e9a-47e6-9fef-079367dc4769",
+              "name": "title",
+              "value": "={{ $('remove documents').item.json.title }}",
+              "type": "string"
+            },
+            {
+              "id": "11c33d6b-d23c-4bc6-9003-b8ca022b3ada",
+              "name": "link",
+              "value": "={{ $('remove documents').item.json.link }}",
+              "type": "string"
+            },
+            {
+              "id": "eea8547b-2e21-4b71-a9dc-74639d658485",
+              "name": "snippet",
+              "value": "={{ $('remove documents').item.json.snippet }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        3880,
+        400
+      ],
+      "id": "797834a5-9a83-4685-a94c-8cd3e31b596b",
+      "name": "set fields to return"
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "configuration": {
+      "main": [
+        [
+          {
+            "node": "create search terms",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "create search terms",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "create search terms",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "summarize",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "is it relevant?",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out": {
+      "main": [
+        [
+          {
+            "node": "search on Google",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Split Out1": {
+      "main": [
+        [
+          {
+            "node": "remove documents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML": {
+      "main": [
+        [
+          {
+            "node": "Markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Markdown": {
+      "main": [
+        [
+          {
+            "node": "filter empty results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "summarize",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser2": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "is it relevant?",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "configuration",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create search terms": {
+      "main": [
+        [
+          {
+            "node": "Split Out",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "search on Google": {
+      "main": [
+        [
+          {
+            "node": "Split Out1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "remove documents": {
+      "main": [
+        [
+          {
+            "node": "get the content of the link",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get the content of the link": {
+      "main": [
+        [
+          {
+            "node": "filter out the errors",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "filter out the errors": {
+      "main": [
+        [
+          {
+            "node": "HTML",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "filter empty results": {
+      "main": [
+        [
+          {
+            "node": "cleanup the markdown",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "cleanup the markdown": {
+      "main": [
+        [
+          {
+            "node": "summarize",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "is it relevant?": {
+      "main": [
+        [
+          {
+            "node": "filter irrelevant",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "summarize": {
+      "main": [
+        [
+          {
+            "node": "is it relevant?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "filter irrelevant": {
+      "main": [
+        [
+          {
+            "node": "set fields to return",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "set fields to return": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a4736b82-ed72-48f3-a786-adf8dfce43bd",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "636db6b6ab21a21c6458e2137f340e33dc3e49f5a1c560c8d1e2372c227cf40e"
+  },
+  "id": "ucEHSGg73IPzhX1n",
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}
