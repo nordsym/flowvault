@@ -1,0 +1,131 @@
+{
+  "nodes": [
+    {
+      "name": "On clicking 'execute'",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        -40,
+        240
+      ],
+      "parameters": {},
+      "typeVersion": 1
+    },
+    {
+      "name": "Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "position": [
+        150,
+        240
+      ],
+      "parameters": {
+        "resource": "message",
+        "operation": "getAll",
+        "returnAll": true,
+        "additionalFields": {
+          "q": "-in:chats unsubscribe -license -key -password",
+          "format": "ids"
+        }
+      },
+      "credentials": {},
+      "typeVersion": 1
+    },
+    {
+      "name": "Delete Old Gmail",
+      "type": "n8n-nodes-base.gmail",
+      "position": [
+        500,
+        410
+      ],
+      "parameters": {
+        "resource": "message",
+        "messageId": "={{$json[\"id\"]}}",
+        "operation": "delete"
+      },
+      "credentials": {},
+      "typeVersion": 1
+    },
+    {
+      "name": "SplitInBatches",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [
+        310,
+        240
+      ],
+      "parameters": {
+        "options": {},
+        "batchSize": 100
+      },
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "connections": {
+    "Gmail": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "SplitInBatches": {
+      "main": [
+        [
+          {
+            "node": "Delete Old Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Old Gmail": {
+      "main": [
+        [
+          {
+            "node": "SplitInBatches",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On clicking 'execute'": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}
