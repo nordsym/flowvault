@@ -1,0 +1,259 @@
+{
+  "id": "WkAiNewsDigest01",
+  "name": "\u6bcf\u9031 AI \u65b0\u805e\u6458\u8981 (Weekly AI News Digest)",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 1"
+            }
+          ]
+        }
+      },
+      "id": "node-schedule",
+      "name": "Schedule Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        240,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://news.google.com/rss/search?q=AI&hl=zh-TW&gl=TW&ceid=TW:zh-Hant",
+        "options": {}
+      },
+      "id": "node-rss-google",
+      "name": "RSS Google News",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        280
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://tw.news.yahoo.com/rss/",
+        "options": {}
+      },
+      "id": "node-rss-yahoo",
+      "name": "RSS Yahoo News",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        520
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "append",
+        "numberInputs": 2
+      },
+      "id": "node-merge",
+      "name": "Merge",
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3,
+      "position": [
+        720,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const seen = new Set();\nconst items = [];\nfor (const it of $input.all()) {\n  const j = it.json;\n  const title = (j.title || '').trim();\n  const link = j.link || j.url || '';\n  if (!title || seen.has(title)) continue;\n  seen.add(title);\n  items.push({ title, link });\n  if (items.length >= 15) break;\n}\nconst newsText = items.map((n, i) => (i + 1) + '. ' + n.title + ' \u2014 ' + n.link).join('\\n');\nconst prompt = '\u4f60\u662f\u4e00\u4f4d\u79d1\u6280\u65b0\u805e\u7de8\u8f2f\u3002\u4ee5\u4e0b\u662f\u672c\u9031\u591a\u5247\u65b0\u805e\u6a19\u984c\u8207\u9023\u7d50\uff0c\u8acb\u7528\u7e41\u9ad4\u4e2d\u6587\u6574\u7406\u6210\u4e00\u4efd\u300c\u6bcf\u9031 AI \u65b0\u805e\u6458\u8981\u300d\uff1a\u6311\u51fa\u6700\u91cd\u8981\u7684 5-7 \u5247\uff0c\u6bcf\u5247\u7528\u4e00\u53e5\u8a71\u8aaa\u660e\u91cd\u9ede\uff0c\u6700\u5f8c\u518d\u7d66 2 \u53e5\u6574\u9ad4\u8da8\u52e2\u7e3d\u7d50\u3002\\n\\n' + newsText;\nreturn [{ json: { count: items.length, items, newsText, prompt } }];"
+      },
+      "id": "node-prepare",
+      "name": "Prepare News Text",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        940,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.anthropic.com/v1/messages",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "anthropic-version",
+              "value": "2023-06-01"
+            },
+            {
+              "name": "content-type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 1500, messages: [ { role: 'user', content: $json.prompt } ] }) }}",
+        "options": {}
+      },
+      "id": "node-claude",
+      "name": "Summarize with Claude",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1160,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\nlet summary = '';\ntry { summary = data.content[0].text; } catch (e) { summary = JSON.stringify(data); }\nreturn [{ json: { summary } }];"
+      },
+      "id": "node-extract",
+      "name": "Extract Summary",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1380,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "you@example.com",
+        "toEmail": "you@example.com",
+        "subject": "\ud83d\udcf0 \u6bcf\u9031 AI \u65b0\u805e\u6458\u8981",
+        "emailFormat": "text",
+        "text": "={{ $json.summary }}",
+        "options": {}
+      },
+      "id": "node-email",
+      "name": "Send Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1600,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "RSS Google News",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "RSS Yahoo News",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Google News": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Yahoo News": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Prepare News Text",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare News Text": {
+      "main": [
+        [
+          {
+            "node": "Summarize with Claude",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarize with Claude": {
+      "main": [
+        [
+          {
+            "node": "Extract Summary",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Summary": {
+      "main": [
+        [
+          {
+            "node": "Send Email",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "meta": {},
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}

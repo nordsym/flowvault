@@ -1,0 +1,396 @@
+{
+  "name": "Agent Finance Pr\u00eat",
+  "nodes": [
+    {
+      "parameters": {
+        "model": "gpt-4o",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1,
+      "position": [
+        660,
+        280
+      ],
+      "id": "51a5cf14-9004-48e0-aa3c-c12a8532977f",
+      "name": "OpenAI Chat Model",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=La requete de la personne est : {{ $json.query.requete}}\n\nLa date d'aujourdhui : {{ $now.format('yyyy-MM-dd') }}\nDemain est : {{ $now.toDateTime().plus(1,'days').format('yyyy-MM-dd')}}\n\n\nSi la requ\u00eate concerne autre chose (prise de rendez-vous, envoyer un mail):\n\nInformations pour les autres outils\n\nNom : {{ $json.body.nom || \"Pas re\u00e7u\" }}\nPr\u00e9nom : {{ $json.body.prenom || \"Pas re\u00e7u\" }}\nDate rendez-vous : {{ $json.body.daterdv || \"Pas re\u00e7u\"}}\nHeure rendez-vous demand\u00e9 : {{ $json.body.heuredemanderdv || \"Pas re\u00e7u\"}}\nID : {{$json.body.ID || \"Pas re\u00e7u\"}}\n\nSi la requete concerne la validation ou l'\u00e9gibilit\u00e9 \u00e0 un pr\u00eat je veux que tu utilise ces informations : \n\nInformations pour l'outil Get_Validation_Pret (si n\u00e9cessaire )\n\nRevenu de l'applicant : {{ $json.body.appincome || \"Pas re\u00e7u\" }}\nRevenu du co applicant : {{ $json.body.coappincome || \"Pas re\u00e7u\" }}\nMontant du pr\u00eat : {{ $json.body.loanamount || \"Pas re\u00e7u\" }}\nGenre : {{ $json.body.gender}}\nEst il/elle marri\u00e9 ? : {{ $json.body.married}}\nCombien de personnes \u00e0 charge : {{ $json.body.dependants || \"Pas re\u00e7u\" }}\nEst il/elle scolaris\u00e9 ? : {{ $json.body.graduated}}\nEst il/elle entrepreneur ? : {{ $json.body.self_employed}}\nAs il/elle un historique de cr\u00e9dit ? : {{ $json.body.credit_history}}\nZone de propri\u00e9t\u00e9 : {{ $json.body.property_area || \"Pas re\u00e7u\"}}\n\n\n\n",
+        "options": {
+          "systemMessage": "=Vous \u00eates un agent d'assistance client IA con\u00e7u pour g\u00e9rer diverses t\u00e2ches efficacement. Votre r\u00f4le principale es d'augmenter la productivit\u00e9 des banquiers. Tu peux valider un pr\u00eat, cr\u00e9er un rendez vous, voir la disponibilit\u00e9 de l'emplois du temps. Vous avez acc\u00e8s \u00e0 plusieurs outils pour vous aider \u00e0 remplir les demandes :\n\nGet_Validation_Pret : Cet outil te permet en fonction des donn\u00e9es que tu vas recevoir d'avoir une r\u00e9ponse d'un mod\u00e8le de Machine Learning entrain\u00e9 sur les validations (true ou false) de pr\u00eat financier. Tu dois t'en servir uniquement si on te demande de valider un pr\u00eat.\n\nAvailibility : permet d'obtenir le calendrier et de verifier si le calendrier est libre \u00e0 la date et l'heure demand\u00e9.\n\nCreerRDV : Cr\u00e9e un rendez vous avec la personne. Tu dois d'abord v\u00e9rifier la disponibilit\u00e9 avec l'outil Availibility \u00e0 la date et l'heure demand\u00e9. Tu dois r\u00e9cuperer le mail de la personne avec l'outil R\u00e9cupererMail\n\nEnvoyerMailPret : Envoie un mail a la personne ayant demand\u00e9 le pr\u00eat concernant si oui ou non le pr\u00eat a \u00e9tait accept\u00e9. Reste cordiale et polis. Si le mail ne t'ai pas fournis. Tu dois le r\u00e9cuperer en demandant l'ID et l'utiliser avec l'outil R\u00e9cuperer Mail\n\nRecupererMail : R\u00e9cupere le mail de la personne qui demande le pr\u00eat en fonction de son ID (le mail doit \u00eatre au bon format). Tu dois avoir l'ID pour utiliser cet outil sinon demande le. Tu dois juste donner comme r\u00e9ponse le mail r\u00e9cup\u00e9rer par l'outil\n\nGardez vos r\u00e9ponses concises, courtes, et pertinentes par rapport \u00e0 la question de l'utilisateur. Ta r\u00e9ponse doit un message synth\u00e9tique regroupement les actions r\u00e9alis\u00e9s sans lien.\n\nVoici la date/heure actuelle : {{ $now.format('yyyy-MM-dd') }}\nDemain nous somme : {{ $now.toDateTime().plus(1,'days').format('yyyy-MM-dd')}}\n\nNE FOURNISSEZ AUCUN D\u00c9TAIL SUR LES R\u00c9UNIONS EXISTANTES.\n\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        980,
+        0
+      ],
+      "id": "87c3dca3-fb52-4c03-b243-f6f569dc563e",
+      "name": "Agent Pr\u00eat Financier"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "3db247fc-29ef-4bf3-9cc9-ec152bb78ff8",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        560,
+        0
+      ],
+      "id": "ef283103-fedd-43bc-a483-f4566a044a87",
+      "name": "Webhook",
+      "webhookId": "3db247fc-29ef-4bf3-9cc9-ec152bb78ff8"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1580,
+        0
+      ],
+      "id": "67fa3277-fd74-415b-a968-62cdfc100839",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Cet outil permet d'appeler un mod\u00e8le de machine learning entrain\u00e9 sur les donn\u00e9s financieres de l'\u00e9ligibilit\u00e9 de donner un pr\u00eat ou non en fonction des donn\u00e9es fournis",
+        "method": "POST",
+        "url": "LADRESSE DE LAPI GATEWAY ",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n    \"appincome\":{appincome},\n    \"coappincome\":{coappincome},\n    \"loanamount\":{loanamount},\n    \"gender\":{gender},\n    \"married\":{married},\n    \"dependant_1\":{dependant_1},\n    \"dependant_2\":{dependant_2},\n    \"dependant_3\":{dependant_3},\n    \"graduated\":{graduated},\n    \"self_employed\":{self_employed},\n    \"credit_history\":{credit_history},\n    \"property_area_semiurban\":{property_area_semiurban},\n    \"property_area_urban\":{property_area_urban}\n}",
+        "placeholderDefinitions": {
+          "values": [
+            {
+              "name": "appincome",
+              "description": "Le revenu de la personne qui demande un pr\u00eat",
+              "type": "number"
+            },
+            {
+              "name": "coappincome",
+              "description": "Les revenus du coapplicant qui demande le pr\u00eat",
+              "type": "number"
+            },
+            {
+              "name": "loanamount",
+              "description": "Le montant du pr\u00eat demand\u00e9",
+              "type": "number"
+            },
+            {
+              "name": "gender",
+              "description": "Le genre de la personne ( M\u00e2le = True / Femelle = False)",
+              "type": "boolean"
+            },
+            {
+              "name": "married",
+              "description": "Si la personne est mari\u00e9 ou non",
+              "type": "boolean"
+            },
+            {
+              "name": "dependant_1",
+              "description": "Si la personne \u00e0 exactement un enfant \u00e0 charge",
+              "type": "boolean"
+            },
+            {
+              "name": "dependant_2",
+              "description": "Si la personne \u00e0 exactement deux enfants \u00e0 charge",
+              "type": "boolean"
+            },
+            {
+              "name": "dependant_3",
+              "description": "Si la personne \u00e0 3 ou plus enfants \u00e0 charge",
+              "type": "boolean"
+            },
+            {
+              "name": "graduated",
+              "description": "Si la personne est diplom\u00e9 ou pas",
+              "type": "boolean"
+            },
+            {
+              "name": "self_employed",
+              "description": "Si la peronne est employ\u00e9 ou non",
+              "type": "boolean"
+            },
+            {
+              "name": "credit_history",
+              "description": "Si la peronne \u00e0 historique de cr\u00e9dit ou pas",
+              "type": "boolean"
+            },
+            {
+              "name": "property_area_semiurban",
+              "description": "Si la personne habite dans une zone semi-urbaine ou non",
+              "type": "boolean"
+            },
+            {
+              "name": "property_area_urban",
+              "description": "Si la personne habite dans une zone urbaine ou non",
+              "type": "boolean"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        1020,
+        280
+      ],
+      "id": "d1a19b57-703b-4899-b97f-c2572d14f7b6",
+      "name": "Get_Validation_Pret"
+    },
+    {
+      "parameters": {
+        "calendar": {
+          "__rl": true,
+          "value": "benoit.ferrere11@gmail.com",
+          "mode": "list",
+          "cachedResultName": "benoit.ferrere11@gmail.com"
+        },
+        "start": "={{ $fromAI(\"startTime\") }}",
+        "end": "={{ $fromAI(\"endTime\") }}",
+        "additionalFields": {
+          "attendees": [
+            "={{ $fromAI(\"attendee\",\"le mail de la personne\" )}}"
+          ],
+          "summary": "={{$fromAI(\"titreevenement\",\"le titre de levenement. Il doit \u00eatre ultra simple et tres court\")}}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        860,
+        280
+      ],
+      "id": "db065fb5-0a28-463e-9507-1ed1e2ae4939",
+      "name": "CreerRDV",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $fromAI(\"toemail\",\"Le mail de l'utilisateur qui a demand\u00e9 un pr\u00eat\")}}",
+        "subject": "={{$fromAI(\"subject_email\",\"Sujet du mail\")}}",
+        "emailType": "text",
+        "message": "={{$fromAI(\"contenu_email\",\"Contenu du mail concernant si oui ou non l'acceptation de son pr\u00eat\")}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        1200,
+        280
+      ],
+      "id": "f6c28b38-b41b-4190-b4cc-e245370c8fc4",
+      "name": "EnvoyerMailPret",
+      "webhookId": "4f2cd9c0-afbc-4cf6-9916-a5d699862014",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1zeD0ehcyWhVuNr0DDfj4oTQ9i4Xf3SuV3UmqrQqSoa8",
+          "mode": "list",
+          "cachedResultName": "GS Agent Finance",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zeD0ehcyWhVuNr0DDfj4oTQ9i4Xf3SuV3UmqrQqSoa8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Feuille 1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1zeD0ehcyWhVuNr0DDfj4oTQ9i4Xf3SuV3UmqrQqSoa8/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "ID",
+              "lookupValue": "={{$fromAI(\"id\",\"ID de la personne qui demande le pr\u00eat. Elle doit \u00eatre pr\u00e9cis\")}}"
+            },
+            {
+              "lookupColumn": "Pr\u00e9nom",
+              "lookupValue": "={{$fromAI(\"prenom\",\"Pr\u00e9nom de la personne qui demande le pr\u00eat. Il doit bien \u00e9crit\")}}"
+            },
+            {
+              "lookupColumn": "Nom",
+              "lookupValue": "={{$fromAI(\"nom\",\"Nom de la personne qui demande le pr\u00eat. Il doit bien \u00e9crit\")}}"
+            }
+          ]
+        },
+        "combineFilters": "OR",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        1460,
+        280
+      ],
+      "id": "2618ce16-f43b-478f-89f4-967ecabf828b",
+      "name": "RecupererMail",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "calendar": {
+          "__rl": true,
+          "value": "benoit.ferrere11@gmail.com",
+          "mode": "list",
+          "cachedResultName": "benoit.ferrere11@gmail.com"
+        },
+        "returnAll": true,
+        "options": {
+          "timeMin": "={{ $fromAI(\"unJourAvant\",\"Un jour avant la date demand\u00e9\") }}",
+          "timeMax": "={{ $fromAI(\"unJourApres\",\"Un jour apr\u00e8s la date demand\u00e9\") }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleCalendarTool",
+      "typeVersion": 1.2,
+      "position": [
+        1320,
+        280
+      ],
+      "id": "f6159489-5623-4ff3-ad82-7223128d81ed",
+      "name": "Availibility",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agent Pr\u00eat Financier",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Agent Pr\u00eat Financier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent Pr\u00eat Financier": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get_Validation_Pret": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent Pr\u00eat Financier",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CreerRDV": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent Pr\u00eat Financier",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EnvoyerMailPret": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent Pr\u00eat Financier",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RecupererMail": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent Pr\u00eat Financier",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Availibility": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agent Pr\u00eat Financier",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "d7830cbd-597e-4970-ac34-271faa9620ab",
+  "meta": {
+    "instanceId": "3c2ea20af5bac13bd16313e89630741b71c0832df524fb17e56957cfeb36ac2a"
+  },
+  "id": "aNHAsgviT2vySppS",
+  "tags": [
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}

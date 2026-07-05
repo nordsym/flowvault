@@ -1,0 +1,343 @@
+{
+  "name": "Optimize Your Top Performing Website Content: Google Analytics, Firecrawl, and InfraNodus",
+  "nodes": [
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://infranodus.com/api/v1/graphAndStatements?doNotSave=false&includeGraph=false&includeGraphSummary=true&includeGraph=false",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "top_support_pages"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.data.markdown }}"
+            },
+            {
+              "name": "=categories",
+              "value": "=[filename: {{ $('Loop Over Items').item.json.pagePath .slice(0,16)}}]"
+            },
+            {
+              "name": "contextSettings",
+              "value": "={{{ \"squareBracketsProcessing\":\"IGNORE_BRACKETS\"} }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1260,
+        280
+      ],
+      "id": "d891e465-f85d-4496-a17e-8def7784e7d0",
+      "name": "InfraNodus Save to Graph",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "propertyId": {
+          "__rl": true,
+          "value": "367609797",
+          "mode": "list",
+          "cachedResultName": "NodusLabs Support - GA4",
+          "cachedResultUrl": "https://analytics.google.com/analytics/web/#/p367609797/"
+        },
+        "dateRange": "last30days",
+        "metricsGA4": {
+          "metricValues": [
+            {
+              "listName": "screenPageViews"
+            }
+          ]
+        },
+        "dimensionsGA4": {
+          "dimensionValues": [
+            {
+              "listName": "other",
+              "name": "pagePath"
+            }
+          ]
+        },
+        "limit": 30,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.googleAnalytics",
+      "typeVersion": 2,
+      "position": [
+        260,
+        180
+      ],
+      "id": "3b5a882d-eba5-4303-bd0f-b55bb9dc3c80",
+      "name": "Google Analytics",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.fullUrl = \"https://support.noduslabs.com\" + item.json.pagePath\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        460,
+        200
+      ],
+      "id": "9b026c0e-b5e8-4269-875f-25020808cf2f",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "options": {
+          "reset": false
+        }
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        700,
+        200
+      ],
+      "id": "053de933-9cb0-454e-b504-7e51b9fce532",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://infranodus.com/api/v1/graphAndAdvice?doNotSave=true&includeGraph=false&includeGraphSummary=true",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "name",
+              "value": "top_support_pages"
+            },
+            {
+              "name": "requestMode",
+              "value": "=summary"
+            },
+            {
+              "name": "aiTopics",
+              "value": "true"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        980,
+        -240
+      ],
+      "id": "5b9a3e4d-ebeb-4ced-b4f3-f8d871d40351",
+      "name": "InfraNodus GraphRAG Summary",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "operation": "completion",
+        "respondWith": "showText",
+        "responseText": "=<br>\n<h1>Top Content Summary</h1>\n<h3>{{ $json.aiAdvice[0].text }}</h3>\n<br>\n<h1>Main Topics</h1>\n<h3>{{ $json.graphSummary }}</h3>"
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 1,
+      "position": [
+        1260,
+        -240
+      ],
+      "id": "87d3b8f9-0b29-4f59-80d0-c24506c1672d",
+      "name": "Form",
+      "webhookId": "87fe6592-cad6-44a2-bf6a-a7fed7e36b10"
+    },
+    {
+      "parameters": {
+        "formTitle": "Launch Analysis",
+        "formDescription": "This workflow will analyze top visited pages in a Google Analytics property you select and reveal the main topics inside.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        -20
+      ],
+      "id": "b6947c22-985b-4930-8e2c-e8cacbf10999",
+      "name": "On form submission",
+      "webhookId": "b1dd1744-90bb-4bdd-bc1e-f9f78256435e"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.firecrawl.dev/v1/scrape",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "url",
+              "value": "={{ $json.fullUrl }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        960,
+        300
+      ],
+      "id": "d517976a-f792-4d67-ac30-0b3e297a04c0",
+      "name": "URL to Markdown with Firecrawl",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "content": "## FlowVault by NordSym\n\nProduction-ready n8n workflow, curated by NordSym AB. Built in Stockholm.\n\n### Before you activate\n1. Review every node - we stripped credentials, you add your own\n2. Replace webhook URLs, API keys, and placeholders\n3. Test on non-production data first\n4. Pin the nodes you edit so upstream updates don't overwrite them\n\n### Resources\n- Full library: flowvault.se\n- Support: gustav@nordsym.com\n- Tag: #nordsym #flowvault\n",
+        "height": 340,
+        "width": 420,
+        "color": 4
+      },
+      "id": "nordsym-sticky-note",
+      "name": "NordSym FlowVault",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -260,
+        -260
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "InfraNodus Save to Graph": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Analytics": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "InfraNodus GraphRAG Summary",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "URL to Markdown with Firecrawl",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "InfraNodus GraphRAG Summary": {
+      "main": [
+        [
+          {
+            "node": "Form",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Google Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "URL to Markdown with Firecrawl": {
+      "main": [
+        [
+          {
+            "node": "InfraNodus Save to Graph",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "28265123-7003-43e7-81fe-db737067ca43",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2a26454b0172ffcb8d70ba77c235b1209f92cd71bf06c79ba609c7173b416d68"
+  },
+  "id": "NVYTk6MsFOtt7oz1",
+  "tags": [
+    {
+      "createdAt": "2025-06-04T10:29:27.533Z",
+      "updatedAt": "2025-06-04T10:29:27.533Z",
+      "id": "E52i6BJ7Ht6yF3OB",
+      "name": "Productivity"
+    },
+    {
+      "createdAt": "2025-05-20T13:16:17.982Z",
+      "updatedAt": "2025-05-20T13:16:17.982Z",
+      "id": "MyFEaUe9Eo4t7SvF",
+      "name": "SEO"
+    },
+    {
+      "createdAt": "2025-05-20T13:16:20.459Z",
+      "updatedAt": "2025-05-20T13:16:20.459Z",
+      "id": "kldZpTCan1suEN8v",
+      "name": "Marketing"
+    },
+    {
+      "name": "nordsym"
+    },
+    {
+      "name": "flowvault"
+    }
+  ]
+}
