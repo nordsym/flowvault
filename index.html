@@ -11,7 +11,7 @@
     <meta property="og:title" content="FlowVault - n8n workflow library and reliability layer | NordSym">
     <meta property="og:description" content="Reusable n8n workflows with a reliability layer. FlowVault is the library to reuse now and the Audit MCP wedge that helps you trust what ships.">
     <!-- Add og:image here if you have a cover image URL -->
-    
+
     <!-- JSON-LD Structured Data for SEO/AEO -->
     <script type="application/ld+json">
     {
@@ -32,7 +32,7 @@
             },
             {
                 "@type": "Offer",
-                "name": "Pro Plan", 
+                "name": "Pro Plan",
                 "description": "Unlimited downloads",
                 "priceCurrency": "SEK"
             }
@@ -47,7 +47,7 @@
         ],
         "category": [
             "Content Creation",
-            "Data Processing", 
+            "Data Processing",
             "Integrations",
             "AI Automation",
             "Notifications"
@@ -66,7 +66,7 @@
         }
     }
     </script>
-    
+
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -96,7 +96,7 @@
         }
     }
     </script>
-    
+
     <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Final%20logo%20no%20text.svg">
 
     <!-- Google Analytics GA4 -->
@@ -109,7 +109,7 @@
       page_title: document.title,
       page_location: window.location.href
     });
-    </script>    
+    </script>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -117,7 +117,7 @@
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
+
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 
@@ -167,15 +167,15 @@
         /* Hide scrollbar for Chrome, Safari and Opera (Optional polish for filters) */
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        
+
         /* Modal Animation */
         .modal-enter { opacity: 0; transform: scale(0.95); }
         .modal-enter-active { opacity: 1; transform: scale(1); transition: opacity 200ms ease-out, transform 200ms ease-out; }
-        
+
         /* Utility */
         .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
         .dark .glass { background: rgba(15, 23, 42, 0.85); }
-        
+
         /* Platform Colors */
         .platform-n8n { color: #FF6D5A; background-color: rgba(255, 109, 90, 0.1); }
         .platform-make { color: #6F3BF5; background-color: rgba(111, 59, 245, 0.1); }
@@ -185,19 +185,19 @@
 
         /* Badges - Updated to Fuchsia gradient */
         .badge-pro { background: linear-gradient(to right, #d946ef, #c026d3); color: white; border: 1px solid #a21caf; box-shadow: 0 1px 2px rgba(217, 70, 239, 0.3); }
-        
+
         /* Body Layering */
         body { position: relative; z-index: 1; }
 
         /* Stars & Space - REPLACED WITH CANVAS */
         .stars-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; opacity: 0; transition: opacity 0.8s ease; }
         .dark .stars-wrapper { opacity: 1; }
-        
+
         /* Grid Background (Light Mode) */
         .grid-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0;
             background-size: 24px 24px;
-            background-image: 
+            background-image:
                 linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
                 linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
             opacity: 1; transition: opacity 0.5s ease;
@@ -205,7 +205,7 @@
         .dark .grid-bg { opacity: 0; }
 
         /* Paywall Animations */
-        
+
         /* Radio Button Custom Style - Updated to Fuchsia */
         .radio-selected { background-color: rgba(217, 70, 239, 0.1); border-color: #d946ef; }
         .dark .radio-selected { background-color: rgba(217, 70, 239, 0.2); border-color: #d946ef; }
@@ -218,7 +218,7 @@
     <div class="stars-wrapper">
         <canvas id="starfall"></canvas>
     </div>
-    
+
     <!-- Light Mode Grid -->
     <div class="grid-bg"></div>
 
@@ -236,7 +236,7 @@
                     <span class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wide uppercase block mt-0.5">POWERED BY NORDSYM AB</span>
                 </div>
             </div>
-            
+
             <div class="flex items-center gap-2 sm:gap-4 shrink-0">
                 <!-- Download Counter (Visible for Free users) -->
                 <div id="download-counter" class="hidden md:flex flex-col items-end mr-2">
@@ -271,7 +271,7 @@
 
     <!-- Main Content -->
     <main class="flex-grow max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8 sm:py-12 relative z-10">
-        
+
         <!-- Hero -->
         <div class="text-center max-w-2xl mx-auto mb-10">
             <!-- WRAPPED MARKETING CONTENT -->
@@ -301,7 +301,7 @@
                 <!-- SEARCH PLACEHOLDER UPDATED -->
                 <input type="text" id="search-input" placeholder="Search workflows (e.g. 'AI agent', 'CRM sync', 'SEO')..." class="block w-full pl-11 pr-4 py-4 bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all shadow-sm text-lg placeholder:text-slate-400" oninput="handleSearch(this.value)">
             </div>
-            
+
             <!-- Request Link (New - High Visibility) -->
             <div class="text-sm text-slate-500 dark:text-slate-400">
                 Can't find what you're looking for?
@@ -366,7 +366,7 @@
         <div class="mb-8 space-y-6">
             <!-- Categories - UPDATED: Horizontal Scroll on Mobile -->
             <div class="flex flex-nowrap overflow-x-auto sm:flex-wrap sm:justify-center gap-2 pb-2 sm:pb-0 no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0" id="category-filters"></div>
-            
+
             <!-- Secondary Filters -->
             <div class="flex flex-col md:flex-row gap-4 items-center justify-between bg-slate-50 dark:bg-slate-900/50 p-4 rounded-2xl border border-slate-100 dark:border-slate-800 transition-all duration-300">
                 <!-- UPDATED: Added ID to toggle visibility -->
@@ -392,7 +392,7 @@
                         <span class="text-xs text-slate-500">Runs locally in Claude Desktop. No n8n server required.</span>
                     </div>
                 </div>
-                
+
                 <!-- Sorting (Always visible, aligned to right) -->
                 <div class="flex items-center gap-2 ml-auto w-full md:w-auto justify-end">
                     <span class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Sort by:</span>
@@ -452,11 +452,11 @@
     <!-- Footer with Pricing -->
     <footer class="border-t border-slate-200 dark:border-slate-800 py-12 mt-16 bg-slate-50/50 dark:bg-slate-900/50 relative z-10">
         <div class="max-w-7xl mx-auto px-4">
-            
+
             <!-- Pricing Section / Status Section -->
             <div id="pricing-section-wrapper" class="mb-16">
                 <a id="pro" class="block -mt-24 pt-24" aria-hidden="true"></a>
-                
+
                 <!-- View: Marketing / Pricing (Visible for Free/Logged out) -->
                 <div id="pricing-marketing">
                     <div class="text-center mb-10">
@@ -483,7 +483,7 @@
                         <div class="relative group z-10">
                             <!-- Glow Effect Border -->
                             <div class="absolute -inset-0.5 bg-gradient-to-r from-fuchsia-600 to-purple-600 rounded-2xl blur opacity-20 group-hover:opacity-40 transition duration-1000 group-hover:duration-200"></div>
-                            
+
                             <div class="relative bg-white dark:bg-slate-900 rounded-2xl p-6 ring-1 ring-slate-900/5 dark:ring-white/10 flex flex-col h-full transform transition-transform duration-300 hover:-translate-y-1">
                                 <!-- Badge -->
                                 <div class="absolute top-0 right-0">
@@ -516,7 +516,7 @@
                                         <div class="w-5 h-5 rounded-full bg-fuchsia-100 dark:bg-fuchsia-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
                                             <i data-lucide="shield-check" class="w-3 h-3 text-fuchsia-600 dark:text-fuchsia-400"></i>
                                         </div>
-                                        <span class="text-sm text-slate-700 dark:text-slate-300 font-medium"><strong>Audit MCP portfolio sweeps</strong> &mdash; grade every workflow in your n8n instance, worst-first</span>
+                                        <span class="text-sm text-slate-700 dark:text-slate-300 font-medium"><strong>Audit MCP portfolio sweeps</strong> - grade every workflow in your n8n instance, worst-first</span>
                                     </li>
                                     <li class="flex items-start gap-3">
                                         <div class="w-5 h-5 rounded-full bg-fuchsia-100 dark:bg-fuchsia-900/30 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -606,7 +606,7 @@
     <!-- Security & Legal Modal (NEW) -->
     <div id="security-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-[90] hidden transition-opacity opacity-0 flex items-center justify-center p-4" onclick="closeSecurityModal()">
         <div class="bg-white dark:bg-slate-900 w-full max-w-2xl rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-slate-200 dark:border-slate-800 flex flex-col max-h-[85vh]" onclick="event.stopPropagation()">
-            
+
             <div class="p-6 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between bg-slate-50/50 dark:bg-slate-800/20">
                 <div class="flex items-center gap-3">
                     <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center text-emerald-600 dark:text-emerald-400">
@@ -661,7 +661,7 @@
                     </p>
                 </div>
             </div>
-            
+
             <div class="p-6 border-t border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 text-center">
                 <button onclick="closeSecurityModal()" class="px-6 py-2 bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold rounded-lg hover:opacity-90 transition-opacity w-full sm:w-auto">Got it</button>
             </div>
@@ -704,7 +704,7 @@
         <div class="bg-white dark:bg-slate-900 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden transform scale-95 transition-transform border border-slate-200 dark:border-slate-800" onclick="event.stopPropagation()">
             <div class="p-6 relative">
                 <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
-                
+
                 <!-- View: Login (Email) -->
                 <div id="auth-view-email" class="block">
                     <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-4 text-primary"><i data-lucide="log-in" class="w-6 h-6"></i></div>
@@ -725,7 +725,7 @@
                 <div id="auth-view-code" class="hidden">
                     <div class="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4 text-green-600 dark:text-green-400"><i data-lucide="mail-check" class="w-6 h-6"></i></div>
                     <h3 class="font-heading text-xl font-bold mb-2 text-slate-900 dark:text-white">Check your inbox</h3>
-                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">Vi har skickat en kod till <span id="auth-email-display" class="font-medium text-slate-800 dark:text-slate-200"></span>.</p>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mb-6">We sent a code to <span id="auth-email-display" class="font-medium text-slate-800 dark:text-slate-200"></span>.</p>
                     <form onsubmit="handleCodeSubmit(event)" class="space-y-4">
                         <div>
                             <label class="block text-xs font-bold uppercase text-slate-500 mb-1">Verification code</label>
@@ -871,7 +871,7 @@
     <div id="modal-backdrop" class="fixed inset-0 z-[60] overflow-y-auto bg-slate-900/70 backdrop-blur-sm hidden transition-opacity opacity-0" aria-hidden="true" onclick="closeModal(event)">
         <!-- MODAL CENTER FIX: Using flexbox centering instead of inline-block hack -->
         <div class="flex min-h-full items-start sm:items-center justify-center p-4 pt-20 sm:pt-4 text-center">
-            
+
             <div id="modal-content" class="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white dark:bg-slate-900 p-6 text-left align-middle shadow-xl transition-all border border-slate-200 dark:border-slate-800 relative scale-95 opacity-0" onclick="event.stopPropagation()">
                 <button onclick="closeModal()" class="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors z-10"><i data-lucide="x" class="w-6 h-6"></i></button>
                 <div class="mb-6 pr-8">
@@ -901,7 +901,7 @@
                         <li>Enjoy the automation! 🚀</li>
                     </ol>
                 </div>
-                
+
                 <!-- Multi-File Selection System - UPDATED TO FUCHSIA -->
                 <div id="multi-file-selector" class="hidden mb-6 bg-fuchsia-50 dark:bg-fuchsia-900/20 rounded-xl border border-fuchsia-100 dark:border-fuchsia-900/50 p-4">
                     <div class="flex items-center gap-2 mb-3 text-fuchsia-700 dark:text-fuchsia-400 font-bold text-sm uppercase tracking-wide">
@@ -981,17 +981,17 @@
     <script>
         // --- CONFIG ---
         const GITHUB_CONFIG = {
-            user: 'nordsym',          
+            user: 'nordsym',
             repo: 'flowvault',        // Updated repo name
-            branch: 'main'            
+            branch: 'main'
         };
 
-        const UI_TEXT = { difficulties: { beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced", enkel: "Beginner", medelsvår: "Intermediate", "komplex / svår": "Advanced", "Enkel": "Beginner", "Medelsvår": "Intermediate", "Komplex / Svår": "Advanced" } };
+        const UI_TEXT = { difficulties: { beginner: "Beginner", intermediate: "Intermediate", advanced: "Advanced", beginner: "Beginner", intermediate: "Intermediate", "advanced": "Advanced", "Beginner": "Beginner", "Intermediate": "Intermediate", "Advanced": "Advanced" } };
 
         // Translate Swedish Airtable values to English before rendering
-        const DIFFICULTY_NORM = { "Enkel": "beginner", "Medelsvår": "intermediate", "Komplex / Svår": "advanced", "enkel": "beginner", "medelsvår": "intermediate", "komplex / svår": "advanced" };
-        const CATEGORY_NORM = { "Sälj & CRM": "sales", "Produktivitet": "productivity", "Specialiserad": "specialized", "Innehållskapande": "content", "Innehållskapande": "content", "Svensk Integration": "swedish", "AI Automation": "ai-automation", "Social Media": "social", "Claude Skills": "skills" };
-        const TAG_NORM = { "automatisering": "automation", "innehållsskapande": "content-creation", "analys": "analysis", "försäljning": "sales", "träning": "training", "finjustering": "fine-tuning", "schemaläggning": "scheduling", "fakturor": "invoices", "skrapning": "scraping", "röst": "voice", "rekrytering": "recruitment", "granskning": "review", "ärendehantering": "ticket-management", "presentation": "presentation", "sociala medier": "social-media", "teknisk": "technical", "utveckling": "development" };
+        const DIFFICULTY_NORM = { "Beginner": "beginner", "Intermediate": "intermediate", "Advanced": "advanced", "beginner": "beginner", "intermediate": "intermediate", "advanced": "advanced" };
+        const CATEGORY_NORM = { "Sales & CRM": "sales", "Productivity": "productivity", "Specialized": "specialized", "Content Creation": "content", "Content Creation": "content", "Swedish Integration": "swedish", "AI Automation": "ai-automation", "Social Media": "social", "Claude Skills": "skills" };
+        const TAG_NORM = { "automation": "automation", "content creation": "content-creation", "analysis": "analysisis", "sales": "sales", "training": "training", "finjustering": "fine-tuning", "scheduling": "scheduling", "invoices": "invoices", "scraping": "scraping", "voice": "voice", "recruitment": "recruitment", "review": "review", "ticket management": "ticket-management", "presentation": "presentation", "sociala medier": "social-media", "technical": "technical", "development": "development" };
         function normalizeWorkflow(wf) {
             if (wf._normalized) return wf;
             if (wf.difficulty && DIFFICULTY_NORM[wf.difficulty]) wf.difficulty = DIFFICULTY_NORM[wf.difficulty];
@@ -1005,19 +1005,19 @@
             return wf;
         }
         const AI_CONFIG = { apiKey: 'PLACEHOLDER_API_KEY', model: 'claude-3-sonnet-20240229', endpoint: 'https://api.anthropic.com/v1/messages' };
-        
+
         // --- API INTEGRATION ---
-        // VIKTIGT: Nu pekar vi på LIVE (Published) URL igen
+        // Production webhook base
         const API_BASE = 'https://nordsym.app.n8n.cloud/webhook';
-        
+
         const API_ENDPOINTS = {
             workflows: `${API_BASE}/flowvault-workflows`,
-            // FIX: Uppdaterad URL baserat på din webhook (dubbel path)
+            // Published download tracking webhook
             download: (id) => `${API_BASE}/flowvault-download/flowvault-download/${id}`,
             authInit: `${API_BASE}/flowvault-auth-init`,   // LIVE: Init login
             authVerify: `${API_BASE}/flowvault-verify-v2`, // LIVE: Verify code
             request: 'https://nordsym.app.n8n.cloud/webhook/flowvault-request',
-            upload: 'https://nordsym.app.n8n.cloud/webhook/flowvault-upload', // NY: Upload Endpoint
+            upload: 'https://nordsym.app.n8n.cloud/webhook/flowvault-upload', // Upload endpoint
             chat: 'https://nordsym.app.n8n.cloud/webhook/5d2f97e8-0938-4fae-a660-5121f4b4fab7/chat', // LIVE: AI Chat
             createCheckout: 'https://nordsym.app.n8n.cloud/webhook/flowvault-create-checkout', // LIVE: Stripe Checkout (Explicit URL)
             getUser: 'https://nordsym.app.n8n.cloud/webhook/flowvault-get-user', // LIVE: Refresh User Tier (Explicit URL)
@@ -1026,13 +1026,13 @@
         const USE_BACKEND = true; // Enabled for production
 
         // --- GLOBAL HELPERS ---
-        // Flyttade ut denna så att både renderWorkflows och downloadJSON kan använda den
+        // Shared by rendering and download handling
         const normalizeTags = (input) => {
             let list = [];
             if (Array.isArray(input)) list = input;
             else if (typeof input === 'string') list = input.split(',');
             else if (input) list = [String(input)];
-            
+
             return list
                 .flatMap(item => String(item).split(','))
                 .map(item => item.trim().toLowerCase())
@@ -1043,18 +1043,18 @@
         const FREE_LIMIT = 3;
         // User State Schema Upgrade
         let userState = JSON.parse(localStorage.getItem('flowvault_user_state')) || {
-            tier: 'free', 
+            tier: 'free',
             downloads: [],
             downloadsRemaining: 3, // New field from API
-            favorites: [], 
-            email: null, 
+            favorites: [],
+            email: null,
             isAuthenticated: false,
             token: null,
             resetDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1).toISOString()
         };
 
         // --- DEV MODE OVERRIDE ---
-        // Tvingar användaren till PRO-nivå för att låsa upp alla funktioner under utveckling.
+        // Optional development override for PRO state.
         // userState.tier = 'pro';
         // console.log("🔧 DEV MODE: PRO tier forced active");
         // -------------------------
@@ -1065,7 +1065,7 @@
 
         // Reset monthly downloads if needed
         if (new Date() > new Date(userState.resetDate)) {
-            userState.downloads = []; 
+            userState.downloads = [];
             userState.resetDate = new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1).toISOString();
             localStorage.setItem('flowvault_user_state', JSON.stringify(userState));
         }
@@ -1073,43 +1073,43 @@
         // --- UPDATED CATEGORIES FOR SKILLS ---
         const CATEGORIES = [
             { id: 'all', label: 'All', icon: 'layout-grid', aliases: [] },
-            // ÄNDRING: Tog bort generiska ord som "automation", "tool" som matchade vanliga flöden
+            // Avoid generic aliases that match ordinary workflows
             { id: 'skills', label: 'Claude Skills', icon: 'folder-code', aliases: ['mcp', 'claude desktop'] },
             { id: 'favorites', label: 'Favorites', icon: 'star', aliases: [] },
-            // ÄNDRING: "Svenska Integrationer" -> "Svensk Integration" för att matcha Airtable exakt
-            { id: 'swedish', label: 'Swedish Integration', icon: '🇸🇪', aliases: ['svensk', 'sweden', 'swedish'] },
-            { id: 'ai-automation', label: 'AI Automation', icon: 'bot', aliases: ['ai', 'artificiell', 'gpt', 'llm'] },
+            // Legacy Airtable values are normalized before rendering.
+            { id: 'swedish', label: 'Swedish Integration', icon: '🇸🇪', aliases: ['swedish', 'sweden', 'swedish'] },
+            { id: 'ai-automation', label: 'AI Automation', icon: 'bot', aliases: ['ai', 'ai', 'gpt', 'llm'] },
             { id: 'social', label: 'Social Media', icon: 'megaphone', aliases: ['social', 'some', 'linkedin', 'facebook', 'instagram', 'tiktok'] },
-            { id: 'sales', label: 'Sales & CRM', icon: 'briefcase', aliases: ['sälj', 'sales', 'crm', 'pipe'] },
+            { id: 'sales', label: 'Sales & CRM', icon: 'briefcase', aliases: ['sales', 'sales', 'crm', 'pipe'] },
             { id: 'content', label: 'Content Creation', icon: 'palette', aliases: ['content', 'creation', 'design', 'image'] },
-            { id: 'productivity', label: 'Productivity', icon: 'zap', aliases: ['produktivitet', 'effektivitet', 'admin'] },
-            { id: 'specialized', label: 'Specialized', icon: 'wrench', aliases: ['special', 'bygg', 'fastighet', 'nisch'] }
+            { id: 'productivity', label: 'Productivity', icon: 'zap', aliases: ['productivity', 'efficiency', 'admin'] },
+            { id: 'specialized', label: 'Specialized', icon: 'wrench', aliases: ['special', 'construction', 'property', 'niche'] }
         ];
 
         const STATIC_WORKFLOWS = [
             // --- CLAUDE SKILLS (Hardcoded Examples) ---
-            // RENSAT: Nu hämtas dessa från Airtable istället
-            
-            // KATEGORI: 🇸🇪 Svenska Integrationer (20)
+            // Loaded from Airtable instead
+
+            // Category: Swedish integrations
             { id: "fortnox-invoice-sync", title: "Fortnox Invoice to Sheets", description: "Automatically sync approved invoices from Fortnox to Google Sheets every night.", category: "swedish", tags: ["fortnox", "invoice", "sheets", "finance"], platform: "n8n", verified: true, downloads: 842, difficulty: "intermediate", estimatedTime: "15 min", useCases: ["Small businesses", "Consultants"], author: "NordSym", category: "swedish" },
             // UPDATED: Added fileCount for testing multi-file system
-            { 
-                id: "kvitto-fortnox", 
-                title: "Kvittoredovisning Dropbox → Fortnox (Complete System)", 
+            {
+                id: "kvitto-fortnox",
+                title: "Receipt Reporting Dropbox to Fortnox (Complete System)",
                 description: "Complete system. Fetches receipts from Dropbox, runs OCR, and creates draft vouchers in Fortnox automatically. Includes error handling module.",
                 category: "swedish",
                 tags: ["fortnox", "dropbox", "ocr", "receipt"],
-                platform: "n8n", 
-                verified: true, 
-                downloads: 620, 
-                difficulty: "advanced", 
-                estimatedTime: "40 min", 
+                platform: "n8n",
+                verified: true,
+                downloads: 620,
+                difficulty: "advanced",
+                estimatedTime: "40 min",
                 useCases: ["Consultants", "Small businesses"],
                 author: "NordSym",
                 category: "swedish",
                 fileCount: 3,
                 workflowType: "modular",
-                fileDescriptions: "Del 1: Huvudprocess (Dropbox trigger)\nDel 2: OCR & AI Processing\nDel 3: Fortnox Integration & Error Handling",
+                fileDescriptions: "Part 1: Main process (Dropbox trigger)\nPart 2: OCR and AI processing\nPart 3: Fortnox integration and error handling",
                 installationNotes: "Import the parts in order 1-3. Make sure to connect the webhook nodes according to the diagram in the documentation."
             },
             // NEW: Multi-file Agent Test
@@ -1131,31 +1131,31 @@
                 fileDescriptions: "Agent 1: Researcher\nAgent 2: Writer\nAgent 3: SEO Specialist\nAgent 4: Editor\nAgent 5: Publisher",
                 installationNotes: "These agents use n8n's new LangChain nodes. Requires n8n version 1.0+."
             },
-            { id: "visma-bokio-sync", title: "Stripe till Bokio", description: "Consolidate daily payouts from Stripe and create combined vouchers in Bokio.", category: "swedish", tags: ["stripe", "bokio", "payments"], platform: "n8n", verified: true, downloads: 410, difficulty: "intermediate", estimatedTime: "25 min", useCases: ["E-commerce"], author: "NordSym", category: "swedish" },
-            { id: "rot-xml-generator", title: "ROT-avdrag XML Generator", description: "Creates XML file for Skatteverket based on work orders. Perfect for construction companies.", category: "swedish", tags: ["skatteverket", "rot", "xml", "construction"], platform: "n8n", verified: true, downloads: 420, difficulty: "advanced", estimatedTime: "60 min", useCases: ["Construction companies", "Craftsmen"], author: "NordSym", category: "swedish" },
+            { id: "visma-bokio-sync", title: "Stripe to Bokio", description: "Consolidate daily payouts from Stripe and create combined vouchers in Bokio.", category: "swedish", tags: ["stripe", "bokio", "payments"], platform: "n8n", verified: true, downloads: 410, difficulty: "intermediate", estimatedTime: "25 min", useCases: ["E-commerce"], author: "NordSym", category: "swedish" },
+            { id: "rot-xml-generator", title: "ROT Tax Deduction XML Generator", description: "Creates XML file for Skatteverket based on work orders. Perfect for construction companies.", category: "swedish", tags: ["tax-agency", "rot", "xml", "construction"], platform: "n8n", verified: true, downloads: 420, difficulty: "advanced", estimatedTime: "60 min", useCases: ["Construction companies", "Craftsmen"], author: "NordSym", category: "swedish" },
             { id: "scrive-signing", title: "Contract signing via Scrive", description: "Create contracts from Google Docs template, convert to PDF and send for e-signing via Scrive.", category: "swedish", tags: ["scrive", "contract", "esigning"], platform: "n8n", verified: true, downloads: 380, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["Consultants", "Sales"], author: "NordSym", category: "swedish" },
             { id: "bankid-verification", title: "BankID Verification", description: "Integrate BankID verification into your workflows for secure identification.", category: "swedish", tags: ["bankid", "verification", "security"], platform: "n8n", verified: true, downloads: 290, difficulty: "advanced", estimatedTime: "45 min", useCases: ["Fintech", "Agencies"], author: "NordSym", category: "swedish" },
-            { id: "byggprojekt-foton", title: "Project Photos to Client", description: "Watermark project images with date/logo and automatically SMS them to the client.", category: "swedish", tags: ["construction", "images", "sms", "customer-care"], platform: "n8n", verified: true, downloads: 280, difficulty: "beginner", estimatedTime: "20 min", useCases: ["Craftsmen", "Construction companies"], author: "NordSym", category: "swedish" },
-            { id: "fortnox-product-sync", title: "Fortnox Produkter → Shopify", description: "Automatically sync products and inventory between Fortnox and Shopify.", category: "swedish", tags: ["fortnox", "shopify", "inventory", "ecommerce"], platform: "n8n", verified: true, downloads: 510, difficulty: "advanced", estimatedTime: "50 min", useCases: ["E-commerce"], author: "NordSym", category: "swedish" },
+            { id: "constructionprojekt-foton", title: "Project Photos to Client", description: "Watermark project images with date/logo and automatically SMS them to the client.", category: "swedish", tags: ["construction", "images", "sms", "customer-care"], platform: "n8n", verified: true, downloads: 280, difficulty: "beginner", estimatedTime: "20 min", useCases: ["Craftsmen", "Construction companies"], author: "NordSym", category: "swedish" },
+            { id: "fortnox-product-sync", title: "Fortnox Products to Shopify", description: "Automatically sync products and inventory between Fortnox and Shopify.", category: "swedish", tags: ["fortnox", "shopify", "inventory", "ecommerce"], platform: "n8n", verified: true, downloads: 510, difficulty: "advanced", estimatedTime: "50 min", useCases: ["E-commerce"], author: "NordSym", category: "swedish" },
             { id: "tripletex-timesheet", title: "Tripletex Time Reporting", description: "Automate time reports from Google Calendar to Tripletex.", category: "swedish", tags: ["tripletex", "time", "calendar"], platform: "n8n", verified: true, downloads: 195, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["Consultants"], author: "NordSym", category: "swedish" },
             { id: "swish-notifications", title: "Swish Payment Notifications", description: "Get Slack/Email notifications when Swish payments arrive.", category: "swedish", tags: ["swish", "payment", "notifications"], platform: "n8n", verified: true, downloads: 340, difficulty: "beginner", estimatedTime: "15 min", useCases: ["Small businesses"], author: "NordSym", category: "swedish" },
             { id: "postnord-tracking", title: "PostNord Tracking", description: "Automatic tracking of PostNord packages with customer notifications via SMS/Email.", category: "swedish", tags: ["postnord", "tracking", "logistics"], platform: "n8n", verified: true, downloads: 220, difficulty: "intermediate", estimatedTime: "25 min", useCases: ["E-commerce"], author: "NordSym", category: "swedish" },
             { id: "kivra-invoices", title: "Kivra Invoice Distribution", description: "Send invoices via Kivra directly from your billing system.", category: "swedish", tags: ["kivra", "invoice", "digital"], platform: "n8n", verified: true, downloads: 175, difficulty: "intermediate", estimatedTime: "35 min", useCases: ["Small businesses"], author: "NordSym", category: "swedish" },
             { id: "fortnox-payroll", title: "Fortnox Payroll Automation", description: "Automate payroll runs from time reports in Fortnox.", category: "swedish", tags: ["fortnox", "payroll", "hr"], platform: "n8n", verified: true, downloads: 310, difficulty: "advanced", estimatedTime: "60 min", useCases: ["HR departments"], author: "NordSym", category: "swedish" },
-            { id: "arbetsformedlingen-api", title: "Arbetsförmedlingen Job Listings", description: "Automatically publish job listings to Arbetsförmedlingen's API.", category: "swedish", tags: ["arbetsförmedlingen", "recruitment", "jobs"], platform: "n8n", verified: true, downloads: 145, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["HR", "Recruitment"], author: "NordSym", category: "swedish" },
+            { id: "arbetsformedlingen-api", title: "Swedish Public Employment Service Job Listings", description: "Automatically publish job listings to the Swedish Public Employment Service API.", category: "swedish", tags: ["public-employment-service", "recruitment", "jobs"], platform: "n8n", verified: true, downloads: 145, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["HR", "Recruitment"], author: "NordSym", category: "swedish" },
             { id: "uc-credit-check", title: "UC Credit Check", description: "Automatic credit check via UC before order confirmation.", category: "swedish", tags: ["uc", "credit", "risk-assessment"], platform: "n8n", verified: true, downloads: 265, difficulty: "advanced", estimatedTime: "40 min", useCases: ["B2B sales"], author: "NordSym", category: "swedish" },
-            { id: "skatteverket-vat", title: "Skatteverket VAT Report", description: "Compile VAT data from Fortnox for Skatteverket.", category: "swedish", tags: ["skatteverket", "vat", "reporting"], platform: "n8n", verified: true, downloads: 390, difficulty: "advanced", estimatedTime: "50 min", useCases: ["Finance departments"], author: "NordSym", category: "swedish" },
-            { id: "bolagsverket-registration", title: "Bolagsverket Change Notification", description: "Automate parts of change notifications to Bolagsverket.", category: "swedish", tags: ["bolagsverket", "company", "registration"], platform: "n8n", verified: true, downloads: 128, difficulty: "advanced", estimatedTime: "45 min", useCases: ["Agencies", "Legal"], author: "NordSym", category: "swedish" },
+            { id: "tax-agency-vat", title: "Swedish Tax Agency VAT Report", description: "Compile VAT data from Fortnox for the Swedish Tax Agency.", category: "swedish", tags: ["tax-agency", "vat", "reporting"], platform: "n8n", verified: true, downloads: 390, difficulty: "advanced", estimatedTime: "50 min", useCases: ["Finance departments"], author: "NordSym", category: "swedish" },
+            { id: "company-registry-registration", title: "Swedish Companies Registration Office Change Notification", description: "Automate parts of company change notifications for the Swedish Companies Registration Office.", category: "swedish", tags: ["company-registry", "company", "registration"], platform: "n8n", verified: true, downloads: 128, difficulty: "advanced", estimatedTime: "45 min", useCases: ["Agencies", "Legal"], author: "NordSym", category: "swedish" },
             { id: "swedish-bank-reconciliation", title: "Swedish Bank Reconciliation", description: "Automatic reconciliation between Swedish banks and accounting systems.", category: "swedish", tags: ["bank", "reconciliation", "finance"], platform: "n8n", verified: true, downloads: 445, difficulty: "advanced", estimatedTime: "55 min", useCases: ["Finance departments"], author: "NordSym", category: "swedish" },
             { id: "digital-mailbox", title: "Digital Mailbox Integration", description: "Fetch and process mail from Kivra, MinMyndighetsPost automatically.", category: "swedish", tags: ["kivra", "government-mail", "digital"], platform: "n8n", verified: true, downloads: 198, difficulty: "intermediate", estimatedTime: "30 min", useCases: ["Businesses"], author: "NordSym", category: "swedish" },
             { id: "swedish-holidays", title: "Swedish Holidays in Automation", description: "Automatic handling of Swedish public holidays in scheduled flows.", category: "swedish", tags: ["holidays", "schedule", "calendar"], platform: "n8n", verified: true, downloads: 312, difficulty: "beginner", estimatedTime: "10 min", useCases: ["Everyone"], author: "NordSym", category: "swedish" },
             // (Remaining workflows omitted for brevity, but array structure remains same)
         ];
 
-        let WORKFLOWS = [...STATIC_WORKFLOWS]; 
-        
+        let WORKFLOWS = [...STATIC_WORKFLOWS];
+
         // --- UPDATED PLATFORMS ---
-        const PLATFORMS = [ 
+        const PLATFORMS = [
             { id: 'all', label: 'All' },
             { id: 'n8n', label: 'n8n' }
         ];
@@ -1163,12 +1163,12 @@
 
         // NEW: ITEMS_PER_PAGE and currentPage added to state
         const ITEMS_PER_PAGE = 20;
-        // ÄNDRING: platformFilter är nu 'n8n' som default istället för 'all'
+        // Default to n8n workflows.
         let state = { search: '', categoryFilter: 'all', platformFilter: 'n8n', difficultyFilter: 'all', sort: 'popular', currentPage: 1 };
 
         let currentModalWorkflow = null;
         let currentFileSelection = 'all'; // 'all' or index (1, 2, 3...)
-        let modalTimer; // Fix för race conditions vid snabba klick
+        let modalTimer; // Prevent race conditions on rapid clicks
 
         // --- DOM Elements ---
         const gridEl = document.getElementById('workflow-grid');
@@ -1180,12 +1180,12 @@
         const modalBackdrop = document.getElementById('modal-backdrop');
         const modalContent = document.getElementById('modal-content');
         const modalHelpBtn = document.getElementById('modal-help-btn');
-        
+
 
         const paywallModal = document.getElementById('paywall-modal');
         const dlCountEl = document.getElementById('dl-count');
-        const counterEl = document.getElementById('workflow-counter'); 
-        const multiFileSelector = document.getElementById('multi-file-selector'); 
+        const counterEl = document.getElementById('workflow-counter');
+        const multiFileSelector = document.getElementById('multi-file-selector');
 
         // --- AUTH & MODAL ELEMENTS ---
         const authModal = document.getElementById('auth-modal');
@@ -1198,8 +1198,8 @@
 
         function init() {
             renderControls();
-            
-            // --- NYTT: DEV BYPASS (Måste köras innan rendering) ---
+
+            // --- DEV BYPASS: run before rendering ---
             const urlParams = new URLSearchParams(window.location.search);
             if (urlParams.get('dev') === 'pro') {
                 console.log("🔧 DEV MODE: Force enabling PRO tier");
@@ -1211,19 +1211,19 @@
             }
             // -----------------------------------------------------
 
-            renderHeader(); 
+            renderHeader();
             renderStats();
-            renderWorkflows(); 
-            fetchWorkflows();  
+            renderWorkflows();
+            fetchWorkflows();
             initTheme();
-            initStarfall(); 
-            updateAuthUI(); 
-            checkStripeRedirect(); 
-            initCookies(); 
+            initStarfall();
+            updateAuthUI();
+            checkStripeRedirect();
+            initCookies();
             populateUploadCategories(); // NEW: Populate upload dropdown
             lucide.createIcons();
 
-            // NYTT: Synka användardata (tier & downloads) direkt vid start om inloggad
+            // Sync user tier and downloads on startup when logged in
             if (userState.isAuthenticated && userState.email && urlParams.get('dev') !== 'pro') {
                 syncUserProfile();
             }
@@ -1231,7 +1231,7 @@
 
         // --- NEW SYNC FUNCTION ---
         async function syncUserProfile() {
-            console.log("🔄 Synkar användarprofil...");
+            console.log("Syncing user profile...");
             try {
                 const formData = new URLSearchParams();
                 formData.append('email', userState.email);
@@ -1244,24 +1244,24 @@
 
                 if (res.ok) {
                     const data = await res.json();
-                    
+
                     // Uppdatera Tier
                     if (data.tier) userState.tier = data.tier.toLowerCase();
-                    
-                    // Uppdatera Nedladdningar (Hård synk)
+
+                    // Sync download history from server count
                     if (data.downloads_count !== undefined) {
                         const count = parseInt(data.downloads_count);
                         console.log(`✅ Profil synkad: ${data.tier}, ${count} nedladdningar.`);
-                        // Skapa dummy-historik för att matcha serverns siffra
+                        // Create placeholder history to match the server count
                         userState.downloads = Array(count).fill({ id: 'synced', timestamp: new Date().toISOString() });
                     }
 
                     saveUserState();
-                    renderHeader(); // Uppdatera mätaren visuellt
-                    renderWorkflows(); // Lås upp/ner PRO-kort
+                    renderHeader(); // Update the header counter
+                    renderWorkflows(); // Refresh PRO card locks
                 }
             } catch (error) {
-                console.warn("Kunde inte synka profil:", error);
+                console.warn("Could not sync profile:", error);
             }
         }
 
@@ -1271,7 +1271,7 @@
                 const banner = document.getElementById('cookie-banner');
                 if (banner) {
                     banner.classList.remove('hidden');
-                    // Liten fördröjning för snyggare in-animation
+                    // Short delay for a smoother entrance animation
                     setTimeout(() => {
                         banner.classList.remove('translate-y-20', 'opacity-0');
                     }, 1000);
@@ -1301,14 +1301,14 @@
             const pricingMarketing = document.getElementById('pricing-marketing');
             const pricingProStatus = document.getElementById('pricing-pro-status');
 
-            // 1. Hantera Header och Hero baserat på PRO-status
+            // 1. Update header and hero based on PRO status
             if (isPro) {
                 // Header Upgrade Button -> Hide
                 if (upgradeBtn) {
                     upgradeBtn.classList.remove('sm:flex');
                     upgradeBtn.classList.add('hidden');
                 }
-                
+
                 // Download Counter -> Show PRO badge & FORCE VISIBLE ON MOBILE
                 if (dlCounter) {
                     dlCounter.className = 'flex flex-col items-end mr-2'; // Reset classes to force visibility
@@ -1331,7 +1331,7 @@
                     upgradeBtn.classList.add('sm:flex');
                     upgradeBtn.classList.remove('hidden');
                 }
-                
+
                 if (heroMarketing) {
                     heroMarketing.style.display = 'block';
                     heroMarketing.parentElement.classList.remove('mt-8');
@@ -1428,17 +1428,17 @@
         function openSecurityModal(section = null) {
             const modal = document.getElementById('security-modal');
             modal.classList.remove('hidden');
-            
+
             // Animation
-            setTimeout(() => { 
-                modal.classList.remove('opacity-0'); 
-                modal.firstElementChild.classList.remove('scale-95'); 
-                modal.firstElementChild.classList.add('scale-100'); 
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.firstElementChild.classList.remove('scale-95');
+                modal.firstElementChild.classList.add('scale-100');
             }, 10);
 
             // Scroll to specific section if requested
             if (section) {
-                // Liten fördröjning så modalen hinner "öppnas" i DOMen
+                // Short delay so the modal exists in the DOM
                 setTimeout(() => {
                     const el = document.getElementById(`sec-${section}`);
                     if (el) {
@@ -1450,8 +1450,8 @@
 
         function closeSecurityModal() {
             const modal = document.getElementById('security-modal');
-            modal.classList.add('opacity-0'); 
-            modal.firstElementChild.classList.remove('scale-100'); 
+            modal.classList.add('opacity-0');
+            modal.firstElementChild.classList.remove('scale-100');
             modal.firstElementChild.classList.add('scale-95');
             setTimeout(() => modal.classList.add('hidden'), 300);
         }
@@ -1484,7 +1484,7 @@
         // UPDATED: Real Upload Logic instead of Mock
         async function handleUploadSubmit(e) {
             e.preventDefault();
-            
+
             if (!userState.isAuthenticated || !userState.email) {
                 showToast("You must be logged in to upload.", true);
                 return;
@@ -1499,11 +1499,11 @@
                 const title = document.getElementById('upload-title').value;
                 const category = document.getElementById('upload-category').value;
                 const isJsonTab = !document.getElementById('upload-view-json').classList.contains('hidden');
-                
+
                 let contentToSend = '';
                 let uploadType = '';
 
-                // Hämta innehåll baserat på flik
+                // Read content from the active tab
                 if (isJsonTab) {
                     contentToSend = document.getElementById('upload-json-content').value;
                     uploadType = 'json_paste';
@@ -1512,7 +1512,7 @@
                     const fileInput = document.getElementById('upload-file-input');
                     if (fileInput.files.length > 0) {
                         const file = fileInput.files[0];
-                        // Läs filen som text
+                        // Read the file as text
                         contentToSend = await file.text();
                         uploadType = 'file_upload';
                     } else {
@@ -1520,7 +1520,7 @@
                     }
                 }
 
-                // Validera att det är någorlunda giltig JSON (enkel check)
+                // Validate that the content is plausible JSON
                 try {
                     JSON.parse(contentToSend);
                 } catch (err) {
@@ -1529,13 +1529,13 @@
 
                 console.log("📤 Skickar uppladdning...", { title, category, uploadType });
 
-                // Skicka till n8n
-                // Vi använder URLSearchParams för att undvika CORS-problem med "application/json"
+                // Send to n8n
+                // Use URLSearchParams to avoid CORS issues with application/json
                 const formData = new URLSearchParams();
                 formData.append('email', userState.email);
                 formData.append('title', title);
                 formData.append('category', category);
-                formData.append('jsonContent', contentToSend); // Hela koden skickas som text
+                formData.append('jsonContent', contentToSend); // Send the full JSON as text
                 formData.append('type', uploadType);
                 formData.append('source', 'flowvault_web');
 
@@ -1548,7 +1548,7 @@
                 if (response.ok) {
                     showToast("Thanks! Your flow has been submitted for review. 🚀");
                     closeUploadModal();
-                    // Rensa formulär
+                    // Clear form
                     document.getElementById('upload-json-content').value = '';
                     document.getElementById('upload-title').value = '';
                     document.getElementById('upload-file-input').value = '';
@@ -1574,15 +1574,15 @@
             const email = document.getElementById('request-email').value;
             const btn = document.getElementById('req-submit-btn');
             const originalContent = btn.innerHTML;
-            
+
             btn.innerHTML = '<div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
             btn.disabled = true;
 
             try {
-                console.log("Sending request to:", API_ENDPOINTS.request); 
+                console.log("Sending request to:", API_ENDPOINTS.request);
 
-                // FIX: Vi använder URLSearchParams (Form Data) istället för JSON.
-                // Detta gör anropet till ett "Simple Request" och hoppar över CORS-kontrollen (OPTIONS).
+                // Use URLSearchParams form data instead of JSON.
+                // This makes the request simple and avoids the OPTIONS preflight.
                 const formData = new URLSearchParams();
                 formData.append('email', email);
                 formData.append('description', desc);
@@ -1604,7 +1604,7 @@
                 }
             } catch (error) {
                 console.error("Request error details:", error);
-                
+
                 if (error.message.includes('Failed to fetch')) {
                     showToast("Could not connect to the server.", true);
                 } else {
@@ -1712,7 +1712,7 @@
                     nudge.style.display = 'inline-flex';
                 }
 
-                // Utloggad vy: Tydlig "Logga in" knapp med puls-effekt
+                // Logged-out view: clear login button with pulse effect
                 btn.className = "flex items-center gap-2 px-4 py-2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-white font-bold text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition-all border border-slate-200 dark:border-slate-700 relative";
                 btn.innerHTML = `
                     <span>Log in</span>
@@ -1739,7 +1739,7 @@
             if (email.toLowerCase() === 'dev@nordsym.com' || email.toLowerCase() === 'pro@nordsym.com') {
                 setTimeout(() => {
                     document.getElementById('auth-email-display').textContent = email;
-                    showToast("DEV MODE: Kod är 123456 🛠️");
+                    showToast("DEV MODE: code is 123456");
                     switchAuthView('code');
                     btn.innerHTML = originalText;
                     btn.disabled = false;
@@ -1750,24 +1750,24 @@
 
             try {
                 console.log("Anropar Auth Init:", API_ENDPOINTS.authInit);
-                
-                // FIX: Byt till URLSearchParams (Form Data) för att undvika CORS-blockering
+
+                // Use URLSearchParams form data to avoid CORS blocking
                 const formData = new URLSearchParams();
                 formData.append('email', email);
 
-                const response = await fetch(API_ENDPOINTS.authInit, { 
-                    method: 'POST', 
+                const response = await fetch(API_ENDPOINTS.authInit, {
+                    method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: formData 
+                    body: formData
                 });
 
                 if (response.ok) {
                     const responseData = await response.clone().json().catch(() => ({}));
                     console.log("🚀 Auth Init Server Response:", responseData);
 
-                    // NY LOGIK: Logga varning men STOPPA INTE. Låt användaren skriva in koden om den kom fram.
+                    // Warn but do not stop. Let the user enter the code if it arrived.
                     if (responseData.success === false) {
-                        console.warn("⚠️ Servern rapporterade fel, men vi fortsätter ändå:", responseData);
+                        console.warn("Server reported an error, continuing:", responseData);
                     }
 
                     document.getElementById('auth-email-display').textContent = email;
@@ -1801,20 +1801,20 @@
 
             btn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>';
             btn.disabled = true;
-            
+
             // --- DEV BACKDOOR ---
             if ((email.toLowerCase() === 'dev@nordsym.com' || email.toLowerCase() === 'pro@nordsym.com') && code === '123456') {
                 setTimeout(() => {
                     userState.isAuthenticated = true;
                     userState.email = email;
                     userState.tier = email.toLowerCase() === 'pro@nordsym.com' ? 'pro' : 'free';
-                    
+
                     saveUserState();
                     showToast(`Inloggad som DEV (${userState.tier.toUpperCase()}) 🛠️`);
                     closeAuthModal();
                     updateAuthUI();
                     renderHeader();
-                    renderWorkflows(); 
+                    renderWorkflows();
                     btn.innerHTML = originalText;
                     btn.disabled = false;
                 }, 800);
@@ -1824,43 +1824,43 @@
 
             try {
                 console.log(`🚀 Sending Verify Request to: ${API_ENDPOINTS.authVerify}`);
-                
+
                 const formData = new URLSearchParams();
                 formData.append('email', email);
                 formData.append('code', code);
 
-                const res = await fetch(API_ENDPOINTS.authVerify, { 
-                    method: 'POST', 
+                const res = await fetch(API_ENDPOINTS.authVerify, {
+                    method: 'POST',
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    body: formData 
+                    body: formData
                 });
-                
+
                 const data = await res.json();
 
-                if (data.success) { 
+                if (data.success) {
                     userState.isAuthenticated = true;
                     userState.email = email;
                     userState.tier = (data.tier || 'free').toLowerCase();
-                    
+
                     // --- HARD TRACKING FIX ---
-                    // Om servern skickar antalet nedladdningar, använd det!
-                    // Vi skapar "dummy-objekt" i historiken för att matcha antalet.
+                    // Use the server download count when available.
+                    // Create placeholder history items to match the count.
                     if (data.downloads_count !== undefined && data.downloads_count !== null) {
                         const count = parseInt(data.downloads_count);
-                        console.log(`📥 Synkar historik från server: ${count} nedladdningar.`);
-                        // Fyll arrayen med placeholder-data så .length blir rätt
+                        console.log(`Syncing download history from server: ${count} downloads.`);
+                        // Fill the array with placeholders so length is correct
                         userState.downloads = Array(count).fill({ id: 'synced_from_server', timestamp: new Date().toISOString() });
                     }
-                    
+
                     saveUserState();
-                    
+
                     const tierMsg = userState.tier === 'pro' ? 'PRO 🚀' : 'Free';
                     showToast(`Logged in as ${tierMsg}!`);
-                    
+
                     closeAuthModal();
                     updateAuthUI();
                     renderHeader();
-                    renderWorkflows(); 
+                    renderWorkflows();
                 } else {
                     showToast("Incorrect code", true);
                 }
@@ -1883,17 +1883,17 @@
             userState.isAuthenticated = false;
             userState.email = null;
             userState.token = null;
-            userState.tier = 'free'; 
-            
-            // FIX: Rensa nedladdningshistoriken vid utloggning så nästa användare slipper ärva den
-            userState.downloads = []; 
-            
+            userState.tier = 'free';
+
+            // Clear download history on logout so the next user does not inherit it
+            userState.downloads = [];
+
             saveUserState();
             showToast("Logged out");
             closeAuthModal();
             updateAuthUI();
             renderHeader();
-            renderWorkflows(); // FIX: Rita om gridet så saker låses igen
+            renderWorkflows(); // Redraw the grid so locks reset
         }
 
         function saveUserState() {
@@ -1924,7 +1924,7 @@
         // --- STRIPE REDIRECT LOGIC ---
         async function checkStripeRedirect() {
             const urlParams = new URLSearchParams(window.location.search);
-            
+
             if (urlParams.get('canceled') === 'true') {
                 console.log("🚫 Stripe Checkout Cancelled");
                 showToast("Upgrade cancelled.", true);
@@ -1934,8 +1934,8 @@
                 console.log("✅ Stripe Checkout Success! Starting polling...");
                 showToast("Payment received! Verifying status...", false);
                 window.history.replaceState({}, document.title, window.location.pathname);
-                
-                // ÖKAD POLLING: 20 försök x 3 sekunder = 60 sekunder totalt
+
+                // Polling: 20 attempts x 3 seconds = 60 seconds total
                 pollForProStatus(20);
             }
         }
@@ -1945,7 +1945,7 @@
 
             // Avbryt om vi redan blivit PRO (t.ex. av en annan flik eller tidigare poll)
             if (userState.tier === 'pro') {
-                return; 
+                return;
             }
 
             if (retriesLeft <= 0) {
@@ -1955,7 +1955,7 @@
             }
 
             try {
-                console.log(`🔄 Polling PRO status via getUser... (${retriesLeft} försök kvar)`);
+                console.log(`Polling PRO status via getUser... (${retriesLeft} attempts left)`);
                 const formData = new URLSearchParams();
                 formData.append('email', userState.email);
 
@@ -1968,17 +1968,17 @@
                 if (res.ok) {
                     const data = await res.json();
                     console.log("👤 User Profile Data:", data);
-                    
+
                     if (data.tier === 'pro') {
                         // SUCCESS! Vi hittade PRO-statusen
                         console.log("🎉 PRO status confirmed!");
                         userState.tier = 'pro';
                         saveUserState();
                         renderHeader();
-                        renderWorkflows(); 
+                        renderWorkflows();
                         showToast("Welcome to PRO! 🚀");
-                        
-                        // Visuell feedback på uppgraderingen
+
+                        // Visual upgrade feedback
                         const dlCounter = document.getElementById('download-counter');
                         if(dlCounter) {
                             dlCounter.innerHTML = '<span class="text-xs font-bold text-fuchsia-500 bg-fuchsia-100 dark:bg-fuchsia-900/30 px-2 py-1 rounded border border-fuchsia-200 dark:border-fuchsia-700 animate-bounce">PRO ACTIVATED</span>';
@@ -1990,7 +1990,7 @@
                 console.error("Polling error:", error);
             }
 
-            // Om vi inte är PRO än, vänta 3 sekunder och försök igen
+            // If PRO is not active yet, wait 3 seconds and retry
             setTimeout(() => pollForProStatus(retriesLeft - 1), 3000);
         }
 
@@ -1998,7 +1998,7 @@
         function openPaywall(reason) {
             const title = document.getElementById('paywall-title');
             const desc = document.getElementById('paywall-desc');
-            
+
             if (reason === 'limit_reached') {
                 title.textContent = "Out of free downloads";
                 desc.textContent = "You have used your 3 free downloads for this month. Upgrade to continue.";
@@ -2031,32 +2031,32 @@
         async function fetchWorkflows() {
             if (!USE_BACKEND) return;
             try {
-                console.log("🔍 Försöker hämta workflows från:", API_ENDPOINTS.workflows);
+                console.log("Fetching workflows from:", API_ENDPOINTS.workflows);
                 const response = await fetch(API_ENDPOINTS.workflows);
-                
+
                 if (response.ok) {
                     const data = await response.json();
-                    // Validera att vi faktiskt fick en lista
+                    // Validate that the response contains a list
                     const items = Array.isArray(data) ? data : (data.workflows || []);
-                    
+
                     if (items.length > 0) {
-                        console.log(`✅ Lyckades hämta ${items.length} workflows från n8n!`);
-                        
-                        // FIX: Slå ihop hårdkodade Skills med backend-data
-                        // Vi extraherar skills från STATIC_WORKFLOWS och lägger dem först
+                        console.log(`Fetched ${items.length} workflows from n8n.`);
+
+                        // Merge hardcoded skills with backend data
+                        // Extract skills from static workflows and place them first
                         const hardcodedSkills = STATIC_WORKFLOWS.filter(w => w.category === 'skills');
-                        
-                        // Undvik dubbletter om du senare lägger in dem i databasen med samma ID
+
+                        // Avoid duplicates if they are later added to the database with the same ID
                         const fetchedIds = new Set(items.map(i => i.id));
                         const uniqueSkills = hardcodedSkills.filter(s => !fetchedIds.has(s.id));
 
-                        // Kombinera: Skills först, sedan resten från databasen
+                        // Combine skills first, then backend records
                         WORKFLOWS = [...uniqueSkills, ...items.map(normalizeWorkflow)];
-                        
-                        // DEBUG: Logga datan för det specifika flödet så vi ser vad category innehåller
+
+                        // Debug a specific workflow category payload
                         const debugItem = items.find(i => i.title && i.title.toLowerCase().includes('fortnox'));
                         if (debugItem) {
-                            console.log("🐛 DEBUG DATA för Fortnox-flödet:", {
+                            console.log("Fortnox workflow debug data:", {
                                 title: debugItem.title,
                                 categoryRaw: debugItem.category,
                                 categoryType: typeof debugItem.category,
@@ -2064,66 +2064,66 @@
                             });
                         }
 
-                        renderWorkflows(); 
+                        renderWorkflows();
                         renderStats();
                     } else {
-                        console.warn("⚠️ Backend svarade OK men listan var tom. Använder fallback.");
+                        console.warn("Backend returned OK but the list was empty. Using fallback.");
                     }
                 } else {
                     console.error(`❌ Backend Error: ${response.status} ${response.statusText}`);
-                    // Visa toast om backend är nere så du vet direkt
+                    // Show a toast if the backend is unavailable
                     showToast(`Could not fetch workflows: ${response.status}`, true);
                 }
             } catch (error) {
-                console.error('❌ Nätverksfel / CORS vid hämtning av workflows:', error);
+                console.error('Network or CORS error while fetching workflows:', error);
             }
         }
 
         function renderWorkflows() {
-            // Helper flyttad till global scope (normalizeTags)
+            // Helper moved to global scope (normalizeTags)
 
             let filtered = WORKFLOWS.filter(wf => {
-                // FIX: Definiera wfCats här uppe så den är tillgänglig i hela funktionen (löser ReferenceError)
+                // Define wfCats here so it is available in the full function
                 const rawCat = wf.category || wf.fields?.category || wf.fields?.Category;
                 const wfCats = normalizeTags(rawCat);
 
                 const matchesSearch = wf.title.toLowerCase().includes(state.search.toLowerCase()) || wf.description.toLowerCase().includes(state.search.toLowerCase());
-                
+
                 let matchesCategory = true;
-                
+
                 if (state.categoryFilter === 'favorites') {
                     matchesCategory = userState.favorites.includes(wf.id);
                 } else if (state.categoryFilter !== 'all') {
-                    // Hämta hela kategori-objektet för att komma åt aliases
+                    // Read the full category object to access aliases
                     const targetCategoryObj = CATEGORIES.find(c => c.id === state.categoryFilter);
                     const targetId = state.categoryFilter.toLowerCase();
                     const targetLabel = targetCategoryObj?.label.toLowerCase() || '';
-                    const targetAliases = targetCategoryObj?.aliases || []; 
+                    const targetAliases = targetCategoryObj?.aliases || [];
 
-                    // SPECIALHANTERING FÖR SKILLS: Strikt matchning
+                    // Strict matching for skills
                     if (state.categoryFilter === 'skills') {
-                        // Måste vara exakt kategorin "skills" eller "claude skills" (från Airtable)
+                        // Must exactly match skills or claude skills
                         matchesCategory = wfCats.includes('skills') || wfCats.includes('claude skills');
                     } else {
-                        // Vanlig logik för andra kategorier
-                        matchesCategory = wfCats.some(cat => 
-                            cat === targetId || 
+                        // Normal matching for other categories
+                        matchesCategory = wfCats.some(cat =>
+                            cat === targetId ||
                             cat === targetLabel ||
-                            cat.includes(targetId) || 
+                            cat.includes(targetId) ||
                             cat.includes(targetLabel) ||
                             (targetLabel && targetLabel.includes(cat)) ||
-                            targetAliases.some(alias => cat.includes(alias)) 
+                            targetAliases.some(alias => cat.includes(alias))
                         );
                     }
                 }
 
                 // UPDATED PLATFORM LOGIC
                 let matchesPlatform = state.platformFilter === 'all';
-                
-                // Om vi visar kategorin "Skills", tvinga fram plattformen 'claude' oavsett vad filtret står på.
-                // Detta gör att man ser sina skills även om "n8n" är förvalt som default.
+
+                // When showing Skills, force the Claude platform regardless of current filter.
+                // This keeps skills visible even when n8n is the default platform.
                 if (state.categoryFilter === 'skills') {
-                    // Använd normalizeTags-resultatet (wfCats) för att fånga upp "claude skills" säkert
+                    // Use normalized categories to catch claude skills safely
                     matchesPlatform = wf.platform === 'claude' || wfCats.includes('skills') || wfCats.includes('claude skills');
                 } else if (!matchesPlatform) {
                     matchesPlatform = wf.platform === state.platformFilter;
@@ -2135,23 +2135,23 @@
 
             if (counterEl) {
                 // UPDATED COUNTER LOGIC
-                // Använd samma robusta detect-funktion som i resten av appen
+                // Use the same robust detection function as the rest of the app
                 const isSkillItem = (w) => {
                     const c = normalizeTags(w.category || w.fields?.category);
                     return c.includes('skills') || c.includes('claude skills');
                 };
 
-                const totalSkills = WORKFLOWS.filter(isSkillItem).length; 
-                const totalFlows = WORKFLOWS.length - totalSkills; 
-                
-                let typeLabel = "workflows";
-                let totalBase = totalFlows; // Basen är "vanliga" flöden (exkluderar skills)
+                const totalSkills = WORKFLOWS.filter(isSkillItem).length;
+                const totalFlows = WORKFLOWS.length - totalSkills;
 
-                // 1. Om man specifikt filtrerar på Skills-kategorin
+                let typeLabel = "workflows";
+                let totalBase = totalFlows; // Base count excludes skills
+
+                // 1. Skills-specific filtering
                 if (state.categoryFilter === 'skills') {
                     typeLabel = "skills";
-                    totalBase = totalSkills; 
-                } 
+                    totalBase = totalSkills;
+                }
                 // 2. Om man visar "Alla" kategorier OCH "Alla" plattformar (helt blandat)
                 else if (state.categoryFilter === 'all' && state.platformFilter === 'all') {
                     typeLabel = "workflows & skills";
@@ -2170,19 +2170,19 @@
             else if (state.sort === 'recent') filtered.reverse();
             else if (state.sort === 'downloads') filtered.sort((a, b) => b.downloads - a.downloads);
             else if (state.sort === 'alphabetical') filtered.sort((a, b) => a.title.localeCompare(b.title));
-            
-            if (filtered.length === 0) { 
-                gridEl.classList.add('hidden'); 
-                emptyStateEl.classList.remove('hidden'); 
+
+            if (filtered.length === 0) {
+                gridEl.classList.add('hidden');
+                emptyStateEl.classList.remove('hidden');
                 document.getElementById('pagination-controls').classList.add('hidden');
-                return; 
+                return;
             }
             gridEl.classList.remove('hidden'); emptyStateEl.classList.add('hidden');
 
             // --- PAGINATION LOGIC ---
             const totalItems = filtered.length;
             const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE);
-            
+
             // Safety check if page is out of bounds after filter change
             if (state.currentPage > totalPages) state.currentPage = 1;
 
@@ -2190,20 +2190,20 @@
             const paginatedItems = filtered.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
             gridEl.innerHTML = paginatedItems.map(wf => {
-                // ANVÄND SUPER-STÄDAREN ÄVEN FÖR VISNINGEN
+                // Use normalization before rendering
                 const rawCat = wf.category || wf.fields?.category || wf.fields?.Category;
                 const wfCatsBadge = normalizeTags(rawCat);
 
                 let badge = '';
-                // UPDATED: Tog bort den specifika "Svensk"-badgen för att undvika dubbla flaggor.
-                // Nu förlitar vi oss på att kategorin "Svensk" genererar en flagg-ikon i loopen nedan istället.
+                // Removed the dedicated country badge to avoid duplicate flags.
+                // The category icon handles the flag.
                 if (wf.proBadge) {
                     badge = `<span class="badge-pro px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider flex items-center gap-1"><i data-lucide="crown" class="w-3 h-3"></i> PRO</span>`;
                 }
 
-                // NY LOGIK: Generera ikoner för ALLA identifierade kategorier
+                // Generate icons for every detected category
                 let catIconsHtml = '';
-                const uniqueMatchedCats = new Set(); 
+                const uniqueMatchedCats = new Set();
 
                 wfCatsBadge.forEach(catStr => {
                     const foundCat = CATEGORIES.find(c => {
@@ -2214,8 +2214,8 @@
                     });
 
                     if (foundCat && !uniqueMatchedCats.has(foundCat.id)) {
-                        uniqueMatchedCats.add(foundCat.id); 
-                        
+                        uniqueMatchedCats.add(foundCat.id);
+
                         const isEmoji = foundCat.icon.match(/\p{Emoji}/u);
                         if (isEmoji) {
                              catIconsHtml += `<span class="text-sm opacity-80 cursor-help" title="${foundCat.label}">${foundCat.icon}</span>`;
@@ -2261,7 +2261,7 @@
                     </div>
                 </div>
             `}).join('');
-            
+
             renderPagination(totalPages);
             lucide.createIcons();
         }
@@ -2273,15 +2273,15 @@
                 paginationEl.classList.add('hidden');
                 return;
             }
-            
+
             paginationEl.classList.remove('hidden');
             paginationEl.innerHTML = `
                 <button onclick="changePage(${state.currentPage - 1})" ${state.currentPage === 1 ? 'disabled' : ''} class="flex items-center gap-1 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium">
-                    <i data-lucide="chevron-left" class="w-4 h-4"></i> Föregående
+                    <i data-lucide="chevron-left" class="w-4 h-4"></i> Previous
                 </button>
                 <span class="text-sm font-medium text-slate-600 dark:text-slate-400">Sida ${state.currentPage} av ${totalPages}</span>
                 <button onclick="changePage(${state.currentPage + 1})" ${state.currentPage === totalPages ? 'disabled' : ''} class="flex items-center gap-1 px-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm font-medium">
-                    Nästa <i data-lucide="chevron-right" class="w-4 h-4"></i>
+                    Next <i data-lucide="chevron-right" class="w-4 h-4"></i>
                 </button>
             `;
             lucide.createIcons();
@@ -2300,7 +2300,7 @@
         }
 
         function toggleFavorite(e, id) {
-            e.stopPropagation(); 
+            e.stopPropagation();
             const index = userState.favorites.indexOf(id);
             if (index === -1) {
                 userState.favorites.push(id);
@@ -2309,54 +2309,54 @@
                 userState.favorites.splice(index, 1);
             }
             localStorage.setItem('flowvault_user_state', JSON.stringify(userState));
-            renderWorkflows(); 
+            renderWorkflows();
         }
 
         // Updated filters to reset page to 1
         function handleSearch(query) { state.search = query; state.currentPage = 1; renderWorkflows(); }
         function setCategory(id) { state.categoryFilter = id; state.currentPage = 1; renderControls(); renderWorkflows(); }
-        
-        function setPlatform(id) { 
-            // NY LOGIK: Lås Skills-knappen för icke-PRO
+
+        function setPlatform(id) {
+            // Lock the Skills button for non-PRO users
             if (id === 'skills' && userState.tier !== 'pro') {
                 openPaywall('skills_locked');
                 return;
             }
 
-            state.platformFilter = id; 
-            state.currentPage = 1; 
-            renderControls(); 
-            renderWorkflows(); 
+            state.platformFilter = id;
+            state.currentPage = 1;
+            renderControls();
+            renderWorkflows();
         }
 
         function setDifficulty(id) { state.difficultyFilter = id; state.currentPage = 1; renderControls(); renderWorkflows(); }
         function setSort(val) { state.sort = val; state.currentPage = 1; renderWorkflows(); }
-        
-        // ÄNDRING: Reset sätter också tillbaka placeholder
-        function resetApp() { 
-            state.search = ''; 
-            state.categoryFilter = 'all'; 
-            state.platformFilter = 'n8n'; 
-            state.currentPage = 1; 
-            
+
+        // Reset also restores placeholder text
+        function resetApp() {
+            state.search = '';
+            state.categoryFilter = 'all';
+            state.platformFilter = 'n8n';
+            state.currentPage = 1;
+
             const searchInput = document.getElementById('search-input');
             if (searchInput) {
                 searchInput.value = '';
                 searchInput.placeholder = "Search workflows (e.g. 'AI agent', 'CRM sync', 'SEO')...";
             }
-            
-            renderControls(); 
-            renderWorkflows(); 
+
+            renderControls();
+            renderWorkflows();
         }
 
         // --- NEW: POPULATE UPLOAD CATEGORIES ---
         function populateUploadCategories() {
             const select = document.getElementById('upload-category');
             if (!select) return;
-            // Ta alla kategorier, men filtrera bort 'all', 'favorites' OCH 'skills' (då det är kommande feature)
+            // Include categories except all, favorites, and skills
             select.innerHTML = CATEGORIES
                 .filter(c => c.id !== 'all' && c.id !== 'favorites' && c.id !== 'skills')
-                // value="${c.label}" skickar "Sälj & CRM" till n8n, vilket matchar din Airtable.
+                // Send the displayed label to n8n.
                 .map(c => `<option value="${c.label}">${c.label}</option>`)
                 .join('');
         }
@@ -2364,14 +2364,14 @@
         // --- DEV TOOL: TOGGLE PRO ---
         function toggleDevTier() {
             userState.isAuthenticated = true; // Tvinga inloggad
-            if (!userState.email) userState.email = 'dev@nordsym.com'; // Sätt dummy-mail om ingen finns
-            
+            if (!userState.email) userState.email = 'dev@nordsym.com'; // Set fallback email if none exists
+
             if (userState.tier === 'pro') {
                 userState.tier = 'free';
-                showToast("🛠️ DEV: Bytte till FREE", false);
+                showToast("DEV: switched to FREE", false);
             } else {
                 userState.tier = 'pro';
-                showToast("🛠️ DEV: Bytte till PRO", false);
+                showToast("DEV: switched to PRO", false);
             }
             saveUserState();
             renderHeader();
@@ -2379,29 +2379,29 @@
         }
 
         function renderControls() {
-            // FIX: Återställer renderingen av kategoriknapparna som försvann
+            // Restore category button rendering
             // Added whitespace-nowrap to prevent text wrapping inside buttons on mobile
             filtersEl.innerHTML = CATEGORIES.map(cat => {
                 const isActive = state.categoryFilter === cat.id;
                 const isSkills = cat.id === 'skills';
 
-                const iconHtml = cat.id === 'swedish' 
-                    ? `<span class="text-lg leading-none">${cat.icon}</span>` 
+                const iconHtml = cat.id === 'swedish'
+                    ? `<span class="text-lg leading-none">${cat.icon}</span>`
                     : `<i data-lucide="${cat.icon}" class="w-4 h-4"></i>`;
-                
+
                 // Beta Badge
-                // FIX: Uppdaterade färger för aktivt läge i Dark Mode (dark:text-slate-900 dark:bg-slate-200) så den syns mot vit knapp
+                // Keep active dark-mode buttons legible
                 const betaBadge = '';
-                
+
                 return `<button onclick="setCategory('${cat.id}')" class="whitespace-nowrap flex-shrink-0 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 border flex items-center gap-2 ${isActive ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 border-transparent shadow-lg scale-105' : 'bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-400 border-slate-200 dark:border-slate-800 hover:border-primary/50 hover:text-primary'}">${iconHtml} ${cat.label} ${betaBadge}</button>`;
             }).join('');
 
             // --- SMART FILTER TOGGLE & DYNAMIC TEXTS ---
-            // Om kategorin är "Skills", dölj plattform och nivå och visa info-texten istället.
+            // Hide platform and difficulty for Skills and show info text instead.
             const filterWrapper = document.getElementById('filter-groups-wrapper');
             const skillsInfo = document.getElementById('skills-info-message');
             const requestText = document.getElementById('request-link-text');
-            
+
             // Elements for dynamic updates
             const searchInput = document.getElementById('search-input');
             const bannerTitle = document.getElementById('banner-title');
@@ -2410,29 +2410,29 @@
             if (state.categoryFilter === 'skills') {
                 filterWrapper.classList.add('hidden', 'opacity-0');
                 filterWrapper.classList.remove('flex', 'opacity-100');
-                
+
                 if (skillsInfo) {
                     skillsInfo.classList.remove('hidden');
                     skillsInfo.classList.add('flex');
                 }
-                
-                // UPDATED: Dynamisk text för Skills-läge
+
+                // Dynamic text for Skills mode
                 if (requestText) requestText.textContent = "Request a skill";
                 if (searchInput) searchInput.placeholder = "Search Claude Skills (e.g. 'Google Drive', 'Search')...";
-                
+
                 if (bannerTitle) bannerTitle.textContent = "Saknar du en MCP-server?";
                 if (bannerText) bannerText.textContent = "We build new Claude Skills based on what the community needs. Tell us what you're missing!";
 
             } else {
                 filterWrapper.classList.remove('hidden', 'opacity-0');
                 filterWrapper.classList.add('flex', 'opacity-100');
-                
+
                 if (skillsInfo) {
                     skillsInfo.classList.add('hidden');
                     skillsInfo.classList.remove('flex');
                 }
-                
-                // UPDATED: Återställ text för standard-läge
+
+                // Restore standard-mode text
                 if (requestText) requestText.textContent = "Request an automation";
                 if (searchInput) searchInput.placeholder = "Search workflows (e.g. 'AI agent', 'CRM sync', 'SEO')...";
 
@@ -2440,7 +2440,7 @@
                 if (bannerText) bannerText.textContent = "We at NordSym build new automations every week based on community needs. Tell us what you need and we'll prioritize it.";
             }
 
-            // NY RENDERING FÖR PLATTFORMS-KNAPPAR (Med Beta-tagg och Lås)
+            // Render platform buttons with beta badge and lock state
             platformFiltersEl.innerHTML = PLATFORMS.map(p => {
                 const isActive = state.platformFilter === p.id;
                 const isSkills = p.id === 'skills';
@@ -2448,15 +2448,15 @@
 
                 // Beta Badge
                 const betaBadge = '';
-                
+
                 // Lock Icon
                 const lockIcon = isLocked
                     ? `<i data-lucide="lock" class="w-3 h-3 ml-1 text-slate-400"></i>`
                     : '';
 
                 return `
-                    <button onclick="setPlatform('${p.id}')" class="flex items-center px-3 py-1.5 rounded-md text-xs font-medium transition-all border ${isActive 
-                        ? 'bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-900 border-transparent shadow-md' 
+                    <button onclick="setPlatform('${p.id}')" class="flex items-center px-3 py-1.5 rounded-md text-xs font-medium transition-all border ${isActive
+                        ? 'bg-slate-800 dark:bg-slate-200 text-white dark:text-slate-900 border-transparent shadow-md'
                         : 'bg-transparent text-slate-500 dark:text-slate-400 border-transparent hover:bg-slate-100 dark:hover:bg-slate-800'}">
                         ${p.label}
                         ${betaBadge}
@@ -2466,8 +2466,8 @@
             }).join('');
 
             difficultyFiltersEl.innerHTML = DIFFICULTIES.map(d => `<button onclick="setDifficulty('${d.id}')" class="px-2.5 py-1 rounded-md text-xs font-medium transition-colors border ${state.difficultyFilter === d.id ? 'bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-white border-slate-300 dark:border-slate-600' : 'bg-transparent text-slate-500 dark:text-slate-400 border-transparent hover:bg-slate-100 dark:hover:bg-slate-800'}">${d.label}</button>`).join('');
-            
-            // Viktigt: Kör createIcons igen för att rita ut låset
+
+            // Re-run createIcons to render locks
             lucide.createIcons();
         }
 
@@ -2475,8 +2475,8 @@
         function openModal(id) {
             const wf = WORKFLOWS.find(w => w.id === id);
             if (!wf) return;
-            
-            // Stoppa eventuella pågående stängnings-timers så vi inte gömmer modalen mitt i öppningen
+
+            // Stop any pending close timers so the modal is not hidden mid-open
             if (modalTimer) clearTimeout(modalTimer);
 
             currentModalWorkflow = wf;
@@ -2489,21 +2489,21 @@
 
             document.getElementById('modal-title').textContent = wf.title;
             document.getElementById('modal-description').textContent = wf.description;
-            
+
             // --- DYNAMIC AUTHOR ---
             const authorEl = document.getElementById('modal-author-wrapper');
-            // Använd wf.author om det finns, annars default till "NordSym" för verified skills
+            // Use wf.author when present, otherwise default to NordSym for verified skills
             const authorName = wf.author && wf.author !== 'Community' ? wf.author : 'NordSym';
             authorEl.innerHTML = `Av <span class="font-medium text-slate-700 dark:text-slate-300">${authorName}</span>`;
 
             const pEl = document.getElementById('modal-platform'); pEl.textContent = wf.platform; pEl.className = `px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wider border platform-${wf.platform}`;
-            
+
             // --- DYNAMIC GUIDE TEXT & HELP BANNER ---
             const guideTitle = document.getElementById('modal-guide-title');
             const guideList = document.getElementById('modal-guide-list');
             const helpTitle = document.getElementById('modal-help-title');
             const helpText = document.getElementById('modal-help-text');
-            
+
             if (isSkill) {
                 // GUIDE
                 guideTitle.innerHTML = `<i data-lucide="info" class="w-3 h-3"></i> How to install this Skill`;
@@ -2512,11 +2512,11 @@
                     <li>Upload the file directly in Claude.</li>
                     <li>Done! No restart required. 🧠</li>
                 `;
-                
+
                 // HELP BANNER (SKILL SPECIFIC)
                 helpTitle.textContent = "Need custom AI agents?";
                 helpText.textContent = "NordSym builds and integrates advanced Claude Skills and MCP servers for businesses.";
-            
+
             } else {
                 // GUIDE
                 guideTitle.innerHTML = `<i data-lucide="info" class="w-3 h-3"></i> How to use this flow`;
@@ -2538,20 +2538,20 @@
             const timeWrapper = document.getElementById('meta-time-wrapper');
 
             if (isSkill) {
-                // Dölj irrelevanta fält för Skills
+                // Hide irrelevant fields for Skills
                 diffWrapper.classList.add('hidden');
                 timeWrapper.classList.add('hidden');
-                // Justera gridet till 2 kolumner istället för 4 så det ser snyggt ut
+                // Use two columns for the compact Skills grid
                 grid.classList.remove('sm:grid-cols-4');
                 grid.classList.add('sm:grid-cols-2');
             } else {
-                // Visa allt för vanliga flöden
+                // Show all fields for regular workflows
                 diffWrapper.classList.remove('hidden');
                 timeWrapper.classList.remove('hidden');
                 grid.classList.add('sm:grid-cols-4');
                 grid.classList.remove('sm:grid-cols-2');
-                
-                // Sätt text (behövs bara om de visas)
+
+                // Set text for visible fields
                 document.getElementById('modal-difficulty').textContent = UI_TEXT.difficulties[wf.difficulty] || wf.difficulty;
                 document.getElementById('modal-time').textContent = wf.estimatedTime;
             }
@@ -2562,18 +2562,18 @@
 
             document.getElementById('modal-usecases').innerHTML = wf.useCases.map(uc => `<span class="px-2 py-1 bg-primary/10 text-primary dark:text-primary-hover rounded text-xs font-semibold">${uc}</span>`).join('');
             document.getElementById('modal-tags').innerHTML = wf.tags.map(tag => `<span class="px-2 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 text-xs font-medium border border-slate-200 dark:border-slate-700">#${tag}</span>`).join('');
-            
+
             modalHelpBtn.href = getEmailLink(wf);
-            
+
             // --- SKILL SPECIFIC UI ---
             const btnDownload = document.getElementById('btn-download');
             if (isSkill) {
-                // Skills laddas ner som .skill (binär zip)
+                // Skills download as .skill bundles
                 btnDownload.innerHTML = `<i data-lucide="package" class="w-5 h-5"></i> <span>Get Skill (.skill)</span>`;
                 btnDownload.classList.remove('bg-primary', 'hover:bg-primary-hover');
-                btnDownload.classList.add('bg-indigo-500', 'hover:bg-indigo-600'); 
+                btnDownload.classList.add('bg-indigo-500', 'hover:bg-indigo-600');
             } else {
-                // Vanliga flöden laddas ner som JSON
+                // Regular workflows download as JSON
                 btnDownload.innerHTML = `<i data-lucide="download" class="w-5 h-5"></i> <span>Download workflow</span>`;
                 btnDownload.classList.add('bg-primary', 'hover:bg-primary-hover');
                 btnDownload.classList.remove('bg-indigo-500', 'hover:bg-indigo-600');
@@ -2588,7 +2588,7 @@
             if (wf.fileCount && wf.fileCount > 1) {
                 selectorEl.classList.remove('hidden');
                 const descLines = wf.fileDescriptions ? wf.fileDescriptions.split('\n') : [];
-                
+
                 let html = `
                     <label class="flex items-center gap-3 p-3 rounded-lg border bg-white dark:bg-slate-900 cursor-pointer hover:border-fuchsia-400 transition-colors group radio-label radio-selected" onclick="selectFileOption('all', this)">
                         <div class="relative flex items-center justify-center">
@@ -2605,7 +2605,7 @@
                 `;
 
                 for (let i = 1; i <= wf.fileCount; i++) {
-                    const desc = descLines[i-1] || `Del ${i}`;
+                    const desc = descLines[i-1] || `Part ${i}`;
                     html += `
                         <label class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 cursor-pointer hover:border-fuchsia-400 transition-colors group radio-label" onclick="selectFileOption(${i}, this)">
                             <div class="relative flex items-center justify-center">
@@ -2631,20 +2631,20 @@
                 selectorEl.classList.add('hidden');
             }
 
-            // 1. Visa bakgrunden först (men osynlig/transparent)
+            // 1. Show the backdrop first, still transparent
             modalBackdrop.classList.remove('hidden');
-            
-            // 2. Tvinga webbläsaren att fatta att den är synlig (reflow) innan vi startar animationen
-            // Detta löser problemet med "suddig bakgrund men inget kort"
-            void modalBackdrop.offsetWidth; 
 
-            // 3. Starta animationen inåt
-            modalTimer = setTimeout(() => { 
-                modalBackdrop.classList.remove('opacity-0'); 
-                modalContent.classList.remove('scale-95', 'opacity-0'); 
-                modalContent.classList.add('scale-100', 'opacity-100'); 
+            // 2. Force a reflow before starting the animation
+            // This prevents a blurred backdrop without the modal card
+            void modalBackdrop.offsetWidth;
+
+            // 3. Start the entrance animation
+            modalTimer = setTimeout(() => {
+                modalBackdrop.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95', 'opacity-0');
+                modalContent.classList.add('scale-100', 'opacity-100');
             }, 10);
-            
+
             document.body.style.overflow = 'hidden';
         }
 
@@ -2656,7 +2656,7 @@
             });
             labelEl.classList.remove('border-slate-200', 'dark:border-slate-700', 'bg-white/50', 'dark:bg-slate-900/50');
             labelEl.classList.add('radio-selected', 'bg-white', 'dark:bg-slate-900');
-            
+
             const radio = labelEl.querySelector('input');
             if(radio) radio.checked = true;
         }
@@ -2664,16 +2664,16 @@
         function closeModal() {
             if (modalTimer) clearTimeout(modalTimer);
 
-            // Starta animation utåt
-            modalBackdrop.classList.add('opacity-0'); 
-            modalContent.classList.remove('scale-100', 'opacity-100'); 
+            // Start the exit animation
+            modalBackdrop.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100', 'opacity-100');
             modalContent.classList.add('scale-95', 'opacity-0');
-            
-            // Vänta på animationen innan vi gömmer elementet helt
-            modalTimer = setTimeout(() => { 
-                modalBackdrop.classList.add('hidden'); 
-                document.body.style.overflow = ''; 
-                currentModalWorkflow = null; 
+
+            // Wait for the animation before hiding the element
+            modalTimer = setTimeout(() => {
+                modalBackdrop.classList.add('hidden');
+                document.body.style.overflow = '';
+                currentModalWorkflow = null;
             }, 200);
         }
 
@@ -2684,7 +2684,7 @@
         }
 
         function tryDownload(workflow) {
-            // LOGIK-ÄNDRING: Tvinga inloggning för ALLA nedladdningar
+            // Require login for all downloads
             if (!userState.isAuthenticated) {
                 closeModal();
                 setTimeout(() => {
@@ -2706,16 +2706,16 @@
             const btn = document.getElementById('btn-download');
             const originalText = btn.innerHTML;
             const githubId = workflow.fields?.ID || workflow.ID || workflow.id;
-            
+
             // Determine file extension
-            // SKILLS = .skill (omdöpt zip)
+            // Skills use .skill, which is a renamed zip
             // N8N = .json
-            
-            // ROBUST CHECK: Använd samma logik som i filtret för att upptäcka skills
+
+            // Use the same detection logic as filters
             const rawCat = workflow.category || workflow.fields?.category;
             const cats = normalizeTags(rawCat);
             const isSkill = cats.includes('skills') || cats.includes('claude skills');
-            
+
             const fileExt = isSkill ? 'skill' : 'json';
 
             const baseUrl = `https://raw.githubusercontent.com/${GITHUB_CONFIG.user}/${GITHUB_CONFIG.repo}/${GITHUB_CONFIG.branch}`;
@@ -2725,22 +2725,22 @@
 
             try {
                 // SCENARIO 1: Bundle Download (Generated ZIP from multiple JSONs)
-                // Detta gäller INTE Skills, utan bara multi-file n8n workflows
+                // This applies only to multi-file n8n workflows, not Skills
                 if (!isSkill && currentFileSelection === 'all' && workflow.fileCount > 1) {
                     btn.innerHTML = '<div class="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Creating ZIP...';
-                    
+
                     const zip = new JSZip();
                     const folder = zip.folder(workflow.title.replace(/[^a-z0-9]/gi, '_').toLowerCase());
-                    
+
                     const fetchPromises = [];
-                    
+
                     for (let i = 1; i <= workflow.fileCount; i++) {
                         const patterns = [`${githubId}_${i}.json`, `${githubId}-${i}.json`];
-                        if (i === 1) patterns.push(`${githubId}.json`); 
-                        
+                        if (i === 1) patterns.push(`${githubId}.json`);
+
                         const p = (async () => {
                             let content = null;
-                            let filename = `${githubId}_${i}.json`; 
+                            let filename = `${githubId}_${i}.json`;
 
                             for (const pattern of patterns) {
                                 try {
@@ -2752,7 +2752,7 @@
                                     }
                                 } catch(e) {}
                             }
-                            
+
                             if (content) {
                                 folder.file(filename, content);
                             } else {
@@ -2764,7 +2764,7 @@
                     }
 
                     await Promise.all(fetchPromises);
-                    
+
                     const content = await zip.generateAsync({type:"blob"});
                     const url = window.URL.createObjectURL(content);
                     const a = document.createElement('a');
@@ -2776,28 +2776,28 @@
                     document.body.removeChild(a);
 
                     showToast(`ZIP file (${workflow.fileCount} parts) downloaded! 📦`);
-                } 
+                }
                 // SCENARIO 2: Single File Download (Or pre-made ZIP for Skills)
                 else {
                     let saveName = `${githubId}.${fileExt}`;
                     const patterns = [];
-                    
-                    // Om det är n8n och vi valt en specifik del
+
+                    // Specific part selected for a multi-file n8n workflow
                     if (!isSkill && workflow.fileCount > 1 && currentFileSelection !== 'all') {
                         patterns.push(`${githubId}_${currentFileSelection}.${fileExt}`);
                         patterns.push(`${githubId}-${currentFileSelection}.${fileExt}`);
                         saveName = `${githubId}_part_${currentFileSelection}.${fileExt}`;
                     } else {
-                        // Standard nedladdning (Skills .zip eller n8n .json)
+                        // Standard download for Skills or n8n JSON
                         patterns.push(`${githubId}.${fileExt}`);
-                        if (!isSkill) patterns.push(`${githubId}_1.${fileExt}`); // Fallback för n8n
+                        if (!isSkill) patterns.push(`${githubId}_1.${fileExt}`); // n8n fallback
                     }
 
                     let foundUrl = null;
                     for (const pattern of patterns) {
                         try {
                             const checkUrl = `${baseUrl}/${pattern}`;
-                            // HEAD request för att se om filen finns utan att ladda ner den än
+                            // HEAD request to check file existence before downloading
                             const response = await fetch(checkUrl, { method: 'HEAD' });
                             if (response.ok) {
                                 foundUrl = checkUrl;
@@ -2808,11 +2808,11 @@
 
                     if (!foundUrl) throw new Error(`File not found on server: ${patterns.join(', ')}`);
 
-                    // Nu hämtar vi filen (som BLOB för att hantera både text och binära ZIPs korrekt)
+                    // Fetch as a blob to support both text and binary bundles
                     const response = await fetch(foundUrl);
                     const blob = await response.blob();
                     const downloadUrl = window.URL.createObjectURL(blob);
-                    
+
                     const a = document.createElement('a');
                     a.href = downloadUrl;
                     a.download = saveName;
@@ -2827,8 +2827,8 @@
                 // --- TRACKING FIX (Updated to use FormData for better CORS handling) ---
                 // --- TRACKING FIX (Updated to use no-cors for guaranteed delivery) ---
                 if (USE_BACKEND && userState.isAuthenticated) {
-                    console.log(`📡 Skickar tracking-signal för ${githubId}...`);
-                    
+                    console.log(`Sending tracking signal for ${githubId}...`);
+
                     const trackingData = new URLSearchParams();
                     trackingData.append('userId', userState.email || 'anonymous');
                     trackingData.append('tier', userState.tier);
@@ -2836,15 +2836,15 @@
                     trackingData.append('fileCount', currentFileSelection === 'all' ? workflow.fileCount : 1);
                     trackingData.append('githubId', githubId);
 
-                    // FIX: Använd no-cors. Vi får inget svar, men anropet garanteras gå igenom utan CORS-blockering.
+                    // Use no-cors fire-and-forget tracking.
                     fetch(API_ENDPOINTS.download(workflow.id), {
                         method: 'POST',
-                        mode: 'no-cors', 
+                        mode: 'no-cors',
                         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
                         body: trackingData
                     })
-                    .then(() => console.log("✅ Tracking-signal skickad (fire-and-forget)."))
-                    .catch(err => console.warn('❌ Tracking nätverksfel:', err));
+                    .then(() => console.log("Tracking signal sent (fire-and-forget)."))
+                    .catch(err => console.warn('Tracking network error:', err));
                 }
 
                 userState.downloads.push({ id: workflow.id, timestamp: new Date().toISOString() });
@@ -2865,9 +2865,9 @@
             const msgEl = document.getElementById('toast-message');
             const titleEl = document.getElementById('toast-title');
             const iconBg = document.getElementById('toast-icon-bg');
-            
+
             msgEl.textContent = message;
-            
+
             if (isError) {
                 titleEl.textContent = "An error occurred";
                 titleEl.classList.add('text-red-300', 'dark:text-red-600');
@@ -2879,15 +2879,15 @@
                 iconBg.className = "w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg shadow-emerald-500/30 shrink-0";
                 iconBg.innerHTML = '<i data-lucide="check" class="w-5 h-5 text-white"></i>';
             }
-            
+
             lucide.createIcons();
 
-            // Mjukare animation in
+            // Smooth entrance animation
             toast.classList.remove('translate-y-32', 'opacity-0');
-            
-            // Rensa tidigare timer så vi inte klipper en ny toast
+
+            // Clear previous timer so a new toast is not cut off
             if (window.toastTimeout) clearTimeout(window.toastTimeout);
-            
+
             window.toastTimeout = setTimeout(() => {
                 toast.classList.add('translate-y-32', 'opacity-0');
             }, 3000);
@@ -2895,13 +2895,13 @@
 
         function getEmailLink(workflow = null) {
             const subject = workflow ? `Help with: ${workflow.title}` : 'Question about automation';
-            const body = workflow ? `Hej NordSym!\n\nJag hittade denna automation på FlowVault: ${workflow.title} (${workflow.id})` : `Hej NordSym!`;
+            const body = workflow ? `Hi NordSym,\n\nI found this automation on FlowVault: ${workflow.title} (${workflow.id})` : `Hi NordSym,`;
             return `mailto:support@nordsym.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
         }
 
-        function renderStats() { 
-            animateValue("stat-workflows", 0, WORKFLOWS.length, 1000); 
-            animateValue("stat-downloads", 0, WORKFLOWS.reduce((acc, curr) => acc + (curr.downloads || 0), 0), 1500); 
+        function renderStats() {
+            animateValue("stat-workflows", 0, WORKFLOWS.length, 1000);
+            animateValue("stat-downloads", 0, WORKFLOWS.reduce((acc, curr) => acc + (curr.downloads || 0), 0), 1500);
         }
 
         function animateValue(id, start, end, duration) {
@@ -2916,16 +2916,16 @@
         }
 
         function initTheme() {
-            // Default till dark om inget val är gjort (eller om valet är 'dark')
+            // Default to dark when no theme is set
             if (localStorage.theme === 'light') {
                 document.documentElement.classList.remove('dark');
             } else {
                 document.documentElement.classList.add('dark');
             }
-            
-            document.getElementById('theme-toggle').addEventListener('click', () => { 
-                document.documentElement.classList.toggle('dark'); 
-                localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light'; 
+
+            document.getElementById('theme-toggle').addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                localStorage.theme = document.documentElement.classList.contains('dark') ? 'dark' : 'light';
             });
         }
 
@@ -2937,9 +2937,9 @@
             let stars = [];
             let meteors = [];
 
-            const STAR_COUNT = 400; 
-            const METEOR_COUNT = 4; 
-            
+            const STAR_COUNT = 400;
+            const METEOR_COUNT = 4;
+
             function resize() {
                 width = window.innerWidth;
                 height = window.innerHeight;
@@ -2947,7 +2947,7 @@
                 canvas.height = height;
                 if (stars.length > 0) stars.forEach(star => star.reset(true));
             }
-            
+
             window.addEventListener('resize', resize);
             resize();
 
@@ -2983,7 +2983,7 @@
                     this.length = Math.random() * 80 + 20;
                     this.speed = Math.random() * 10 + 5;
                     this.size = Math.random() * 1 + 0.5;
-                    this.angle = Math.PI / 4 + (Math.random() * 0.2 - 0.1); 
+                    this.angle = Math.PI / 4 + (Math.random() * 0.2 - 0.1);
                     this.active = false;
                     setTimeout(() => { this.active = true; }, Math.random() * 5000);
                 }
@@ -2998,8 +2998,8 @@
                     const endX = this.x + this.length * Math.cos(this.angle);
                     const endY = this.y - this.length * Math.sin(this.angle);
                     const gradient = ctx.createLinearGradient(this.x, this.y, endX, endY);
-                    gradient.addColorStop(0, 'rgba(0, 191, 255, 1)'); 
-                    gradient.addColorStop(1, 'rgba(0, 191, 255, 0)'); 
+                    gradient.addColorStop(0, 'rgba(0, 191, 255, 1)');
+                    gradient.addColorStop(1, 'rgba(0, 191, 255, 0)');
                     ctx.strokeStyle = gradient;
                     ctx.lineWidth = this.size;
                     ctx.lineCap = 'round';

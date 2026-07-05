@@ -15,7 +15,7 @@ n8n workflow library powering [flowvault.se](https://flowvault.se) - NordSym's c
 
 **FlowVault.se** - n8n workflow library
 - **Free tier:** Browse & download workflows via UI
-- **PRO (299 SEK/mån):** Priority support, custom templates, early access
+- **PRO (299 SEK/month):** Priority support, custom templates, early access
 - **Current MRR:** ~100 SEK (1 PRO user, 5 FREE trials)
 
 ## 🏗️ Architecture
