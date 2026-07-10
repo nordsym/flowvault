@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free n8n Workflow Audit - runs in your browser | FlowVault</title>
+    <meta name="description" content="Paste your n8n workflow JSON and get a deterministic production-readiness audit in seconds. 10 reliability rules, zero uploads: everything runs locally in your browser.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Free n8n Workflow Audit - runs in your browser | FlowVault">
+    <meta property="og:description" content="Paste n8n workflow JSON, get a production-readiness grade. Error coverage, suppression gates, auth drift, idempotency, timeouts and more. Nothing leaves your browser.">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "FlowVault Workflow Audit",
+        "description": "Deterministic production-readiness audit for n8n workflow JSON. Runs entirely client-side in the browser.",
+        "url": "https://flowvault.se/audit/",
+        "applicationCategory": "DeveloperApplication",
+        "operatingSystem": "Web",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "SEK" },
+        "creator": { "@type": "Organization", "name": "NordSym AB", "url": "https://nordsym.com" }
+    }
+    </script>
+
+    <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Final%20logo%20no%20text.svg">
+
+    <!-- Google Analytics GA4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KRLNF7DHVJ"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-KRLNF7DHVJ', { page_title: document.title, page_location: window.location.href });
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        heading: ['Comfortaa', 'cursive'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: { DEFAULT: '#00BFFF', hover: '#00D4FF', light: 'rgba(0, 191, 255, 0.1)' },
+                        slate: { 850: '#151F32', 950: '#020617' }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        ::-webkit-scrollbar { width: 8px; height: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background-color: #334155; }
+        .glass { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(12px); }
+        .dark .glass { background: rgba(15, 23, 42, 0.85); }
+        body { position: relative; z-index: 1; }
+    </style>
+    <script defer src="https://analytics.nordsym.com/script.js" data-website-id="b0954546-7b1b-4179-94f8-d7b1a92d9e56"></script>
+</head>
+<body class="bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 font-body transition-colors duration-300 antialiased min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 w-full border-b border-slate-200 dark:border-slate-800 glass">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="/" class="flex items-center gap-2 sm:gap-3 shrink-0">
+                <img src="https://raw.githubusercontent.com/GusHem/NordSym-Logga/refs/heads/main/Final%20logo%20no%20text.svg" alt="NordSym Logo" class="w-8 h-8 sm:w-10 sm:h-10 object-contain">
+                <div class="flex flex-col justify-center">
+                    <h1 class="font-heading text-lg sm:text-xl font-bold tracking-tight leading-none text-slate-900 dark:text-white">FlowVault.se</h1>
+                    <span class="text-[9px] sm:text-[10px] text-slate-500 font-bold tracking-wide uppercase block mt-0.5">POWERED BY NORDSYM AB</span>
+                </div>
+            </a>
+            <div class="flex items-center gap-2 sm:gap-4">
+                <a href="/" class="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-primary transition-colors">Workflow library</a>
+                <a href="/flowvault-audit.mcpb" download class="hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-hover transition-all shadow-sm">
+                    <i data-lucide="download" class="w-4 h-4"></i> Audit MCP
+                </a>
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="Change theme">
+                    <i data-lucide="sun" class="w-5 h-5 hidden dark:block text-amber-400"></i>
+                    <i data-lucide="moon" class="w-5 h-5 block dark:hidden text-slate-600"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-10 sm:py-14 relative z-10">
+
+        <!-- Hero -->
+        <div class="text-center max-w-2xl mx-auto mb-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 dark:bg-primary/20 text-primary text-xs font-semibold uppercase tracking-wider mb-4">
+                <i data-lucide="shield-check" class="w-3.5 h-3.5"></i> Reliability layer · Free
+            </div>
+            <h2 class="font-heading text-3xl sm:text-4xl font-bold mb-4">Will your n8n workflow<br class="hidden sm:block"> survive production?</h2>
+            <p class="text-slate-500 dark:text-slate-400 text-lg">
+                Paste a workflow JSON export and get a deterministic production-readiness grade in seconds.
+                <span class="font-semibold text-slate-700 dark:text-slate-200">Everything runs in your browser.</span>
+                Your workflow is never uploaded anywhere.
+            </p>
+        </div>
+
+        <!-- Input card -->
+        <section class="rounded-2xl border border-slate-200 dark:border-slate-800 bg-gradient-to-br from-slate-50 to-white dark:from-slate-900 dark:to-slate-950 p-5 sm:p-7 shadow-sm mb-8">
+            <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+                <label for="wf-input" class="text-sm font-semibold text-slate-700 dark:text-slate-200 flex items-center gap-2">
+                    <i data-lucide="file-json" class="w-4 h-4 text-primary"></i> n8n workflow JSON
+                </label>
+                <div class="flex items-center gap-3 text-xs">
+                    <button onclick="loadExample()" class="text-primary hover:underline font-semibold">Load example</button>
+                    <label class="text-primary hover:underline font-semibold cursor-pointer">
+                        Open file<input type="file" accept=".json,application/json" class="hidden" onchange="loadFile(this)">
+                    </label>
+                    <button onclick="clearInput()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">Clear</button>
+                </div>
+            </div>
+            <textarea id="wf-input" rows="10" spellcheck="false"
+                placeholder='Paste the JSON from n8n (workflow "Download" export or the API shape) ...'
+                class="w-full font-mono text-xs sm:text-sm p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary focus:border-transparent outline-none transition-all placeholder:text-slate-400 resize-y"></textarea>
+            <div class="mt-4 flex items-center justify-between flex-wrap gap-3">
+                <p class="text-[11px] text-slate-400 dark:text-slate-500 flex items-center gap-1.5">
+                    <i data-lucide="lock" class="w-3 h-3"></i> Client-side only. No uploads, no telemetry on your JSON.
+                </p>
+                <button onclick="runAudit()" id="audit-btn" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary-hover transition-all shadow-sm hover:shadow disabled:opacity-50">
+                    <i data-lucide="shield-check" class="w-4 h-4"></i> Run audit
+                </button>
+            </div>
+        </section>
+
+        <!-- Results -->
+        <section id="results" class="hidden"></section>
+
+        <!-- MCP upsell -->
+        <section class="mt-10 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 sm:p-7 bg-slate-50/50 dark:bg-slate-900/50">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-4">
+                <div class="flex-1">
+                    <h3 class="font-heading text-lg font-bold mb-1">Want this across your whole n8n instance?</h3>
+                    <p class="text-sm text-slate-500 dark:text-slate-400">
+                        The <span class="font-semibold text-slate-700 dark:text-slate-200">FlowVault Audit MCP</span> connects to your own n8n from Claude Desktop: portfolio sweeps, plus execution evidence that catches runs that were green but never actually delivered. Same rules, deeper reach, still local.
+                    </p>
+                </div>
+                <a href="/flowvault-audit.mcpb" download class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-hover transition-all shadow-sm whitespace-nowrap self-start sm:self-center">
+                    <i data-lucide="download" class="w-4 h-4"></i> Download .mcpb
+                </a>
+            </div>
+        </section>
+
+        <p class="mt-8 text-center text-[11px] text-slate-400 dark:text-slate-500">
+            Deterministic rules, no LLM judgement on the audit core. Engine v<span id="engine-version">-</span> ·
+            <a href="https://github.com/nordsym/flowvault-audit-mcp" target="_blank" rel="noopener" class="underline hover:text-primary">source on GitHub</a>
+        </p>
+    </main>
+
+    <footer class="border-t border-slate-200 dark:border-slate-800 py-6 text-center text-xs text-slate-400 dark:text-slate-500 relative z-10">
+        FlowVault · a <a href="https://nordsym.com" class="underline hover:text-primary">NordSym</a> product
+    </footer>
+
+    <script src="./flowvault-audit-browser.js"></script>
+    <script>
+        // Theme toggle (same behavior as the main site).
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            localStorage.setItem('fv-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        });
+        if (localStorage.getItem('fv-theme') === 'light') document.documentElement.classList.remove('dark');
+
+        document.getElementById('engine-version').textContent = window.FlowVaultAudit ? FlowVaultAudit.version : '?';
+
+        const SEV_STYLE = {
+            critical: { label: 'CRITICAL', cls: 'bg-rose-500/10 text-rose-500 border-rose-500/30' },
+            high:     { label: 'HIGH',     cls: 'bg-orange-500/10 text-orange-500 border-orange-500/30' },
+            medium:   { label: 'MEDIUM',   cls: 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/30' },
+            low:      { label: 'LOW',      cls: 'bg-sky-500/10 text-sky-600 dark:text-sky-400 border-sky-500/30' },
+            info:     { label: 'INFO',     cls: 'bg-slate-500/10 text-slate-500 border-slate-500/30' },
+        };
+        const GRADE_STYLE = {
+            'production-ready': { emoji: '🟢', label: 'Production-Ready', cls: 'from-emerald-500/15 to-emerald-500/5 border-emerald-500/40 text-emerald-600 dark:text-emerald-400', blurb: 'No blocking findings. This workflow carries the hygiene patterns that survive production.' },
+            'conditional':      { emoji: '🟡', label: 'Conditional',      cls: 'from-amber-500/15 to-amber-500/5 border-amber-500/40 text-amber-600 dark:text-amber-400', blurb: 'Runs, but with documented risks. Fix the findings below before trusting it with real traffic.' },
+            'not-ready':        { emoji: '🔴', label: 'Not Ready',        cls: 'from-rose-500/15 to-rose-500/5 border-rose-500/40 text-rose-600 dark:text-rose-400', blurb: 'One or more failure modes will bite in production. Fix the critical and high findings first.' },
+        };
+
+        function esc(s) {
+            return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+        }
+
+        function runAudit() {
+            const input = document.getElementById('wf-input').value.trim();
+            const results = document.getElementById('results');
+            results.classList.remove('hidden');
+            if (!input) {
+                results.innerHTML = errorCard('Nothing to audit', 'Paste an n8n workflow JSON export first, or click "Load example".');
+                return;
+            }
+            let res;
+            try {
+                res = FlowVaultAudit.audit(input);
+            } catch (e) {
+                res = { ok: false, error: { error: 'audit_crashed', detail: String(e) } };
+            }
+            if (!res.ok) {
+                results.innerHTML = errorCard('Could not parse workflow', esc(res.error.detail || res.error.error));
+                results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                return;
+            }
+            const r = res.report;
+            const g = GRADE_STYLE[r.grade];
+            const counts = r.summary;
+            const findingCards = r.findings.map(f => {
+                const s = SEV_STYLE[f.severity] || SEV_STYLE.info;
+                return `
+                <div class="rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4">
+                    <div class="flex items-center gap-2 mb-2 flex-wrap">
+                        <span class="text-[10px] font-bold px-2 py-0.5 rounded border ${s.cls}">${s.label}</span>
+                        <span class="text-[11px] font-mono text-slate-400">${esc(f.rule)}</span>
+                        ${f.node_name ? `<span class="text-[11px] text-slate-500 dark:text-slate-400">· node: <span class="font-semibold text-slate-700 dark:text-slate-200">${esc(f.node_name)}</span></span>` : ''}
+                    </div>
+                    <p class="text-sm text-slate-700 dark:text-slate-300 mb-2">${esc(f.message)}</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400"><span class="font-semibold text-primary">Fix:</span> ${esc(f.fix_hint)}</p>
+                </div>`;
+            }).join('');
+
+            results.innerHTML = `
+                <div class="rounded-2xl border bg-gradient-to-br ${g.cls} p-6 sm:p-8 mb-6">
+                    <div class="flex items-center gap-4 flex-wrap">
+                        <div class="text-4xl">${g.emoji}</div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-heading text-2xl font-bold">${g.label}</h3>
+                            <p class="text-sm opacity-80 mt-1">${g.blurb}</p>
+                        </div>
+                        <div class="text-right text-xs opacity-80">
+                            <div class="font-semibold">${esc(r.workflow_name)}</div>
+                            <div>${r.workflow_node_count} nodes · ${r.rules_run.length} rules · ${counts.total} finding${counts.total === 1 ? '' : 's'}</div>
+                        </div>
+                    </div>
+                    <div class="mt-5 pt-4 border-t border-current/10 grid grid-cols-5 gap-2 text-center text-xs">
+                        ${['critical','high','medium','low','info'].map(k => `
+                            <div><div class="text-lg font-bold">${counts[k]}</div><div class="uppercase tracking-wider opacity-70">${k}</div></div>
+                        `).join('')}
+                    </div>
+                </div>
+                ${counts.total === 0
+                    ? `<div class="text-center text-sm text-slate-500 dark:text-slate-400 py-6">No findings. Ten deterministic rules ran clean. 🎉</div>`
+                    : `<div class="space-y-3">${findingCards}</div>`}
+                <div class="mt-6 text-center">
+                    <button onclick="copyReport()" class="text-xs text-primary hover:underline font-semibold inline-flex items-center gap-1">
+                        <i data-lucide="clipboard" class="w-3 h-3"></i> Copy JSON report
+                    </button>
+                </div>`;
+            window.__lastReport = r;
+            lucide.createIcons();
+            results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (typeof gtag === 'function') gtag('event', 'web_audit_run', { grade: r.grade, findings: counts.total });
+        }
+
+        function errorCard(title, detail) {
+            return `
+            <div class="rounded-2xl border border-rose-500/40 bg-rose-500/5 p-6 text-center">
+                <h3 class="font-heading text-lg font-bold text-rose-500 mb-1">${title}</h3>
+                <p class="text-sm text-slate-500 dark:text-slate-400">${detail}</p>
+            </div>`;
+        }
+
+        function copyReport() {
+            if (window.__lastReport) navigator.clipboard.writeText(JSON.stringify(window.__lastReport, null, 2));
+        }
+
+        function clearInput() {
+            document.getElementById('wf-input').value = '';
+            document.getElementById('results').classList.add('hidden');
+        }
+
+        function loadFile(input) {
+            const file = input.files && input.files[0];
+            if (!file) return;
+            file.text().then(t => { document.getElementById('wf-input').value = t; runAudit(); });
+        }
+
+        function loadExample() {
+            document.getElementById('wf-input').value = JSON.stringify(EXAMPLE, null, 2);
+            runAudit();
+        }
+
+        // A deliberately unhardened AI-generated-style workflow: webhook -> LLM -> send.
+        const EXAMPLE = {
+            "name": "AI Assistant - Lead intake to email (example)",
+            "active": true,
+            "nodes": [
+                { "id": "n1", "name": "Webhook", "type": "n8n-nodes-base.webhook", "typeVersion": 2, "position": [0, 0], "parameters": { "path": "lead-intake", "httpMethod": "POST" } },
+                { "id": "n2", "name": "OpenAI - Qualify Lead", "type": "@n8n/n8n-nodes-langchain.openAi", "typeVersion": 1.8, "position": [220, 0], "parameters": { "resource": "text", "operation": "message", "modelId": "gpt-4o" }, "credentials": { "openAiApi": { "id": "cred-openai-1", "name": "OpenAi account" } } },
+                { "id": "n3", "name": "Gmail - Send Reply", "type": "n8n-nodes-base.gmail", "typeVersion": 2.1, "position": [440, 0], "parameters": { "operation": "send", "sendTo": "={{ $json.email }}" }, "credentials": { "gmailOAuth2": { "id": "cred-gmail-1", "name": "Gmail account" } } }
+            ],
+            "connections": {
+                "Webhook": { "main": [[{ "node": "OpenAI - Qualify Lead", "type": "main", "index": 0 }]] },
+                "OpenAI - Qualify Lead": { "main": [[{ "node": "Gmail - Send Reply", "type": "main", "index": 0 }]] }
+            },
+            "settings": {}
+        };
+
+        lucide.createIcons();
+    </script>
+</body>
+</html>
