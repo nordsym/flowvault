@@ -2239,6 +2239,7 @@
                                 ${catIconsHtml}
                             </div>
                             ${badge}
+                            ${wf.auditGrade === 'production-ready' ? `<span class="flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-900/30 border border-emerald-200 dark:border-emerald-800" title="Passed the FlowVault deterministic audit with zero blocking findings"><i data-lucide="shield-check" class="w-3 h-3"></i> Production Ready</span>` : ''}
                         </div>
                         <div class="flex items-center gap-2">
                             ${wf.verified ? `<span class="text-emerald-500 dark:text-emerald-400" title="Verifierad"><i data-lucide="check-circle-2" class="w-5 h-5"></i></span>` : ''}
